@@ -6,7 +6,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const PaymentModal = ({ open, handleClose}) => {
+const PaymentModal = ({ open, handleClose, handleSubmit}) => {
 
   return (
     <React.Fragment>
@@ -41,7 +41,7 @@ const PaymentModal = ({ open, handleClose}) => {
             </FormControl>
         </DialogContent>
         <DialogActions>
-          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Submit" handleClick={handleClose}/>
+          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Submit" handleClick={handleSubmit}/>
         </DialogActions>
       </Dialog>
     </React.Fragment>

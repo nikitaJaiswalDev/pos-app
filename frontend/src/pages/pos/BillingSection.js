@@ -5,6 +5,7 @@ import CartTable from './CartTable';
 import CustomButton from 'components/CustomButton/index';
 import WarningModal from 'components/CustomModal/Warning';
 import PaymentModal from 'components/CustomModal/PaymentModal';
+import InvoiceModal from 'components/CustomModal/InvoiceModal';
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -28,6 +29,8 @@ const BillingSection = () => {
 
   const [cancelModal, setCancelModal] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false)
+  const [invoiceModal, setInvoiceModal] = React.useState(false)
+
 
   return (
     <React.Fragment>
@@ -118,7 +121,15 @@ const BillingSection = () => {
         <PaymentModal 
           open={paymentModal} 
           handleClose={() => setPaymentModal(false)}
+          handleSubmit={() => {
+            setPaymentModal(false)
+            setInvoiceModal(true)
+          }}
         />
+      }
+      {
+        invoiceModal &&
+        <InvoiceModal open={invoiceModal} handleClose={() => setInvoiceModal(false)}/>
       }
     </React.Fragment>
   )

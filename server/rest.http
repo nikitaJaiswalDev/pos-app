@@ -1,0 +1,8 @@
+//add a users
+POST http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+    "email": "abc@yopmail.com",
+    "password": "123"
+}
