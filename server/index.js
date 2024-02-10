@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const createError = require('http-errors')
-require('./heplers/init_mongodb')
+require('./helpers/init_mongodb')
 
 const AuthRoute = require('./Routes/Auth.route')
 const app = express();

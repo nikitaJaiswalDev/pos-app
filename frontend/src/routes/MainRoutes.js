@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 
+
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 
@@ -11,6 +12,13 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Order = Loadable(lazy(() => import('pages/orders/Order')));
 const Category = Loadable(lazy(() => import('pages/category/Category')));
 const Product = Loadable(lazy(() => import('pages/product/Product')));
+const AddEmployee = Loadable(lazy(() => import('pages/employee/AddEmployee')));
+const AddRole = Loadable(lazy(() => import('pages/employee/AddRole')));
+const AddSupplier = Loadable(lazy(() => import('pages/supplier/Add')));
+const ListSupplier = Loadable(lazy(() => import('pages/supplier/List')));
+const AddCustomer = Loadable(lazy(() => import('pages/customer/Add')));
+const ListCustomer = Loadable(lazy(() => import('pages/customer/List')));
+const ShopSetup = Loadable(lazy(() => import('pages/settings/ShopSetup')));
 // const Pos = Loadable(lazy(() => import('pages/pos/Pos')));
 
 // render - utilities
@@ -40,6 +48,34 @@ const MainRoutes = {
     {
       path: '/product',
       element: <Product />
+    },
+    {
+      path: '/add-employee',
+      element: <AddEmployee />
+    },
+    {
+      path: '/create-role',
+      element: <AddRole />
+    },
+    {
+      path: '/add-supplier',
+      element: <AddSupplier />
+    },
+    {
+      path: '/supplier-list',
+      element: <ListSupplier />
+    },
+    {
+      path: '/add-customer',
+      element: <AddCustomer />
+    },
+    {
+      path: '/customer-list',
+      element: <ListCustomer />
+    },
+    {
+      path: '/shop-setup',
+      element: <ShopSetup />
     },
     {
       path: 'color',

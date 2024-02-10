@@ -3,16 +3,15 @@
 import dashboard from './dashboard';
 import pos from './pos';
 import product from './product';
-// import utilities from './utilities';
-// import support from './support';
+import employee from './employee';
+import customer from './customer';
+import supplier from './supplier';
+import settings from './settings';
 
 // ==============================|| MENU ITEMS ||============================== //
 
-// const menuItems = {
-//   items: [dashboard, pages, utilities, support]
-// };
 const menuItems = {
-  items: [dashboard, pos, product]
+  items: [dashboard, pos, product, employee, customer, supplier, settings]
 };
 
 export default menuItems;

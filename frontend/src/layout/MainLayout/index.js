@@ -38,7 +38,6 @@ const MainLayout = () => {
   }, [matchDownLG]);
 
   useEffect(() => {
-    console.log({ navigation });
     if (open !== drawerOpen) setOpen(drawerOpen);
   }, [drawerOpen]);
 
