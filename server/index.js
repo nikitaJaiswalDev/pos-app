@@ -2,11 +2,22 @@ require('dotenv').config()
 const express = require('express');
 const createError = require('http-errors')
 require('./helpers/init_mongodb')
+const multer = require('multer')
+const GridFsStorage = require('multer-gridfs-storage')
+const Grid = require('gridfs-stream')
+const bodyParser = require('body-parser')
 
 const AuthRoute = require('./Routes/Auth.route')
+const EmployeeRoute = require('./Routes/Employee.route')
+const ProfilePictureRoute = require('./Routes/ProfilePicture.Route')
+
 const app = express();
+
+// Middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
 const PORT = process.env.PORT
 
 
@@ -15,6 +26,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', AuthRoute)
+app.use('/employee', EmployeeRoute)
+app.use('/picture', ProfilePictureRoute)
 
 app.use((err, req, res, next ) => {
     res.status(err.status || 500)

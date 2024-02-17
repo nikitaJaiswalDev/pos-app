@@ -1,0 +1,10 @@
+### Upload Profile Picture
+POST http://localhost:5000/picture/upload
+Content-Type: multipart/form-data
+
+--form image=./server/language.png
+
+
+### Get profile Pic
+GET http://localhost:5000/picture/65d0ccd11024216a89deac8d
+Content-Type: image/jpeg

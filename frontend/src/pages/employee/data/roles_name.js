@@ -1,0 +1,16 @@
+export const rolesname = [
+    { "title": "Dashboard Section", value: true},
+    { "title": "Pos Section", value: true},
+    { "title": "Product Section", value: true},
+    { "title": "Employee Section", value: true},
+    { "title": "Employee Role Section", value: true},
+    { "title": "Customer Section", value: true},
+    { "title": "Supplier Section", value: true},
+    { "title": "Setting Section", value: true},
+    { "title": "Category Section", value: true},
+    { "title": "Brand Section", value: true},
+    { "title": "Unit Section", value: true},
+    { "title": "Account Section", value: true},
+    { "title": "Stock Section", value: true},
+    { "title": "Coupen Section", value: true},
+]
