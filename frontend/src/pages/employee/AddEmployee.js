@@ -1,5 +1,5 @@
 import MainCard from 'components/MainCard'
-import React from 'react'
+import React, {useEffect } from 'react'
 import { Typography, Box, Grid, InputLabel, OutlinedInput, Stack,
   FormHelperText,
   Button,
@@ -14,13 +14,16 @@ import { Typography, Box, Grid, InputLabel, OutlinedInput, Stack,
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import PersonIcon from '@mui/icons-material/Person';
 import { Formik} from 'formik';
-import * as Yup from 'yup';
-import AnimateButton from 'components/@extended/AnimateButton';
 import { CardSx, EmployeeIconWrapper } from './style';
 import { useMaterialReactTable } from 'material-react-table';
 import { Edit, Delete } from '@mui/icons-material';
 import { data } from './data/employee_data';
 import CustomTable from './CustomTable';
+import { useDispatch, useSelector,  } from 'react-redux';
+import { fetchAllRolesList, 
+  selectAllRolesList, selectIsAllRolesPending
+ } from '../../store/reducers/roleSlice';
+import { formValidationSchema } from 'utils/index';
 
 const generalInfo = {
   first_name: '',
@@ -35,22 +38,20 @@ const accountInfo = {
   retype_password: ''
 }
 
-const formValidationSchema = Yup.object().shape({
-  generalInfo: Yup.object().shape({
-    first_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    profile_picture: Yup.mixed().required('Required'),
-    role: Yup.string().required('Required'),
-    phone_no: Yup.string().required('Required'),
-  }),
-  accountInfo: Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(3).max(8).required('Required'),
-    retype_password: Yup.string().min(3).max(8).required('Required'),
-  }),
-});
 
 const AddEmployee = () => {
+
+  const dispatch = useDispatch();
+  const allRolesList = useSelector(selectAllRolesList);
+  const isAllRolesPending = useSelector(selectIsAllRolesPending);
+
+  console.log({ allRolesList, isAllRolesPending});
+
+  useEffect(() => {
+    const res = dispatch(fetchAllRolesList());
+    console.log({ res });
+  }, [dispatch]);
+
   const [initialValues, setInitialValues] = React.useState({
     generalInfo: {...generalInfo },
     accountInfo: {...accountInfo}
@@ -370,7 +371,6 @@ const AddEmployee = () => {
                 </Card>
 
                 {/* Button */}
-                <AnimateButton>
                   <Button 
                     sx={{ marginTop: '20px'}} 
                     disableElevation 
@@ -382,7 +382,6 @@ const AddEmployee = () => {
                   >
                     submit
                   </Button>
-                </AnimateButton>
               </form>
             )}
         </Formik>

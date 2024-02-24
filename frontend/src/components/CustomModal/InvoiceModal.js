@@ -44,8 +44,7 @@ const CustomTable = () => {
   )
 }
 const InvoiceModal = ({ open, handleClose }) => {
-  const componentRef = React.useRef(null);
-  console.log({ componentRef });
+  // const componentRef = React.useRef(null);
 
   // const reactToPrintContent = React.useCallback(() => {
   //   return componentRef.current;

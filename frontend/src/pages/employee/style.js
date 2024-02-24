@@ -15,4 +15,9 @@ const iconSx= {
     fontWeight: '400',
     border: '.0625rem solid transparent'
 }
-export { EmployeeIconWrapper, CardSx, iconSx}
+const chipSx = {
+    borderRadius: '20px', 
+    backgroundColor: '#bac2e8', 
+    margin: '4px 1px !important'
+}
+export { EmployeeIconWrapper, CardSx, iconSx, chipSx}

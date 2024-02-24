@@ -55,11 +55,10 @@ const IOSSwitch = styled((props) => (
     },
 }));
 
-const SwitchButton = ({ checked}) => {
-    console.log({ checked });
+const SwitchButton = ({ checked, onChange}) => {
   return (
     <FormControlLabel
-        control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
+        control={<IOSSwitch sx={{ m: 1 }} defaultChecked={checked} onChange={onChange} />}
     />
   )
 }

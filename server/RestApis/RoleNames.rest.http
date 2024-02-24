@@ -1,0 +1,28 @@
+### get all Role names
+GET http://localhost:5000/role_names
+Content-Type: application/json
+
+### add a Role Name
+POST http://localhost:5000/role_names
+Content-Type: application/json
+
+{
+    "name": "coupon section ",
+    "active": false
+}
+
+### get one Role name
+GET http://localhost:5000/role_names/65d0d902126599d9c9d0cc22
+Content-Type: application/json
+
+### Update one Role name
+PUT http://localhost:5000/role_names/65d0d902126599d9c9d0cc22
+Content-Type: application/json
+
+{
+    "active": true
+}
+
+### Delete one Role Name
+DELETE  http://localhost:5000/role_names/65d0d902126599d9c9d0cc22
+Content-Type: application/json

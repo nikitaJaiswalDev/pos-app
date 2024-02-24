@@ -17,7 +17,7 @@ const titleSx= {
   textAlign: 'center',
 }
 
-const WarningModal = ({open, handleClose, title, contentText}) => {
+const WarningModal = ({open, handleClose, handleYes, title, contentText}) => {
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -36,7 +36,7 @@ const WarningModal = ({open, handleClose, title, contentText}) => {
         </DialogContent>
         <DialogActions>
           <CustomButton bgColor="#aaa" hoverColor="#878181" title="No" handleClick={handleClose}/>
-          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={handleClose}/>
+          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={handleYes}/>
         </DialogActions>
       </Dialog>
     </React.Fragment>
