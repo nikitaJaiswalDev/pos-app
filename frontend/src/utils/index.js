@@ -21,16 +21,18 @@ export const roleFormSchema = Yup.object().shape({
 });
   
 export const formValidationSchema = Yup.object().shape({
-  generalInfo: Yup.object().shape({
+  employeeInfo: Yup.object().shape({
     first_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    profile_picture: Yup.mixed().required('Required'),
-    role: Yup.string().required('Required'),
+    role_id: Yup.string().required('Required'),
     phone_no: Yup.string().required('Required'),
-  }),
-  accountInfo: Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(3).max(8).required('Required'),
-    retype_password: Yup.string().min(3).max(8).required('Required'),
+    password: Yup.string().min(4, 'Password must be at least 4 characters').required('Required'),
   }),
+  retype_password: Yup.string().oneOf([Yup.ref('employeeInfo.password'), null], 'Passwords must match').required('Required'),
 });
+
+export const convertImage = (buffer) => {
+  const binary = buffer.reduce((data, byte) => data + String.fromCharCode(byte), '');
+  return 'data:image/png;base64,' + btoa(binary);
+}

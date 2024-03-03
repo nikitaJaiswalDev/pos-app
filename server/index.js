@@ -1,11 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const cors = require('cors')
-const createError = require('http-errors')
 require('./helpers/init_mongodb')
-const multer = require('multer')
-const GridFsStorage = require('multer-gridfs-storage')
-const Grid = require('gridfs-stream')
 const bodyParser = require('body-parser')
 
 const AuthRoute = require('./Routes/Auth.route')

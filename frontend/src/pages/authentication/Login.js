@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material-ui
 import {
   Button,
@@ -27,10 +26,12 @@ import AuthWrapper from './AuthWrapper';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
+import { useMutation } from '@tanstack/react-query'
+import { loginUser } from 'api/index';
 // ================================|| LOGIN ||================================ //
 
 const Login = () => {
+  const navigate = useNavigate();
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -41,6 +42,18 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const { mutateAsync: loginEmp, isSuccess: isLoginSuccess } = useMutation({
+    mutationFn: (data) => loginUser(data),
+    onSuccess: (response) => {
+        if(response.status !== 200) {
+          throw new Error(response.data.message);
+        } else {
+          localStorage.setItem('token', response.data.token)
+          navigate("/");
+        }
+    }
+  })
   return (
     <AuthWrapper>
       <Grid container spacing={3}>
@@ -48,8 +61,8 @@ const Login = () => {
         <Grid item xs={12}>
         <Formik
           initialValues={{
-            email: 'info@codedthemes.com',
-            password: '123456',
+            email: '',
+            password: '',
             submit: null
           }}
           validationSchema={Yup.object().shape({
@@ -58,6 +71,7 @@ const Login = () => {
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
+              await loginEmp({ email: values.email, password: values.password})
               setStatus({ success: false });
               setSubmitting(false);
             } catch (err) {

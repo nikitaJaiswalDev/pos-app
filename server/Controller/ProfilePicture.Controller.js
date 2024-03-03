@@ -7,7 +7,7 @@ exports.createProPic = async (req, res, next) => {
         name: req.file.originalname,
         image: req.file.buffer,
     });
-    res.json({ message: "Image uploaded successfully!", status: "success" });
+    res.json({ data: picture, status: "success" });
   } catch (err) {
     next(err)
   }
@@ -22,3 +22,13 @@ exports.getProPicById = async (req, res, next) => {
     next(err)
   }
 };
+exports.deletePic = async (req, res, next) => {
+  try {
+    const pic = await ProfilePictureService.deletePicById(req.params.id);
+    if(!pic) throw createError.NotFound()
+    res.json({ message: "pic Deleted Successfully", status: "success" });
+  } catch (err) {
+    next(err)
+  }
+};
+

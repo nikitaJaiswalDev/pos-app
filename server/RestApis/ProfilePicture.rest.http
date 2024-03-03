@@ -6,5 +6,5 @@ Content-Type: multipart/form-data
 
 
 ### Get profile Pic
-GET http://localhost:5000/picture/65d0ccd11024216a89deac8d
+GET http://localhost:5000/picture/65da43444d6fbfc89bb93478
 Content-Type: image/jpeg

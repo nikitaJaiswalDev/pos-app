@@ -2,7 +2,7 @@ import React from 'react'
 import {MaterialReactTable } from 'material-react-table';
 import { Typography } from '@mui/material';
 
-const CustomTable = ({ table, title }) => {
+const MaterialTable = ({ table, title }) => {
     return (
         <React.Fragment>
             <Typography variant="h5" gutterBottom>{title}</Typography>
@@ -11,4 +11,4 @@ const CustomTable = ({ table, title }) => {
     )
 }
 
-export default CustomTable
+export default MaterialTable

@@ -1,7 +1,7 @@
 ### get all Employee
 GET http://localhost:5000/employee
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWU0YWRiZTgxYjI5YTVmY2M2ZWIwNDQiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MDk0ODc3MzcsImV4cCI6MTcwOTQ5MTMzNywiYXVkIjoiNjVlNGFkYmU4MWIyOWE1ZmNjNmViMDQ0IiwiaXNzIjoibmlrdWphaXMuY29tIn0.SlNaIiYdOy7sXhujSdS4QRni8tC9rkToXQcgVBTPrEQ
 ### add a Employee
 POST http://localhost:5000/employee
 Content-Type: application/json

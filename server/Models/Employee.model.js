@@ -13,7 +13,6 @@ const EmployeeSchema = new Schema({
     },
     profile_picture_id: {
         type: String,
-        required: true,
     },
     role_id: {
         type: String,
@@ -38,14 +37,14 @@ const EmployeeSchema = new Schema({
 
 EmployeeSchema.pre('save', async function (next) {
     try {
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(this.password, salt)
-        this.password = hashedPassword
-        next()
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(this.get('password'), salt);
+        this.set('password', hashedPassword);
+        next();
     } catch (error) {
-        next(error)   
+        next(error);
     }
-})
+});
 
 EmployeeSchema.methods.isValidPassword = async function (password) {
     try {

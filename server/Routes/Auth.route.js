@@ -2,41 +2,48 @@ const express = require('express');
 const router = express.Router()
 const createError = require('http-errors')
 const User = require('../Models/User.model')
+const Employee = require('../Models/Employee.model')
 const {authSchema} = require('../helpers/validation_schema')
-const { signAccessToken } = require('../helpers/jwt_helpers')
+const { signAccessToken } = require('../helpers/jwt_helpers');
+const { getRoleListById } = require('../Services/RoleList');
 
-router.post('/register',async (req, res, next) => {
-    try {
-       const { email, password } = req.body
-       const result = await authSchema.validateAsync(req.body)
+// router.post('/register',async (req, res, next) => {
+//     try {
+//        const { email, password } = req.body
+//        const result = await authSchema.validateAsync(req.body)
 
-       const doesExists = await User.findOne({email: result.email})
-        if(doesExists) throw createError.Conflict(`${result.email} already exixts`)
+//        const doesExists = await User.findOne({email: result.email})
+//         if(doesExists) throw createError.Conflict(`${result.email} already exixts`)
 
-        const user = new User(result)
-        const savedUser = await user.save()
-        const accessToken = await signAccessToken(savedUser.id)
+//         const user = new User(result)
+//         const savedUser = await user.save()
+//         const accessToken = await signAccessToken(savedUser.id)
 
-        res.send({message: "User Added Successfully"})
+//         res.send({message: "User Added Successfully"})
 
-    } catch (error) {
-        if(error.isJoi === true) error.status = 422
-        next(error)
-    }
-})
+//     } catch (error) {
+//         if(error.isJoi === true) error.status = 422
+//         next(error)
+//     }
+// })
 
 router.post('/login',async (req, res, next) => {
     try {
         const result = await authSchema.validateAsync(req.body)
-        const user = await User.findOne({email: result.email})
+
+        const user = await Employee.findOne({email: result.email})
         if(!user) throw createError.NotFound("User not registered")
 
         const isMatch = await user.isValidPassword(result.password)
         if(!isMatch) throw createError.Unauthorized("Username/password not valid")
+      
+        
+        const role = await getRoleListById(user.role_id)
+        if(!role) throw createError.NotFound("User has no role")
+        
+        const accessToken = await signAccessToken(user.id, role.name)
 
-        const accessToken = await signAccessToken(user.id)
-
-        res.send({accessToken})
+        res.send({token: accessToken, role: role.name})
     } catch (error) {
         if(error.isJoi === true) return next(createError.BadRequest('Invalid Email/Password'))
         next(error)

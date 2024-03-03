@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import ProtectedRoute from './ProtectedRoute';
 
 
 // render - dashboard
@@ -12,7 +13,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Order = Loadable(lazy(() => import('pages/orders/Order')));
 const Category = Loadable(lazy(() => import('pages/category/Category')));
 const Product = Loadable(lazy(() => import('pages/product/Product')));
-const AddEmployee = Loadable(lazy(() => import('pages/employee/AddEmployee')));
+const AddEmployeeNew = Loadable(lazy(() => import('pages/employee/AddEmployeeNew')));
 const AddRole = Loadable(lazy(() => import('pages/employee/AddRole')));
 const AddSupplier = Loadable(lazy(() => import('pages/supplier/Add')));
 const ListSupplier = Loadable(lazy(() => import('pages/supplier/List')));
@@ -35,47 +36,47 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <ProtectedRoute><DashboardDefault /></ProtectedRoute>
     },
     {
       path: '/orders',
-      element: <Order />
+      element:  <ProtectedRoute><Order /></ProtectedRoute>
     },
     {
       path: '/category',
-      element: <Category />
+      element:  <ProtectedRoute><Category /></ProtectedRoute>
     },
     {
       path: '/product',
-      element: <Product />
+      element:  <ProtectedRoute><Product /></ProtectedRoute>
     },
     {
       path: '/add-employee',
-      element: <AddEmployee />
+      element:  <ProtectedRoute><AddEmployeeNew /></ProtectedRoute>
     },
     {
       path: '/create-role',
-      element: <AddRole />
+      element:  <ProtectedRoute><AddRole /></ProtectedRoute>
     },
     {
       path: '/add-supplier',
-      element: <AddSupplier />
+      element:  <ProtectedRoute><AddSupplier /></ProtectedRoute>
     },
     {
       path: '/supplier-list',
-      element: <ListSupplier />
+      element:  <ProtectedRoute><ListSupplier /></ProtectedRoute>
     },
     {
       path: '/add-customer',
-      element: <AddCustomer />
+      element:  <ProtectedRoute><AddCustomer /></ProtectedRoute>
     },
     {
       path: '/customer-list',
-      element: <ListCustomer />
+      element:  <ProtectedRoute><ListCustomer /></ProtectedRoute>
     },
     {
       path: '/shop-setup',
-      element: <ShopSetup />
+      element:  <ProtectedRoute><ShopSetup /></ProtectedRoute>
     },
     {
       path: 'color',

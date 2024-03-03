@@ -6,3 +6,6 @@ exports.createProPic = async (pic) => {
 exports.getProPicById = async (id) => {
   return await ProfilePicture.findById(id);
 };
+exports.deletePicById = async (id) => {
+  return await ProfilePicture.findByIdAndDelete(id);
+};

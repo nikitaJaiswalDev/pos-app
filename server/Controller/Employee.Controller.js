@@ -1,11 +1,15 @@
 const createError = require("http-errors");
 const employeeService = require("../Services/Employee");
+const bcrypt = require('bcrypt')
 
 exports.getAllEmployees = async (req, res, next) => {
   try {
     const employees = await employeeService.getAllEmployees();
-    console.log({ employees });
-    res.json({ data: employees, status: "success" });
+    const data = employees.map(employee => {
+      const { password, __v, ...rest } = employee.toObject({ getters: true, virtuals: false });
+      return rest;
+    });
+    res.json({ data: data, status: "success" });
   } catch (err) {
     next(err)
   }
@@ -32,7 +36,14 @@ exports.getEmployeeById = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
   try {
-    const employee = await employeeService.updateEmployee(req.params.id, req.body);
+    const { password } = req.body
+    let updatedData = {...req.body}
+    if(password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      updatedData = {...updatedData, password: hashedPassword}
+    }
+    const employee = await employeeService.updateEmployee(req.params.id, updatedData);
     if(!employee) throw createError.NotFound()
     res.json({ message: "Employee Updated Successfully", status: "success" });
   } catch (err) {
