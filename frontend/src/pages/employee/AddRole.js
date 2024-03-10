@@ -1,5 +1,5 @@
 import MainCard from 'components/MainCard'
-import React, { useState, useRef} from 'react'
+import React, { useState, useRef, useEffect} from 'react'
 import {  Box,
   FormHelperText,
   IconButton,
@@ -21,11 +21,19 @@ import { capitalizedString, roleFormSchema } from 'utils/index';
 import CustomLoader from 'components/Loader/CustomLoader';
 import WarningModal from 'components/CustomModal/Warning';
 import RoleTable from 'components/CustomTable/RoleTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllRolesList, selectAllRolesList } from 'store/reducers/roleSlice';
 
 const AddRole = () => {
 
   const queryClient = useQueryClient()
   const formikRef = useRef();
+  const dispatch = useDispatch();
+  const { roleSlice } = useSelector(selectAllRolesList);
+
+  useEffect(() => {
+    dispatch(fetchAllRolesList());
+  }, [dispatch]);
 
   // states
   const [showToast, setShowToast] = useState({
@@ -52,52 +60,39 @@ const AddRole = () => {
     }
   });
 
-  // fetch role list
-  const { data: allRolesList, isPending: isAllRolesPending } = useQuery({
-    queryKey: ['rolesList'],
-    queryFn: () => getAllRolesList()
-  })
-
   // delete role list
   const { mutateAsync: deletedRoleList, isIdle: isDeleteIdle, isSuccess: isDeleteSuccess } = useMutation({
     mutationFn: (id) => deleteRole(id),
     onSuccess: (response) => {
       setShowToast({...showToast, open: true, title: response.message})
       setWarning({open: false, id: null, content: ''})
-      queryClient.invalidateQueries('rolesList')
-    }
-  })
-
-  // get one role list
-  const { mutateAsync: editRoleList, isIdle: isEditIdle, isSuccess: isEditSuccess} = useMutation({
-    mutationFn: (id) => getOneRole(id),
-    onSuccess: (response) => {
-      setType({ type: 'edit', id: response?.data?._id})
-      formikRef.current.setValues({
-        name: response?.data?.name,
-        status: response?.data?.status,
-        roles: response?.data?.roles
-      });
+      dispatch(fetchAllRolesList());
     }
   })
 
    // add role list item
   const { mutateAsync: addRoleList, isIdle: isAddIdle, isSuccess: isAddSuccess } = useMutation({
     mutationFn: (data) => !type.id ? addRole(data): editRole(type.id,data),
-    onSuccess: () => {
-      queryClient.invalidateQueries('rolesList')
-      setType({ type: 'add', id: null})
-      setWarning({open: false, id: null, content: ''})
-      formikRef.current.setValues((prevValues) => {
-        const updatedRoles = prevValues.roles.map(role => {
-          return {...role, status: false}
+    onSuccess: (response) => {
+      console.log({ response });
+      if(response.status !== 200) {
+        setShowToast({open: true, title: response.data.message})
+      } else {
+        setShowToast({open: true, title: response.data.message})
+        dispatch(fetchAllRolesList());
+        setType({ type: 'add', id: null})
+        setWarning({open: false, id: null, content: ''})
+        formikRef.current.setValues((prevValues) => {
+          const updatedRoles = prevValues.roles.map(role => {
+            return {...role, status: false}
+          });
+          return {
+            ...prevValues,
+            roles: updatedRoles,
+            name: ''
+          };
         });
-        return {
-          ...prevValues,
-          roles: updatedRoles,
-          name: ''
-        };
-      });
+      }
     }
   })
 
@@ -106,8 +101,7 @@ const AddRole = () => {
 
       {/* Roles section */}
       <CustomLoader open={isRoleNameLoading || 
-        isAllRolesPending || 
-        !isEditIdle && !isEditSuccess || 
+        roleSlice.isAllRolesPending ||
         !isDeleteIdle && !isDeleteSuccess ||
         !isAddIdle && !isAddSuccess
       }/>
@@ -133,10 +127,7 @@ const AddRole = () => {
             ) => {
             try {
               setTouched({name: false})
-              const response = await addRoleList(values)
-              if(response) {
-                setShowToast({open: true, title: response.message})
-              }
+              await addRoleList(values)
               setSubmitting(false);
             } catch (err) {
               setSubmitting(false);
@@ -171,7 +162,7 @@ const AddRole = () => {
                   </Grid>
                   
                   <Grid item xs={2} >
-                    <Typography variant="h5">Module Permission :</Typography>
+                    <Typography variant="h5" onClick={() => console.log(values)}>Module Permission :</Typography>
                   </Grid>
 
                 </Grid>
@@ -226,8 +217,8 @@ const AddRole = () => {
       <br/>
       {/* Role Table */}
       <MainCard>
-        {!isAllRolesPending &&
-          <RoleTable allRolesList={allRolesList} setType={setType} type={type} addRoleList={addRoleList}setShowToast={setShowToast} editRoleList={editRoleList} setWarning={setWarning}/>
+        {!roleSlice.isAllRolesPending &&
+          <RoleTable allRolesList={roleSlice.allRolesList} setType={setType} type={type} addRoleList={addRoleList}setShowToast={setShowToast} setWarning={setWarning} formikRef={formikRef}/>
         }
       </MainCard>
       {

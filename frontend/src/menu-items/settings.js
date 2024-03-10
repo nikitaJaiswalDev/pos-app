@@ -10,7 +10,7 @@ const icons = {
 
 const settings = {
   id: 'settingsection',
-  title: 'Shop Setting Section',
+  title: 'setting section',
   type: 'group',
   children: [
     {

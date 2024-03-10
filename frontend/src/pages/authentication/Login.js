@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 
 // third party
-import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project import
@@ -26,12 +25,14 @@ import AuthWrapper from './AuthWrapper';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { useMutation } from '@tanstack/react-query'
-import { loginUser } from 'api/index';
+import { loginValidationSchema } from 'utils/index';
+import { useDispatch } from 'react-redux';
+import { loginEmployee } from 'store/reducers/loginSlice';
 // ================================|| LOGIN ||================================ //
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -43,17 +44,7 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const { mutateAsync: loginEmp, isSuccess: isLoginSuccess } = useMutation({
-    mutationFn: (data) => loginUser(data),
-    onSuccess: (response) => {
-        if(response.status !== 200) {
-          throw new Error(response.data.message);
-        } else {
-          localStorage.setItem('token', response.data.token)
-          navigate("/");
-        }
-    }
-  })
+
   return (
     <AuthWrapper>
       <Grid container spacing={3}>
@@ -65,13 +56,13 @@ const Login = () => {
             password: '',
             submit: null
           }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-            password: Yup.string().max(255).required('Password is required')
-          })}
+          validationSchema={loginValidationSchema}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
-              await loginEmp({ email: values.email, password: values.password})
+              const data = await dispatch(loginEmployee({ email: values.email, password: values.password }));
+              if(data.payload) {
+                navigate('/')
+              }
               setStatus({ success: false });
               setSubmitting(false);
             } catch (err) {

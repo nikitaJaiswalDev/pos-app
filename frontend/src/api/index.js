@@ -1,8 +1,8 @@
 import axios from 'axios';
-// let AUTH_TOKEN = localStorage.getItem('token');
+let AUTH_TOKEN = localStorage.getItem('token');
 
 axios.defaults.baseURL = 'http://localhost:5000';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // ----------------- AUTH API --------------------------
@@ -14,7 +14,14 @@ export async function loginUser(data) {
     return {data: error.response.data.error, status: error.response.status}
   }
 }
-
+export async function verifyUser() {
+  try {
+      var res = await axios.get("/auth/verify-user");
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
 
 // ------------------ ROLES API --------------------------------------
 
@@ -31,9 +38,9 @@ export async function getAllRolesNames() {
 export async function addRole(data) {
   try {
       var res = await axios.post("/role_list", data);
-      return res.data
+      return {data: res.data, status: res.status}
   } catch (error) {
-    return error.response
+    return {data: error.response.data.error, status: error.response.status}
   }
 }
 // Get all Roles List
@@ -66,10 +73,19 @@ export async function getOneRole(id) {
 // Edit Role
 export async function editRole(id, data) {
   try {
-      var res = await axios.put(`/role_list/${id}`, data);
-      return res.data
+    var res = await axios.put(`/role_list/${id}`, data);
+    return {data: res.data, status: res.status}
   } catch (error) {
-    return error.response
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get specific Role
+export async function fetchRolePermissions(token) {
+  try {
+    var res = await axios.get("/role_list/role-items");
+    return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return {data: error.response.data.error, status: error.response.status}
   }
 }
 

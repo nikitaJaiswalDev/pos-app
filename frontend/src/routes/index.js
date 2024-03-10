@@ -3,7 +3,6 @@ import { useRoutes } from 'react-router-dom';
 // project import
 import MinimalRoutes from './MinimalRoutes';
 import MainRoutes from './MainRoutes';
-import ProtectedRoute from './ProtectedRoute';
 
 // ==============================|| ROUTING RENDER ||============================== //
 

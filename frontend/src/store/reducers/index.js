@@ -5,9 +5,10 @@ import { combineReducers } from 'redux';
 import menu from './menu';
 import roleSlice from './roleSlice';
 import employeeSlice from './employees'
+import loginSlice from './loginSlice';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
-const reducers = combineReducers({ menu, roleSlice,employeeSlice });
+const reducers = combineReducers({ menu, roleSlice,employeeSlice, loginSlice });
 
 export default reducers;

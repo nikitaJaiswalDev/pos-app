@@ -1,13 +1,11 @@
 const createError = require("http-errors");
 const RoleListService = require("../Services/RoleList");
 const RoleList = require('../Models/RoleList.model')
+const jwt = require('jsonwebtoken');
 
 exports.getAllRoleList = async (req, res, next) => {
   try {
     const roles = await RoleListService.getAllRoleList();
-    // const filteredData = roles.map(item => {
-    //   return { roles: item.roles.filter(role => role.status), _id: item._id, name: item.name, status: item.status}
-    // })
     res.json({ data: roles, status: "success" });
   } catch (err) {
     next(err)
@@ -54,3 +52,30 @@ exports.deleteRoleList = async (req, res, next) => {
     next(err)
   }
 };
+
+exports.getSpecificRole = async (req, res, next) => {
+
+  try {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.decode(token);
+    
+    const roleName = decodedToken.role;
+    const roles = await RoleListService.getAllRoleList();
+    
+    // Filter to get only the roles matching the role name in the token
+    const specificRole = roles.filter(role => role.name === roleName);
+
+    const filteredData = specificRole.map(item => {
+      return {
+        roles: item.roles.filter(role => role.status), // Filter roles with status true
+        _id: item._id,
+        name: item.name,
+        status: item.status
+      }
+    });
+    res.json({ data: filteredData, status: "success" });
+  } catch (err) {
+    next(err)
+  }
+   
+}

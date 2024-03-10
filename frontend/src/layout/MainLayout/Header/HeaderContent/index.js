@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect} from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -8,15 +8,32 @@ import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout, verifyToken } from 'store/reducers/loginSlice';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
 
   const theme = useTheme();
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const user = useSelector((state) =>  state.loginSlice);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("reloaded") === null) {
+      sessionStorage.setItem("reloaded", "true");
+    } else {
+      dispatch(verifyToken());
+    }
+  }, [dispatch]);
 
   const handleLogout = async () => {
-    // logout
+   localStorage.removeItem('token')
+   sessionStorage.removeItem('reloaded');
+   dispatch(logout())
+   navigate('/login')
   };
 
   const anchorRef = useRef(null);
@@ -93,9 +110,9 @@ const HeaderContent = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                             <Stack>
-                              <Typography variant="h6">John Doe</Typography>
+                              <Typography variant="h6">{user?.user?.first_name} {user?.user?.last_name}</Typography>
                               <Typography variant="body2" color="textSecondary">
-                                UI/UX Designer
+                                {user?.user?.role}
                               </Typography>
                             </Stack>
                           </Stack>
@@ -106,13 +123,6 @@ const HeaderContent = () => {
                       <>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                           <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
-                            <ListItemButton  onClick={handleLogout}>
-                                <ListItemIcon>
-                                  <SettingOutlined />
-                                </ListItemIcon>
-                                <ListItemText primary="Settings" />
-                              </ListItemButton>
-
                             <ListItemButton  onClick={handleLogout}>
                               <ListItemIcon>
                                 <LogoutOutlined />

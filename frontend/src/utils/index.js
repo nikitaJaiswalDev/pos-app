@@ -32,6 +32,11 @@ export const formValidationSchema = Yup.object().shape({
   retype_password: Yup.string().oneOf([Yup.ref('employeeInfo.password'), null], 'Passwords must match').required('Required'),
 });
 
+export const loginValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  password: Yup.string().max(255).required('Password is required')
+});
+
 export const convertImage = (buffer) => {
   const binary = buffer.reduce((data, byte) => data + String.fromCharCode(byte), '');
   return 'data:image/png;base64,' + btoa(binary);

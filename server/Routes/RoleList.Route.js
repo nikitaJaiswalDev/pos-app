@@ -4,13 +4,19 @@ const {
     createRoleList,
     getRoleListById,
     updateRoleList,
-    deleteRoleList
+    deleteRoleList,
+    getSpecificRole
 } = require('../Controller/RoleList.Controller')
 const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');
 
 const router = express.Router()
-router.use(verifyAccessToken, authorizeRoles('Admin'))
+
+// Make getAllRoleList accessible to anyone
+router.use(verifyAccessToken)
+router.route("/role-items").get(getSpecificRole);
+
+router.use(authorizeRoles('Admin'))
 
 router.route("/").get(getAllRoleList).post(createRoleList);
 router.route("/:id").get(getRoleListById).put(updateRoleList).delete(deleteRoleList);
