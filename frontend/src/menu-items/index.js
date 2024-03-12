@@ -30,7 +30,6 @@ const UseMenuItems = () => {
     if (sessionStorage.getItem("reloaded") === null) {
       sessionStorage.setItem("reloaded", "true");
     } else {
-      console.log('here');
       dispatch(getMenus());
       if (menus.menus && menus.menus.length > 0) {
         setFilteredMenuItems({ items: filterMenuItems(menus.menus) });

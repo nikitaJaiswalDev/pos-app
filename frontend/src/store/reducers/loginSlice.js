@@ -40,9 +40,22 @@ export const verifyToken = createAsyncThunk(
   }
 );
 
-export const getMenus = createAsyncThunk('menus/getMenus', async () => {
-  const response = await fetchRolePermissions();
-  return response;
+export const getMenus = createAsyncThunk('menus/getMenus', 
+async (_, { getState, rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetchRolePermissions(token);
+    if (response.status === 200) {
+      return response;
+    } else {
+      return rejectWithValue(response.data.message);
+    }
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 export const loginSlice = createSlice({
@@ -60,6 +73,7 @@ export const loginSlice = createSlice({
       state.user = null;
       state.isLoading = false;
       state.error = null;
+      state.menus = []
     },
   },
   extraReducers: (builder) => {

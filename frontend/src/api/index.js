@@ -14,9 +14,13 @@ export async function loginUser(data) {
     return {data: error.response.data.error, status: error.response.status}
   }
 }
-export async function verifyUser() {
+export async function verifyUser(token) {
   try {
-      var res = await axios.get("/auth/verify-user");
+      var res = await axios.get("/auth/verify-user", {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+        } 
+      });
       return {data: res.data, status: res.status}
   } catch (error) {
     return {data: error.response.data.error, status: error.response.status}
@@ -82,7 +86,11 @@ export async function editRole(id, data) {
 // Get specific Role
 export async function fetchRolePermissions(token) {
   try {
-    var res = await axios.get("/role_list/role-items");
+    var res = await axios.get("/role_list/role-items", {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      } 
+    });
     return {data: res.data.data, status: res.status}
   } catch (error) {
     return {data: error.response.data.error, status: error.response.status}
