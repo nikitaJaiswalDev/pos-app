@@ -1,7 +1,7 @@
 import axios from 'axios';
 let AUTH_TOKEN = localStorage.getItem('token');
 
-axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
+axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 

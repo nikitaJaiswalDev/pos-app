@@ -13,7 +13,7 @@ const authorizeRoles = require('../helpers/authorize_roles');
 const router = express.Router()
 
 // Make getAllRoleList accessible to anyone
-// router.use(verifyAccessToken)
+router.use(verifyAccessToken)
 router.route("/role-items").get(getSpecificRole);
 
 router.use(authorizeRoles('Admin', 'Supar Admin'))
