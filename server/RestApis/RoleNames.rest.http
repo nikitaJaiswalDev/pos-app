@@ -7,8 +7,8 @@ POST http://localhost:5000/role_names
 Content-Type: application/json
 
 {
-    "name": "coupon section ",
-    "active": false
+    "name": "setting section",
+    "active": true
 }
 
 ### get one Role name

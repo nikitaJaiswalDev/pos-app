@@ -14,7 +14,7 @@ const router = express.Router()
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.use(verifyAccessToken, authorizeRoles('Admin'))
+router.use(verifyAccessToken, authorizeRoles('Admin', 'Supar Admin'))
 
 router.post("/", upload.single('image'), createProPic);
 router.route("/:id").get(getProPicById).delete(deletePic);
