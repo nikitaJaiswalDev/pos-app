@@ -26,6 +26,11 @@ const HeaderContent = () => {
       sessionStorage.setItem("reloaded", "true");
     } else {
       dispatch(verifyToken());
+      // if(res.meta.requestStatus === 'rejected') {
+      //   handleLogout()
+      //   window.location.href = '/'
+      // }
+      // console.log({ res });
     }
   }, [dispatch]);
 

@@ -15,21 +15,25 @@ const supplier = {
   type: 'group',
   children: [
     {
-      id: 'add_supplier',
-      title: 'Add Supplier',
-      type: 'item',
-      url: '/add-supplier',
+      id: 'supplier',
+      title: 'Supplier',
+      type: 'collapse',
       icon: icons.ShoppingOutlined,
-      target: false
+      children: [
+        {
+          id: 'add-supplier',
+          title: 'Add Supplier',
+          url: 'supplier/add',
+          target: false,
+        },
+        {
+          id: 'supplier-list',
+          title: 'Supplier List',
+          url: 'supplier/list',
+          target: false,
+        },
+      ]
     },
-    {
-      id: 'supplier_list',
-      title: 'Supplier List',
-      type: 'item',
-      url: '/supplier-list',
-      icon: icons.ProfileOutlined,
-      target: false
-    }
   ]
 };
 

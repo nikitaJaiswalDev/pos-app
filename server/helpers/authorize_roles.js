@@ -1,6 +1,5 @@
 const authorizeRoles = (...permittedRoles) => {
     return (req, res, next) => {
-        console.log({ req: req.payload, permittedRoles});
         const userRole = req.payload.role; // Assuming `req.user` is set by previous auth middleware
 
         if (permittedRoles.includes(userRole)) {

@@ -1,12 +1,26 @@
 const createError = require("http-errors");
 const RoleListService = require("../Services/RoleList");
-const RoleList = require('../Models/RoleList.model')
+// const RoleName = require('../Models/RoleNames.model')
 const jwt = require('jsonwebtoken');
+const RoleName = require("../Models/RoleNames.model");
 
+const fetchRolesWithNames = async (roles) => {
+  return Promise.all(roles.map(async (role) => {
+    const rolesWithNames = await Promise.all(role.roles.map(async (itemId) => {
+      const roleDetails = await RoleName.findById(itemId);
+      return  roleDetails.name;
+    }));
+    return {_id: role._id, name: role.name, roles_name: rolesWithNames, roles: role.roles, status: role.status};
+  }));
+};
 exports.getAllRoleList = async (req, res, next) => {
   try {
     const roles = await RoleListService.getAllRoleList();
-    res.json({ data: roles, status: "success" });
+    fetchRolesWithNames(roles).then(result => {
+      res.json({ data: result, status: "success" });
+    }).catch(error => {
+      next(error)
+    });
   } catch (err) {
     next(err)
   }
@@ -65,17 +79,23 @@ exports.getSpecificRole = async (req, res, next) => {
     // Filter to get only the roles matching the role name in the token
     const specificRole = roles.filter(role => role.name === roleName);
 
-    const filteredData = specificRole.map(item => {
+    const fetchRoleNamesByIds = async (roleIds) => {
+      const role = await RoleName.find({
+        '_id': { $in: roleIds }
+      });
+      return role ? role.map(item => item.name) : null;
+    };
+
+    const filteredData = await Promise.all(specificRole.map(async item => {
       return {
-        roles: item.roles.filter(role => role.status), // Filter roles with status true
+        roles: await fetchRoleNamesByIds(item.roles),
         _id: item._id,
         name: item.name,
         status: item.status
-      }
-    });
+      };
+    }));
     res.json({ data: filteredData, status: "success" });
   } catch (err) {
     next(err)
   }
-   
 }

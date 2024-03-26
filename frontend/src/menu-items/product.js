@@ -1,10 +1,15 @@
 // assets
-import { ShoppingOutlined, ProfileOutlined } from '@ant-design/icons';
+import StarIcon from '@mui/icons-material/Star';
+import AdUnitsIcon from '@mui/icons-material/AdUnits';
+import CategoryIcon from '@mui/icons-material/Category';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 // icons
 const icons = {
-  ShoppingOutlined,
-  ProfileOutlined
+  StarIcon,
+  AdUnitsIcon,
+  CategoryIcon,
+  InventoryIcon
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
@@ -17,18 +22,58 @@ const product = {
     {
       id: 'category',
       title: 'Category',
-      type: 'item',
-      url: '/category',
-      icon: icons.ShoppingOutlined,
-      target: false
+      type: 'collapse',
+      icon: icons.CategoryIcon,
+      children: [
+        {
+          id: 'child-category',
+          title: 'Category',
+          url: 'category/categories',
+          target: false,
+        },
+        {
+          id: 'child-sub-category',
+          title: 'Sub Category',
+          url: 'category/sub-categories',
+          target: false,
+        },
+      ]
     },
     {
       id: 'product',
       title: 'Product',
+      type: 'collapse',
+      icon: icons.InventoryIcon,
+      children: [
+        {
+          id: 'add-new',
+          title: 'Add New',
+          url: 'product/add-new',
+          target: false,
+        },
+        {
+          id: 'product-list',
+          title: 'List',
+          url: 'product/list',
+          target: false,
+        }
+      ]
+    },
+    {
+      id: 'brand',
+      title: 'Brand',
       type: 'item',
-      url: '/product',
-      icon: icons.ProfileOutlined,
-      target: false
+      url: '/brand',
+      icon: icons.StarIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'unit',
+      title: 'Unit',
+      type: 'item',
+      url: '/unit',
+      icon: icons.AdUnitsIcon,
+      breadcrumbs: false
     }
   ]
 };

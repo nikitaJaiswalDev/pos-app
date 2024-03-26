@@ -11,12 +11,14 @@ const EmployeeSchema = new Schema({
         type: String,
         required: true,
     },
-    profile_picture_id: {
-        type: String,
+    image: {
+        type: Buffer,
+        required: true,
     },
     role_id: {
-        type: String,
-        required: true
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'RoleName'
     },
     phone_no: {
         type: String,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 let AUTH_TOKEN = localStorage.getItem('token');
 
-axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com';
+axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -60,7 +60,7 @@ export async function getAllRolesList() {
 export async function deleteRole(id) {
   try {
       var res = await axios.delete(`/role_list/${id}`);
-      return res.data
+      return {data: res.data, status: res.status}
   } catch (error) {
     return error.response
   }
@@ -97,46 +97,16 @@ export async function fetchRolePermissions(token) {
   }
 }
 
-// ------------------------- PROFILE PICTURE API --------------------------
-
-// Upload picture
-export async function uploadProfile(data) {
-  try {
-      var res = await axios.post("/picture", data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
-      return {data: res.data.data, status: res.status}
-  } catch (error) {
-    return error.response
-  }
-}
-// Get profile picture
-export async function getPicture(id) {
-  try {
-      var res = await axios.get(`/picture/${id}`);
-      return {data: res.data.data, status: res.status}
-  } catch (error) {
-    return error.response
-  }
-}
-//Delete Profile Picture
-export async function deletePicture(id) {
-  try {
-      var res = await axios.delete(`/picture/${id}`);
-      return {data: res.data, status: res.status}
-  } catch (error) {
-    return error.response
-  }
-}
-
 // --------------------------- EMPLOYEES API -------------------------------
 
 // Add Employee
 export async function addEmployee(data) {
   try {
-      var res = await axios.post("/employee", data);
+      var res = await axios.post("/employee", data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
       return {data: res.data, status: res.status}
     } catch (error) {
     console.log({ error });
@@ -164,10 +134,185 @@ export async function deleteEmployee(id) {
 // Update Employee
 export async function updateEmployee(id, data) {
   try {
-      const filteredData = Object.fromEntries(
-        Object.entries(data).filter(([key, value]) => value !== '')
-      );
-      var res = await axios.put(`/employee/${id}`, filteredData);
+      var res = await axios.put(`/employee/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- UNIT API -------------------------------
+// Add Unit
+export async function addUnit(data) {
+  try {
+      var res = await axios.post("/unit", data);
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Units
+export async function getAllUnits() {
+  try {
+      var res = await axios.get("/unit");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Unit
+export async function deleteUnit(id) {
+  try {
+      var res = await axios.delete(`/unit/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Unit
+export async function updateUnit(id, data) {
+  try {
+      var res = await axios.put(`/unit/${id}`, data);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- BRANDS API -------------------------------
+// Add Brand
+export async function addBrand(data) {
+  try {
+      var res = await axios.post("/brand", data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Brands
+export async function getAllBrand() {
+  try {
+      var res = await axios.get("/brand");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Brand
+export async function deleteBrand(id) {
+  try {
+      var res = await axios.delete(`/brand/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Brand
+export async function updateBrand(id, data) {
+  try {
+      var res = await axios.put(`/brand/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+// --------------------------- Categories API -------------------------------
+// Add Category
+export async function addCategory(data) {
+  try {
+      var res = await axios.post("/category", data);
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Categories
+export async function getAllCategories() {
+  try {
+      var res = await axios.get("/category");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Category
+export async function deleteCategory(id) {
+  try {
+      var res = await axios.delete(`/category/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Category
+export async function updateCategory(id, data) {
+  try {
+      var res = await axios.put(`/category/${id}`, data);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- SUPPLIERS API -------------------------------
+// Add Supplier
+export async function addSupplier(data) {
+  try {
+      var res = await axios.post("/supplier", data);
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Supplier
+export async function getAllSuppliers() {
+  try {
+      var res = await axios.get("/supplier");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Get Supplier by Id
+export async function getSupplierById(id) {
+  try {
+      var res = await axios.get(`/supplier/${id}`);
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Supplier
+export async function deleteSupplier(id) {
+  try {
+      var res = await axios.delete(`/supplier/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Supplier
+export async function updateSupplier(id, data) {
+  try {
+      var res = await axios.put(`/supplier/${id}`, data);
       return {data: res.data, status: res.status}
   } catch (error) {
     return error.response

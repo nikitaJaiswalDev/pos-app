@@ -1,10 +1,8 @@
 // assets
-import { ShoppingOutlined, ProfileOutlined } from '@ant-design/icons';
-
+import GroupIcon from '@mui/icons-material/Group';
 // icons
 const icons = {
-  ShoppingOutlined,
-  ProfileOutlined
+  GroupIcon
 };
 
 // ==============================|| MENU ITEMS - EMPLOYEES ||============================== //
@@ -15,23 +13,25 @@ const employee = {
   type: 'group',
   children: [
     {
-      id: 'employee_role',
-      title: 'Employee Role',
-      type: 'item',
-      url: '/create-role',
-      icon: icons.ShoppingOutlined,
-      target: false,
-      breadcrumbs: false
+      id: 'employee',
+      title: 'Employee',
+      type: 'collapse',
+      icon: icons.GroupIcon,
+      children: [
+        {
+          id: 'employee-role',
+          title: 'Employee Role',
+          url: '/create-role',
+          target: false,
+        },
+        {
+          id: 'add-employee',
+          title: 'Add Employee',
+          url: '/add-employee',
+          target: false,
+        },
+      ]
     },
-    {
-      id: 'add_employee',
-      title: 'Add Employee',
-      type: 'item',
-      url: '/add-employee',
-      icon: icons.ProfileOutlined,
-      target: false,
-      breadcrumbs: false
-    }
   ]
 };
 

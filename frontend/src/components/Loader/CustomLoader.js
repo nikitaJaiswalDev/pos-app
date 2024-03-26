@@ -3,7 +3,8 @@ import { Circles } from 'react-loader-spinner'
 const loaderSx = {
     top: '50%',
     left: '50%',
-    position: 'absolute'
+    position: 'absolute',
+    zIndex: 99
 }
 const CustomLoader = ({ open}) => {
   return (

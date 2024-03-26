@@ -22,12 +22,10 @@ const ProductSection = () => {
     const [page, setPage] = useState(1);
     const handlePagination = (event, value) => {
         setPage(value)
-        console.log({ event, value });
     };
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const displayedProducts = PRODUCTS_ITEMS.slice(startIndex, endIndex);
-    console.log({ displayedProducts });
 
   return (
     <MainCard title="Product Section" headerColor='#f9fafc'>

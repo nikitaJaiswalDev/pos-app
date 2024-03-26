@@ -9,9 +9,12 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWU0YWRiZTgxYjI5YTVmY2M2ZWIwNDQiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MDk5OTMzNDUsImV4cCI6MTcwOTk5Njk0NSwiYXVkIjoiNjVlNGFkYmU4MWIyOWE1ZmNjNmViMDQ0IiwiaXNzIjoibmlrdWphaXMuY29tIn0.pvrr5V5LIutO9Di0f-5oURMFnDANjmnBb3EYtF4NQKk
 
 {
-    "name": "Admin",
+    "name": "Manager",
     "roles": [
-        {"id": "65f5d64fd86d23cc46582475", "name": "dfsdf", "status": false},
+        "660111f9443094e03352b3c0",
+        "660111fe443094e03352b3c2",
+        "66011205443094e03352b3c4",
+        "66011228443094e03352b3c6"
     ],
     "status": true
 }

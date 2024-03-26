@@ -1,10 +1,31 @@
 // employeeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllEmployeesList } from 'api/index';
+import { getAllBrand, getAllCategories, getAllEmployeesList, getAllRolesList, getAllRolesNames, getAllSuppliers, getAllUnits } from 'api/index';
 
 // Async thunk for fetching all roles list
 export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async () => {
   const response = await getAllEmployeesList();
+  return response;
+});
+
+export const fetchAllUnits = createAsyncThunk('fetchAllUnits', async () => {
+  const response = await getAllUnits();
+  return response;
+});
+export const fetchAllBrand = createAsyncThunk('fetchAllBrand', async () => {
+  const response = await getAllBrand();
+  return response;
+});
+export const fetchAllCategories = createAsyncThunk('fetchAllCategories', async () => {
+  const response = await getAllCategories();
+  return response;
+});
+export const fetchAllSuppliers = createAsyncThunk('fetchAllSuppliers', async () => {
+  const response = await getAllSuppliers();
+  return response;
+});
+export const fetchAllRolesList = createAsyncThunk('fetchAllRolesList', async () => {
+  const response = await getAllRolesList();
   return response;
 });
 
@@ -14,6 +35,16 @@ const employeeSlice = createSlice({
   initialState: {
     allEmployeesList: [],
     isAllEmployeePending: false,
+    isUnitPending: false,
+    allUnits: [],
+    isBrandPending: false,
+    allBrands: [],
+    isCategoryPending: false,
+    allCategories: [],
+    isSupplierPending: false,
+    allSuppliers: [],
+    allRolesList: [],
+    isAllRolesPending: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -27,6 +58,61 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchAllEmployeesList.rejected, (state) => {
         state.isAllEmployeePending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllUnits.pending, (state) => {
+        state.isUnitPending = true;
+      })
+      .addCase(fetchAllUnits.fulfilled, (state, action) => {
+          state.allUnits = action.payload.data;
+          state.isUnitPending = false;
+      })
+      .addCase(fetchAllUnits.rejected, (state) => {
+        state.isUnitPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllBrand.pending, (state) => {
+        state.isBrandPending = true;
+      })
+      .addCase(fetchAllBrand.fulfilled, (state, action) => {
+          state.allBrands = action.payload.data;
+          state.isBrandPending = false;
+      })
+      .addCase(fetchAllBrand.rejected, (state) => {
+        state.isBrandPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllCategories.pending, (state) => {
+        state.isCategoryPending = true;
+      })
+      .addCase(fetchAllCategories.fulfilled, (state, action) => {
+          state.allCategories = action.payload.data;
+          state.isCategoryPending = false;
+      })
+      .addCase(fetchAllCategories.rejected, (state) => {
+        state.isCategoryPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllSuppliers.pending, (state) => {
+        state.isSupplierPending = true;
+      })
+      .addCase(fetchAllSuppliers.fulfilled, (state, action) => {
+          state.allSuppliers = action.payload.data;
+          state.isSupplierPending = false;
+      })
+      .addCase(fetchAllSuppliers.rejected, (state) => {
+        state.isSupplierPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllRolesList.pending, (state) => {
+        state.isAllRolesPending = true;
+      })
+      .addCase(fetchAllRolesList.fulfilled, (state, action) => {
+          state.allRolesList = action.payload;
+          state.isAllRolesPending = false;
+      })
+      .addCase(fetchAllRolesList.rejected, (state) => {
+        state.isAllRolesPending = false;
         // Handle error if needed
       });
   },

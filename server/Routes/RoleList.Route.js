@@ -16,7 +16,7 @@ const router = express.Router()
 router.use(verifyAccessToken)
 router.route("/role-items").get(getSpecificRole);
 
-router.use(authorizeRoles('Admin', 'Supar Admin'))
+router.use(authorizeRoles('Admin'))
 
 router.route("/").get(getAllRoleList).post(createRoleList);
 router.route("/:id").get(getRoleListById).put(updateRoleList).delete(deleteRoleList);

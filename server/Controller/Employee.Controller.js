@@ -6,7 +6,7 @@ exports.getAllEmployees = async (req, res, next) => {
   try {
     const employees = await employeeService.getAllEmployees();
     const data = employees.map(employee => {
-      const { password, __v, ...rest } = employee.toObject({ getters: true, virtuals: false });
+      const { password, ...rest } = employee._doc;
       return rest;
     });
     res.json({ data: data, status: "success" });
@@ -16,8 +16,11 @@ exports.getAllEmployees = async (req, res, next) => {
 };
 
 exports.createEmployee = async (req, res, next) => {
+  const { first_name, last_name, role_id, phone_no, email, password } = req.body;
+  const { file } = req;
   try {
-    const employee = await employeeService.createEmployee(req.body);
+    const newEmployeeData = { first_name, last_name, image: file.buffer, role_id, phone_no, email, password };
+    await employeeService.createEmployee(newEmployeeData);
     res.json({ message: "Employee Added Successfully", status: "success" });
   } catch (err) {
     next(err)
@@ -36,8 +39,9 @@ exports.getEmployeeById = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
   try {
+    const { file } = req;
     const { password } = req.body
-    let updatedData = {...req.body}
+    let updatedData = {...req.body, image: file.buffer}
     if(password) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);

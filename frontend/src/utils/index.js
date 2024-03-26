@@ -41,3 +41,46 @@ export const convertImage = (buffer) => {
   const binary = buffer.reduce((data, byte) => data + String.fromCharCode(byte), '');
   return 'data:image/png;base64,' + btoa(binary);
 }
+export const convertBufferIntoFile = (base64Data, fileName='file.png') => {
+  const parts = base64Data.split(';base64,');
+    const mimeType = parts[0].split(':')[1];
+    const imageData = parts[1];
+    const byteString = atob(imageData);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([arrayBuffer], { type: mimeType });
+    const file = new File([blob], fileName, { type: mimeType });
+    
+    return file;
+}
+
+export const productFormValidationSchema = Yup.object().shape({
+  name: Yup.string().required('Required'),
+  product_code: Yup.string().required('Required'),
+  brand: Yup.string().required('Required'),
+  quantity: Yup.string().required('Required'),
+  unit_type: Yup.string().required('Required'),
+  unit_value: Yup.string().required('Required'),
+  category: Yup.string().required('Required'),
+  sub_category: Yup.string().required('Required'),
+  purchase_price: Yup.string().required('Required'),
+  discount_type: Yup.string().required('Required'),
+  discount_value: Yup.string().required('Required'),
+  tax: Yup.string().required('Required'),
+  supplier: Yup.string().required('Required'),
+  image: Yup.string().required('Required'),
+});
+
+export const supplierFormValidationSchema = Yup.object().shape({
+  name: Yup.string().required('Required'),
+  mobile_no: Yup.string().required('Required'),
+  email: Yup.string().required('Required'),
+  country: Yup.string().required('Required'),
+  state: Yup.string().required('Required'),
+  city: Yup.string().required('Required'),
+  zip_code: Yup.string().required('Required'),
+  address: Yup.string().required('Required'),
+});

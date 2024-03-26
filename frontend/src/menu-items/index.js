@@ -18,12 +18,10 @@ const allMenuItems = {
 const UseMenuItems = () => {
   const [filteredMenuItems, setFilteredMenuItems] = useState({ items: [] });
   const menus = useSelector((state) =>  state.loginSlice);
-  console.log({ menus });
   const dispatch = useDispatch()
 
   const filterMenuItems = (roles) => {
-    const permittedSections = roles.map(role => role.name);
-    return allMenuItems.items.filter(item => permittedSections.includes(item.title));
+    return allMenuItems.items.filter(item => roles.includes(item.title));
   };
 
   useEffect(() => {

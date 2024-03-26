@@ -1,10 +1,9 @@
 // assets
-import { ShoppingOutlined, ProfileOutlined } from '@ant-design/icons';
+import GroupIcon from '@mui/icons-material/Group';
 
 // icons
 const icons = {
-  ShoppingOutlined,
-  ProfileOutlined
+  GroupIcon
 };
 
 // ==============================|| MENU ITEMS - CUSTOMER ||============================== //
@@ -15,21 +14,25 @@ const customer = {
   type: 'group',
   children: [
     {
-      id: 'add_customer',
-      title: 'Add Customer',
-      type: 'item',
-      url: '/add-customer',
-      icon: icons.ShoppingOutlined,
-      target: false
+      id: 'customer',
+      title: 'Customer',
+      type: 'collapse',
+      icon: icons.GroupIcon,
+      children: [
+        {
+          id: 'add-customer',
+          title: 'Add Customer',
+          url: '/add-customer',
+          target: false,
+        },
+        {
+          id: 'customer-list',
+          title: 'Customer List',
+          url: '/customer-list',
+          target: false,
+        },
+      ]
     },
-    {
-      id: 'customer_list',
-      title: 'Customer List',
-      type: 'item',
-      url: '/customer-list',
-      icon: icons.ProfileOutlined,
-      target: false
-    }
   ]
 };
 

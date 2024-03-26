@@ -8,7 +8,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-const InputFile = ({ setFieldValue, setUploadedImage}) => {
+const InputFile = ({ setFieldValue=null, setUploadedImage, set_data=null, data=null, color='#d0d0d0'}) => {
   // Ref for the hidden file input
   const fileInputRef = React.useRef(null);
 
@@ -20,10 +20,14 @@ const InputFile = ({ setFieldValue, setUploadedImage}) => {
         setUploadedImage(reader.result);
       };
       reader.readAsDataURL(file);
-      setFieldValue("profile_picture", file);
+      if(set_data) {
+        set_data({ ...data, image: file})
+      }
+      if(setFieldValue) {
+        setFieldValue("profile_picture", file);
+      }
     }
   };
-
   return (
     <React.Fragment>
         <Input
@@ -31,12 +35,13 @@ const InputFile = ({ setFieldValue, setUploadedImage}) => {
             id="contained-button-file"
             multiple
             type="file"
+            name="image"
             onChange={handleFileChange}
             ref={fileInputRef}
         />
         <label htmlFor="contained-button-file">
           <Button
-            sx={{ border: '1px solid #d0d0d0', height: '38px', color: 'unset'}}
+            sx={{ border: `1px solid ${color}`, height: '38px', color: 'unset'}}
             variant="outlined" 
             component="span" 
             fullWidth

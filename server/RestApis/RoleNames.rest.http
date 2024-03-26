@@ -7,7 +7,7 @@ POST http://localhost:5000/role_names
 Content-Type: application/json
 
 {
-    "name": "setting section",
+    "name": "supplier section",
     "active": true
 }
 

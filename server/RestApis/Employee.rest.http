@@ -10,7 +10,6 @@ Content-Type: application/json
     "first_name": "nikita",
     "last_name": "jaiswal",
     "role_id": "55",
-    "profile_picture_id": "55",
     "phone_no": "+859923425",
     "email": "niki@yopmail.com",
     "password": "123"

@@ -8,7 +8,6 @@ export const loginEmployee = createAsyncThunk(
     try {
       const response = await loginUser(credentials);
       if (response.status === 200) {
-        console.log({ response });
         localStorage.setItem('token', response.data.token);
         return {token: response.data.token, user: response.data.user}
       } else {

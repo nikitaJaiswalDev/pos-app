@@ -6,9 +6,12 @@ const bodyParser = require('body-parser')
 
 const AuthRoute = require('./Routes/Auth.route')
 const EmployeeRoute = require('./Routes/Employee.route')
-const ProfilePictureRoute = require('./Routes/ProfilePicture.Route')
 const RoleNamesRoute = require('./Routes/RoleNames.Route')
 const RoleListRoute = require('./Routes/RoleList.Route')
+const UnitRoute = require('./Routes/Unit.Route')
+const BrandRoute = require('./Routes/Brand.Route')
+const CategoryRoute = require('./Routes/Category.Route')
+const SupplierRoute = require('./Routes/Supplier.Route')
 
 const app = express();
 
@@ -27,9 +30,12 @@ app.get('/', (req, res) => {
 
 app.use('/auth', AuthRoute)
 app.use('/employee', EmployeeRoute)
-app.use('/picture', ProfilePictureRoute)
 app.use('/role_names', RoleNamesRoute)
 app.use('/role_list', RoleListRoute)
+app.use('/unit', UnitRoute)
+app.use('/brand', BrandRoute)
+app.use('/category', CategoryRoute)
+app.use('/supplier', SupplierRoute)
 
 app.use((err, req, res, next ) => {
     res.status(err.status || 500)

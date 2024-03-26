@@ -1,6 +1,8 @@
 import React from 'react'
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery, useTheme} from '@mui/material';
 import CustomButton from 'components/CustomButton/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleDelete } from 'store/reducers/warning';
 
 const contentTextSx = {
   color: '#545454',
@@ -17,10 +19,13 @@ const titleSx= {
   textAlign: 'center',
 }
 
-const WarningModal = ({open, handleClose, handleYes, title, contentText}) => {
+const WarningModal = ({open, handleClose, title, contentText}) => {
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const dispatch = useDispatch()
+  const { delete_type, id } = useSelector((state) =>  state.warning)
  
   return (
     <React.Fragment>
@@ -36,7 +41,7 @@ const WarningModal = ({open, handleClose, handleYes, title, contentText}) => {
         </DialogContent>
         <DialogActions>
           <CustomButton bgColor="#aaa" hoverColor="#878181" title="No" handleClick={handleClose}/>
-          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={handleYes}/>
+          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={() => dispatch(handleDelete({ id: id, delete_type: delete_type }))}/>
         </DialogActions>
       </Dialog>
     </React.Fragment>

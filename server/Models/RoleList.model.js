@@ -1,31 +1,16 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const RoleSchema = new Schema({
-    role_id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    status: {
-        type: Boolean,
-        required: true,
-    }
-});
-
 const RoleListSchema = new Schema({
     name: {
         type: String,
         required: true,
         unique: true
     },
-    roles: {
-        type: [RoleSchema],
-        required: true,
-    },
+    roles: [{
+        type: Schema.Types.ObjectId,
+        ref: 'RoleName'
+    }],
     status: {
         type: Boolean,
         required: true,
