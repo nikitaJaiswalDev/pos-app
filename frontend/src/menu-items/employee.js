@@ -8,7 +8,7 @@ const icons = {
 // ==============================|| MENU ITEMS - EMPLOYEES ||============================== //
 
 const employee = {
-  id: 'possection',
+  id: 'employeesection',
   title: 'employee section',
   type: 'group',
   children: [

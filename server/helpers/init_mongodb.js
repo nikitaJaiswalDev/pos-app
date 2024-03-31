@@ -6,7 +6,6 @@ var path = require("path");
 const URI = "mongodb+srv://nikita_mongo:123@cluster0.nyecp.mongodb.net/"
 const db_name = "pos_app"
 
-console.log({ URI })
 mongoose.connect(URI, {
     dbName: db_name
 })

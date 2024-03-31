@@ -6,9 +6,8 @@ import SubmitButton from 'components/CustomButton/SubmitButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Formik } from 'formik';
 import { Countries } from 'utils/countries_state'
-import { addSupplier, getAllSuppliers, getSupplierById, updateSupplier } from 'api/index';
+import { addSupplier, getSupplierById, updateSupplier } from 'api/index';
 import { useMutation, useQuery } from '@tanstack/react-query'
-import SuccessToast from 'components/CustomToast/SuccessToast';
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { toggleLoader } from 'store/reducers/loader';
@@ -32,7 +31,7 @@ const AddSupplier = () => {
         mutationFn: (data) => !supplierId ? addSupplier(data): updateSupplier(supplierId,data),
     })
     // fetch spcific supplier
-    const { data: supplierData } = useQuery({
+    useQuery({
         queryKey: ['supplier', supplierId],
         queryFn: () => getSupplierById(supplierId),
         select: (data) => {
@@ -74,7 +73,7 @@ const AddSupplier = () => {
                     zip_code: '',
                     address: '',
                 }}
-                validationSchema={type.type == 'add' && supplierFormValidationSchema} 
+                validationSchema={type.type === 'add' && supplierFormValidationSchema} 
                 onSubmit={async (values, actions) => {
                     dispatch(toggleLoader({ loader: true }));
                     try {
@@ -155,7 +154,7 @@ const AddSupplier = () => {
                                                 error={Boolean(errors.country && touched.country)}
                                             >
                                                 { Countries.map(item => (
-                                                    <MenuItem value={item.iso2}>{item.name}</MenuItem>
+                                                    <MenuItem key={item.iso2} value={item.iso2}>{item.name}</MenuItem>
                                                 ))}
                                             </Select>
                                             {errors.country && touched.country && (
@@ -178,7 +177,7 @@ const AddSupplier = () => {
                                                 onChange={handleChange}
                                                 startAdornment={<InputAdornment position="start">
                                                     +{ 
-                                                        values.country !== '' && Countries.find(country => country.iso2 == values.country)?.phone_code
+                                                        values.country !== '' && Countries.find(country => country.iso2 === values.country)?.phone_code
                                                     }
                                                 </InputAdornment>}
                                                 error={Boolean(errors.mobile_no && touched.mobile_no)}
@@ -204,8 +203,8 @@ const AddSupplier = () => {
                                             >
                                                 <MenuItem value=''>----State----</MenuItem>
                                                 {
-                                                    values.country !== '' && Countries.find(country => country.iso2 == values.country)?.states.map(state => (
-                                                        <MenuItem value={state.state_code}>{state.name}</MenuItem>
+                                                    values.country !== '' && Countries.find(country => country.iso2 === values.country)?.states.map(state => (
+                                                        <MenuItem key={state.state_code} value={state.state_code}>{state.name}</MenuItem>
                                                     ))
                                                 }
                                             </Select>

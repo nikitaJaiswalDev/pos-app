@@ -1,19 +1,19 @@
-const Brand = require('../Models/Brand.model')
+const Product = require('../Models/Product.model')
 
-exports.getAllBrands = async () => {
-    return await Brand.find();
+exports.getAllProducts = async (query) => {
+    return await Product.find(query);
 };
-exports.createBrand = async (data) => {
-  return await Brand.create(data);
+exports.createProduct = async (data) => {
+  return await Product.create(data);
 };
-exports.getBrandById = async (id) => {
-  return await Brand.findById(id);
-};
- 
-exports.updateBrand = async (id, data) => {
-  return await Brand.findByIdAndUpdate(id, data);
+exports.getProductById = async (id) => {
+  return await Product.findById(id);
 };
  
-exports.deleteBrand= async (id) => {
-  return await Brand.findByIdAndDelete(id);
+exports.updateProduct = async (id, data) => {
+  return await Product.findByIdAndUpdate(id, data);
+};
+ 
+exports.deleteProduct= async (id) => {
+  return await Product.findByIdAndDelete(id);
 };

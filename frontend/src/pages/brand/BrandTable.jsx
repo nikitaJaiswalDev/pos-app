@@ -74,7 +74,6 @@ const BrandTable = ({ data, set_brand, set_image, set_type }) => {
             <Box>
             <IconButton >
                 <Edit onClick={() => {
-                    console.log({ data: row.row.original.image});
                     set_brand({name: row.row.original.name, name_error: null, image: convertBufferIntoFile(convertImage(row.row.original.image.data))})
                     set_image(convertImage(row.row.original.image.data))
                     set_type({type: 'update', id: row.row.original._id})

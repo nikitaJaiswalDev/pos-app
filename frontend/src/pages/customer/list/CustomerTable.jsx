@@ -6,8 +6,7 @@ import MaterialTable from '../../../components/CustomTable/MaterialTable';
 import { capitalizedString, convertImage } from 'utils/index';
 import { openWarning } from 'store/reducers/warning';
 
-const ProductTable = ({ data, dispatch, navigate }) => {
-
+const CustomerTable = ({ data, dispatch, navigate }) => {
     const columns = React.useMemo(
         () => [
             {
@@ -21,55 +20,10 @@ const ProductTable = ({ data, dispatch, navigate }) => {
                 }
             },
             {
-                id: 'image',
-                header: 'Image',
+                accessorKey: 'mobile_no',
+                header: 'Mobile No',
                 size: 150,
-                Cell: ({ row }) => {
-                    return (
-                        <img src={convertImage(row.original.image.data)} alt="Uploaded" height={50} width={50} style={{ borderRadius: 10}}/>
-                    )
-                }
-            },
-            {
-                accessorKey: 'sku',
-                header: 'Product Code',
-                size: 150,
-            },
-            {
-                id: 'purchase_price',
-                header: 'Purchase Price',
-                size: 150,
-                Cell: ({ row }) => {
-                    return (
-                        <p>{ row.original.purchase_price} ₹</p>
-                    )
-                }
-            },
-            {
-                accessorKey: 'selling_price',
-                header: 'Selling Price',
-                size: 150,
-                Cell: ({ row }) => {
-                    return (
-                        <p>{ row.original.selling_price} ₹</p>
-                    )
-                }
-            },
-            {
-                accessorKey: 'qtn',
-                header: 'Quantity',
-                size: 150,
-            },
-            {
-                id: 'supplier',
-                header: 'Supplier Name',
-                size: 150,
-                Cell: ({ row }) => {
-                    return (
-                        <p>{ capitalizedString(row.original.supplier)}</p>
-                    )
-                }
-            },
+            }
         ],
         [],
     )
@@ -100,11 +54,11 @@ const ProductTable = ({ data, dispatch, navigate }) => {
         renderRowActions: (row) => (
             <Box>
             <IconButton >
-                <Edit onClick={() => navigate(`/product/edit/${row?.row?.original?._id}`)}/>
+                <Edit onClick={() => navigate(`/edit-customer/${row?.row?.original?._id}`)}/>
             </IconButton>
             <IconButton >
                 <Delete onClick={() => {
-                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'product' }));
+                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'customer' }));
                 }}/>
             </IconButton>
             </Box>
@@ -116,4 +70,4 @@ const ProductTable = ({ data, dispatch, navigate }) => {
   )
 }
 
-export default ProductTable
+export default CustomerTable

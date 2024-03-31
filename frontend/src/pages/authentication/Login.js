@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import {
   Button,
@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
-  Link,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -20,30 +19,28 @@ import {
 import { Formik } from 'formik';
 
 // project import
-import AnimateButton from 'components/@extended/AnimateButton';
 import AuthWrapper from './AuthWrapper';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { loginValidationSchema } from 'utils/index';
 import { useDispatch } from 'react-redux';
-import { loginEmployee } from 'store/reducers/loginSlice';
+import { useMutation } from '@tanstack/react-query'
+import { loginUser } from 'api/index';
+import { toggleLoader } from 'store/reducers/loader';
+import { openToast } from 'store/reducers/toast';
 // ================================|| LOGIN ||================================ //
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
+  // Add customer
+  const { mutateAsync: login } = useMutation({
+      mutationFn: (data) => loginUser(data)
+  })
 
   return (
     <AuthWrapper>
@@ -54,26 +51,30 @@ const Login = () => {
           initialValues={{
             email: '',
             password: '',
-            submit: null
+            signIn: false
           }}
           validationSchema={loginValidationSchema}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          onSubmit={async ( values, actions ) => {
+            dispatch(toggleLoader({ loader: true }));
             try {
-              const data = await dispatch(loginEmployee({ email: values.email, password: values.password }));
-              if(data.payload) {
-                navigate('/')
-              }
-              setStatus({ success: false });
-              setSubmitting(false);
-            } catch (err) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
+                const res = await login(values);
+                if (res.status === 200) {
+                    localStorage.setItem('token', res.data.token)
+                    navigate('/')
+                } else {
+                    dispatch(openToast({ toast_open: true, title: res.data.message }));
+                }
+            } catch (error) {
+                dispatch(openToast({ toast_open: true, title: error }));
+            } finally {
+                dispatch(toggleLoader({ loader: false }));
+                actions.resetForm()
             }
           }}
         >
-          {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          {({ errors, handleChange, handleSubmit, touched, values }) => (
             <form noValidate onSubmit={handleSubmit}>
+              <p>{JSON.stringify(values.submit)}</p>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Stack spacing={1}>
@@ -83,7 +84,6 @@ const Login = () => {
                       type="email"
                       value={values.email}
                       name="email"
-                      onBlur={handleBlur}
                       onChange={handleChange}
                       placeholder="Enter email address"
                       fullWidth
@@ -106,14 +106,12 @@ const Login = () => {
                       type={showPassword ? 'text' : 'password'}
                       value={values.password}
                       name="password"
-                      onBlur={handleBlur}
                       onChange={handleChange}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
                             aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
+                            onClick={() => setShowPassword(!showPassword)}
                             edge="end"
                             size="large"
                           >
@@ -136,31 +134,27 @@ const Login = () => {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={checked}
-                          onChange={(event) => setChecked(event.target.checked)}
-                          name="checked"
+                          checked={values.signIn}
+                          onChange={handleChange}
+                          name="signIn"
                           color="primary"
                           size="small"
                         />
                       }
                       label={<Typography variant="h6">Keep me sign in</Typography>}
                     />
-                    <Link variant="h6" component={RouterLink} to="" color="text.primary">
-                      Forgot Password?
-                    </Link>
+                    
                   </Stack>
                 </Grid>
-                {errors.submit && (
+                {values.submit && (
                   <Grid item xs={12}>
                     <FormHelperText error>{errors.submit}</FormHelperText>
                   </Grid>
                 )}
                 <Grid item xs={12}>
-                  <AnimateButton>
-                    <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                    <Button fullWidth size="large" type="submit" variant="contained" color="primary">
                       Login
                     </Button>
-                  </AnimateButton>
                 </Grid>
                 
               </Grid>

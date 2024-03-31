@@ -14,15 +14,15 @@ const Order = Loadable(lazy(() => import('pages/orders/Order')));
 const Category = Loadable(lazy(() => import('pages/category/category/index')));
 const SubCategory = Loadable(lazy(() => import('pages/category/sub-category/index')));
 const AddNew = Loadable(lazy(() => import('pages/product/Add/index')));
-const ListProduct = Loadable(lazy(() => import('pages/product/List/ListProduct')));
+const ListProduct = Loadable(lazy(() => import('pages/product/List/index')));
 const Brand = Loadable(lazy(() => import('pages/brand/index')));
 const Unit = Loadable(lazy(() => import('pages/unit/index')));
 const AddEmployee = Loadable(lazy(() => import('pages/employee/employee/index')));
 const AddRole = Loadable(lazy(() => import('pages/employee/role/index')));
 const AddSupplier = Loadable(lazy(() => import('pages/supplier/add/index')));
 const ListSupplier = Loadable(lazy(() => import('pages/supplier/list/index')));
-const AddCustomer = Loadable(lazy(() => import('pages/customer/Add')));
-const ListCustomer = Loadable(lazy(() => import('pages/customer/List')));
+const AddCustomer = Loadable(lazy(() => import('pages/customer/add/index')));
+const ListCustomer = Loadable(lazy(() => import('pages/customer/list/index')));
 const ShopSetup = Loadable(lazy(() => import('pages/settings/ShopSetup')));
 // const Pos = Loadable(lazy(() => import('pages/pos/Pos')));
 
@@ -71,6 +71,10 @@ const MainRoutes = {
       path: '/product',
       children: [
         {
+          path: 'edit/:productId',
+          element: <ProtectedRoute><AddNew /></ProtectedRoute>
+        },
+        {
           path: 'add-new',
           element: <ProtectedRoute><AddNew /></ProtectedRoute>
         },
@@ -104,6 +108,10 @@ const MainRoutes = {
           element: <ProtectedRoute><ListSupplier /></ProtectedRoute>
         }
       ]
+    },
+    {
+      path: '/edit-customer/:customerId',
+      element:  <ProtectedRoute><AddCustomer /></ProtectedRoute>
     },
     {
       path: '/add-customer',

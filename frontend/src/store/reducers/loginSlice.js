@@ -1,23 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchRolePermissions, loginUser, verifyUser } from 'api/index';
-
-// Async thunk for performing the login operation
-export const loginEmployee = createAsyncThunk(
-  'login/loginEmployee',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = await loginUser(credentials);
-      if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
-        return {token: response.data.token, user: response.data.user}
-      } else {
-        return rejectWithValue(response.data.message);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+import { fetchRolePermissions, verifyUser } from 'api/index';
 
 export const verifyToken = createAsyncThunk(
   'auth/verifyToken',
@@ -77,19 +59,6 @@ export const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginEmployee.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(loginEmployee.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.token = action.payload.token;
-        state.user = action.payload.user;
-        state.error = null;
-      })
-      .addCase(loginEmployee.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
       .addCase(verifyToken.fulfilled, (state, action) => {
         state.user = action.payload;
       })

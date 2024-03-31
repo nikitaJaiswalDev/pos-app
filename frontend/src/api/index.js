@@ -5,6 +5,24 @@ axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+// Function to handle 401 errors
+const handle401Error = () => {
+  localStorage.removeItem('token')
+  window.location.href = '/login';
+};
+// Add a response interceptor
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      handle401Error();
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ----------------- AUTH API --------------------------
 export async function loginUser(data) {
   try {
@@ -314,6 +332,110 @@ export async function updateSupplier(id, data) {
   try {
       var res = await axios.put(`/supplier/${id}`, data);
       return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+// --------------------------- PRODUCTS API -------------------------------
+// Add Product
+export async function addProduct(data) {
+  try {
+      var res = await axios.post("/product", data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Products
+export async function getAllProducts(filter) {
+  try {
+      var res = await axios.get(`/product?category=${filter?.category}&text=${filter?.text}`);
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Product
+export async function deleteProduct(id) {
+  try {
+      var res = await axios.delete(`/product/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Product
+export async function updateProduct(id, data) {
+  try {
+      var res = await axios.put(`/product/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Get Product by Id
+export async function getProductById(id) {
+  try {
+      var res = await axios.get(`/product/${id}`);
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- CUSTOMER API -------------------------------
+// Add Customer
+export async function addCustomer(data) {
+  try {
+      var res = await axios.post("/customer", data);
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Customers
+export async function getAllCustomers() {
+  try {
+      var res = await axios.get("/customer");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Delete Customer
+export async function deleteCustomert(id) {
+  try {
+      var res = await axios.delete(`/customer/${id}`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Customer
+export async function updateCustomer(id, data) {
+  try {
+      var res = await axios.put(`/customer/${id}`, data);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Get Customer by Id
+export async function getCustomerById(id) {
+  try {
+      var res = await axios.get(`/customer/${id}`);
+      return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
   }

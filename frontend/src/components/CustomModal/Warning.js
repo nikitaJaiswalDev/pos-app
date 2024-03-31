@@ -21,16 +21,12 @@ const titleSx= {
 
 const WarningModal = ({open, handleClose, title, contentText}) => {
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
   const dispatch = useDispatch()
   const { delete_type, id } = useSelector((state) =>  state.warning)
  
   return (
     <React.Fragment>
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"

@@ -6,7 +6,7 @@ import MinimalLayout from 'layout/MinimalLayout';
 
 // render - login
 const AuthLogin = Loadable(lazy(() => import('pages/authentication/Login')));
-const Pos = Loadable(lazy(() => import('pages/pos/Pos')));
+const Pos = Loadable(lazy(() => import('pages/pos/index')));
 
 // ==============================|| AUTH ROUTING ||============================== //
 

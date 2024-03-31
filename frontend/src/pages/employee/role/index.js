@@ -161,7 +161,6 @@ const AddRole = () => {
                                   const updatedRoles = prevValues.roles.map(role =>
                                     role.role_id === item.role_id ? { ...role, status: checked } : role
                                   );
-                                  console.log({ updatedRoles });
                                   return {
                                     ...prevValues,
                                     roles: updatedRoles

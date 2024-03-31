@@ -1,56 +1,71 @@
 const createError = require("http-errors");
-const BrandService = require("../Services/Brand");
-const jwt = require('jsonwebtoken');
+const ProductService = require("../Services/Product");
 
-exports.getAllBrands = async (req, res, next) => {
+exports.getAllProducts = async (req, res, next) => {
   try {
-    const brands = await BrandService.getAllBrands();
-    res.json({ data: brands, status: "success" });
+    let query = {};
+    const { category, text } = req.query;
+
+    if (category !== 'undefined' && category !== 'null') {
+      query.category = category;
+    }
+    if (text !== 'undefined' && text !== 'null') {
+      query.$or = [
+        { name: { $regex: text, $options: 'i' } },
+        { sku: { $regex: text, $options: 'i' } }
+      ];
+    }
+    const products = await ProductService.getAllProducts(query);
+    res.json({ data: products, status: "success" });
   } catch (err) {
     next(err)
   }
 };
 
-exports.createBrand = async (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
     try {
-      await BrandService.createBrand({
-          name: req.body.name,
-          image: req.file.buffer,
+      const { name, sku, brand, qtn, unit, unit_value, category, supplier, selling_price, purchase_price, discount, tax } = req.body
+      const file = req.file
+      await ProductService.createProduct({
+          name,sku, brand, qtn, unit, unit_value, category, supplier, selling_price, purchase_price, discount, tax, 
+          image: file.buffer,
       });
-      res.json({ message: "Brand Added Successfully", status: "success" });
+      res.json({ message: "Product Added Successfully", status: "success" });
     } catch (err) {
         next(err)
     }
 };
 
-exports.getBrandById = async (req, res, next) => {
+exports.getProductById = async (req, res, next) => {
   try {
-    const brand = await BrandService.getBrandById(req.params.id);
-    if(!brand) throw createError.NotFound()
-    res.json({ data: brand, status: "success" });
+    const product = await ProductService.getProductById(req.params.id);
+    if(!product) throw createError.NotFound()
+    res.json({ data: product, status: "success" });
   } catch (err) {
     next(err)
   }
 };
 
-exports.updateBrand = async (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
   try {
-    const brand = await BrandService.updateBrand(req.params.id, {
-        name: req.body.name,
-        image: req.file.buffer,
+    const { name, sku, brand, qtn, unit, unit_value, category, supplier, selling_price, purchase_price, discount, tax } = req.body
+    const file = req.file
+    const product = await ProductService.updateProduct(req.params.id, {
+      name,sku, brand, qtn, unit, unit_value, category, supplier, selling_price, purchase_price, discount, tax, 
+      image: file.buffer,
     });
-    if(!brand) throw createError.NotFound()
-    res.json({ message: "Brand Updated Successfully", status: "success" });
+    if(!product) throw createError.NotFound()
+    res.json({ message: "Product Updated Successfully", status: "success" });
   } catch (err) {
     next(err)
   }
 };
 
-exports.deleteBrand = async (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
   try {
-    const brand = await BrandService.deleteBrand(req.params.id);
-    if(!brand) throw createError.NotFound()
-    res.json({ message: "Brand Deleted Successfully", status: "success" });
+    const product = await ProductService.deleteProduct(req.params.id);
+    if(!product) throw createError.NotFound()
+    res.json({ message: "Product Deleted Successfully", status: "success" });
   } catch (err) {
     next(err)
   }

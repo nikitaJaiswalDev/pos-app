@@ -1,27 +1,12 @@
 import React from 'react'
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton} from '@mui/material';
 import {DeleteFilled} from '@ant-design/icons';
-
-function createData(item, qty, price) {
-    return { item, qty, price };
-}
-
-const rows = [
-    createData('Marvel School bag', 1, 4500),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Marvel School bag', 1, 4500),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-    createData('Water proof Travel Bag', 1, 1450),
-];
+import { removeCartItem, updateQtn} from 'store/reducers/cartItems';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const paperSx = {
-    height: 200, overflow: 'auto',  "&::-webkit-scrollbar": {
+    overflow: 'auto',  "&::-webkit-scrollbar": {
         width: 5
     },
     "&::-webkit-scrollbar-track": {
@@ -32,7 +17,8 @@ const paperSx = {
         borderRadius: 2
     }
 }
-const CartTable = () => {
+const CartTable = ({ data, dispatch }) => {
+
   return (
     <Paper sx={paperSx}
     >
@@ -47,17 +33,26 @@ const CartTable = () => {
             </TableRow>
             </TableHead>
             <TableBody>
-            {rows.map((row) => (
-                <TableRow
-                key={row.item}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                <TableCell component="th" scope="row">{row.item.length > 10 ? row.item.slice(0,10)+'...' : row.item}</TableCell>
-                <TableCell align="right">{row.qty}</TableCell>
-                <TableCell align="right">{row.price} $</TableCell>
-                <TableCell align="right"><DeleteFilled /></TableCell>
-                </TableRow>
-            ))}
+            {data.map((row) => (
+                    <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                    <TableCell component="th" scope="row">{row.name.length > 10 ? row.name.slice(0,10)+'...' : row.name}</TableCell>
+                    <TableCell align="right">
+                        <IconButton color="secondary" size="medium" onClick={() => dispatch(updateQtn({id: row._id, operation: 'plus'}))}>
+                            <AddIcon fontSize="inherit" />
+                        </IconButton>
+                            {row.qtn}
+                        <IconButton color="secondary" size="medium" onClick={() => dispatch(updateQtn({id: row._id, operation: 'minus'}))}>
+                            <RemoveIcon fontSize="inherit" />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell align="right">{row.price} ₹</TableCell>
+                    <TableCell align="right"><DeleteFilled onClick={() => dispatch(removeCartItem({item: row}))} /></TableCell>
+                    </TableRow>
+                )
+            )}
             </TableBody>
         </Table>
         </TableContainer>

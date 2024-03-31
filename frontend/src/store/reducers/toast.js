@@ -14,7 +14,6 @@ const toast = createSlice({
   initialState,
   reducers: {
     openToast(state, action) {
-        console.log({ action });
       state.toast_open = action.payload.toast_open;
       state.title = action.payload.title;
     },

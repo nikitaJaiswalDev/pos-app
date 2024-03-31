@@ -1,12 +1,12 @@
 const express = require('express')
 const multer = require('multer');
 const { 
-    getAllBrands,
-    getBrandById,
-    createBrand,
-    updateBrand,
-    deleteBrand
-} = require('../Controller/Brand.Controller')
+    getAllProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
+} = require('../Controller/Product.Controller')
 const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');
 
@@ -17,12 +17,12 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Make getAllRoleList accessible to anyone
-router.use(verifyAccessToken, authorizeRoles('Admin', 'Supar Admin'))
+router.use(verifyAccessToken, authorizeRoles('Admin'))
 
-router.post("/", upload.single('image'), createBrand);
-router.put("/:id", upload.single('image'), updateBrand);
+router.post("/", upload.single('image'), createProduct);
+router.put("/:id", upload.single('image'), updateProduct);
 
-router.route("/").get(getAllBrands);
-router.route("/:id").get(getBrandById).delete(deleteBrand);
+router.route("/").get(getAllProducts);
+router.route("/:id").get(getProductById).delete(deleteProduct);
 
 module.exports = router

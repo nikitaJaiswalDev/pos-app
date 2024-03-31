@@ -2,15 +2,15 @@ import { useRef, useState, useEffect} from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, Stack, Typography, List, ListItemButton, ListItemIcon, ListItemText
+import {  Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, Stack, Typography, List, ListItemButton, ListItemIcon, ListItemText
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
-import avatar1 from 'assets/images/users/avatar-1.png';
-import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout, verifyToken } from 'store/reducers/loginSlice';
+import { convertImage } from 'utils/index';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
@@ -25,12 +25,7 @@ const HeaderContent = () => {
     if (sessionStorage.getItem("reloaded") === null) {
       sessionStorage.setItem("reloaded", "true");
     } else {
-      dispatch(verifyToken());
-      // if(res.meta.requestStatus === 'rejected') {
-      //   handleLogout()
-      //   window.location.href = '/'
-      // }
-      // console.log({ res });
+      dispatch(verifyToken())
     }
   }, [dispatch]);
 
@@ -72,7 +67,7 @@ const HeaderContent = () => {
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-          <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+          { user?.user && <img src={convertImage(user?.user?.picture?.data)}  style={{ width: 32, height: 32 }}/>}
         </Stack>
       </ButtonBase>
       <Popper
@@ -113,9 +108,10 @@ const HeaderContent = () => {
                       <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
                           <Stack direction="row" spacing={1.25} alignItems="center">
-                            <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                            <img src={convertImage(user?.user?.picture?.data)}  style={{ width: 32, height: 32, border: '1px solid', borderRadius: 50 }}/>
                             <Stack>
                               <Typography variant="h6">{user?.user?.first_name} {user?.user?.last_name}</Typography>
+                              {/* <p>{JSON.stringify(user?.user?.picture)}</p> */}
                               <Typography variant="body2" color="textSecondary">
                                 {user?.user?.role}
                               </Typography>

@@ -1,8 +1,8 @@
 // types
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteBrand, deleteCategory, deleteEmployee, deleteRole, deleteSupplier, deleteUnit } from 'api/index';
+import { deleteBrand, deleteCategory, deleteCustomert, deleteEmployee, deleteProduct, deleteRole, deleteSupplier, deleteUnit } from 'api/index';
 import { openToast } from './toast';
-import { fetchAllBrand, fetchAllCategories, fetchAllEmployeesList, fetchAllRolesList, fetchAllSuppliers, fetchAllUnits } from './employees';
+import { fetchAllBrand, fetchAllCategories, fetchAllCustomer, fetchAllEmployeesList, fetchAllProductList, fetchAllRolesList, fetchAllSuppliers, fetchAllUnits } from './employees';
 import { toggleLoader } from './loader';
 
 
@@ -84,7 +84,32 @@ export const deleteSupplierData = createAsyncThunk('deleteSupplierData', async (
   }
 }
 );
-
+export const deleteProductData = createAsyncThunk('deleteProductData', async (id, { rejectWithValue }) => {
+  try {
+    const response = await deleteProduct(id);
+    if (response.status === 200) {
+      return {message: response.data, status: true}
+    } else {
+      return rejectWithValue(response.data.message);
+    }
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+}
+);
+export const deleteCustomerData = createAsyncThunk('deleteCustomerData', async (id, { rejectWithValue }) => {
+  try {
+    const response = await deleteCustomert(id);
+    if (response.status === 200) {
+      return {message: response.data, status: true}
+    } else {
+      return rejectWithValue(response.data.message);
+    }
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+}
+);
 
 export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_type}, { dispatch, rejectWithValue }) => {
   try {
@@ -124,6 +149,18 @@ export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_
           const supplier_res = await  dispatch(deleteSupplierData(id));
           dispatch(openToast({ toast_open: true, title:  supplier_res?.payload?.message?.message}))
           dispatch(fetchAllSuppliers())
+          dispatch(toggleLoader({loader: false}))
+          break;
+      case 'product':
+          const product_res = await  dispatch(deleteProductData(id));
+          dispatch(openToast({ toast_open: true, title:  product_res?.payload?.message?.message}))
+          dispatch(fetchAllProductList())
+          dispatch(toggleLoader({loader: false}))
+          break;
+      case 'customer':
+          const customer_res = await  dispatch(deleteCustomerData(id));
+          dispatch(openToast({ toast_open: true, title:  customer_res?.payload?.message?.message}))
+          dispatch(fetchAllCustomer())
           dispatch(toggleLoader({loader: false}))
           break;
       default:

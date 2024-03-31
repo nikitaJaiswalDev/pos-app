@@ -101,7 +101,6 @@ const RoleTable = ({ setType, type, addRoleList, setWarning, formikRef}) => {
                       }
                       return role;
                     });
-                    console.log({ updatedRoles });
                     return {
                       ...prevValues,
                       roles: updatedRoles,

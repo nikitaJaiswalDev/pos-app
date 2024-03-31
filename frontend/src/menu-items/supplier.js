@@ -1,11 +1,11 @@
 // assets
-import { ShoppingOutlined, ProfileOutlined } from '@ant-design/icons';
-
+import GroupIcon from '@mui/icons-material/Group';
 // icons
 const icons = {
-  ShoppingOutlined,
-  ProfileOutlined
+  GroupIcon
 };
+// assets
+
 
 // ==============================|| MENU ITEMS - SUPPLIER ||============================== //
 
@@ -18,7 +18,7 @@ const supplier = {
       id: 'supplier',
       title: 'Supplier',
       type: 'collapse',
-      icon: icons.ShoppingOutlined,
+      icon: icons.GroupIcon,
       children: [
         {
           id: 'add-supplier',

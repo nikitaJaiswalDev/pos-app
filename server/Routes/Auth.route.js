@@ -9,26 +9,28 @@ const { getEmployeeById } = require('../Services/Employee');
 
 router.post('/login',async (req, res, next) => {
     try {
-        const result = await authSchema.validateAsync(req.body)
+        const { email, password, signIn} = req.body
+        // const result = await authSchema.validateAsync(req.body)
 
-        const user = await Employee.findOne({email: result.email})
+        const user = await Employee.findOne({email: email})
         if(!user) throw createError.NotFound("User not registered")
 
-        const isMatch = await user.isValidPassword(result.password)
+        const isMatch = await user.isValidPassword(password)
         if(!isMatch) throw createError.Unauthorized("Username/password not valid")
       
         
         const role = await getRoleListById(user.role_id)
         if(!role) throw createError.NotFound("User has no role")
         
-        const accessToken = await signAccessToken(user.id, role.name)
+        const accessToken = await signAccessToken(user.id, role.name, signIn)
 
         res.send({token: accessToken, role: role.name, user: {
             first_name: user.first_name,
             last_name: user.last_name,
             profile: user.profile_picture_id,
             email: user.email,
-            role: role.name
+            role: role.name,
+            picture: user.image
         }})
     } catch (error) {
         if(error.isJoi === true) return next(createError.BadRequest('Invalid Email/Password'))
@@ -49,7 +51,8 @@ router.get('/verify-user', verifyAccessToken, async (req, res, next) => {
             last_name: user.last_name,
             profile: user.profile_picture_id,
             email: user.email,
-            role: req.payload.role
+            role: req.payload.role,
+            picture: user.image
         });
     } catch (error) {
         if (error.statusCode) {

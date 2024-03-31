@@ -1,9 +1,9 @@
 // assets
-import { HomeOutlined } from '@ant-design/icons';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 // icons
 const icons = {
-  HomeOutlined
+  StorefrontIcon
 };
 
 // ==============================|| MENU ITEMS - SETTINGS ||============================== //
@@ -18,7 +18,7 @@ const settings = {
       title: 'Shop Setup',
       type: 'item',
       url: '/shop-setup',
-      icon: icons.HomeOutlined,
+      icon: icons.StorefrontIcon,
       breadcrumbs: false
     }
   ]

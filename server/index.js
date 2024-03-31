@@ -12,6 +12,8 @@ const UnitRoute = require('./Routes/Unit.Route')
 const BrandRoute = require('./Routes/Brand.Route')
 const CategoryRoute = require('./Routes/Category.Route')
 const SupplierRoute = require('./Routes/Supplier.Route')
+const ProductRoute = require('./Routes/Product.Route')
+const CustomerRoute = require('./Routes/Customer.Route')
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.use('/unit', UnitRoute)
 app.use('/brand', BrandRoute)
 app.use('/category', CategoryRoute)
 app.use('/supplier', SupplierRoute)
+app.use('/product', ProductRoute)
+app.use('/customer', CustomerRoute)
 
 app.use((err, req, res, next ) => {
     res.status(err.status || 500)

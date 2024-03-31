@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, Grid, TextField, MenuItem, Select, InputLabel, Stack, Divider, OutlinedInput, FormHelperText} from '@mui/material';
+import { Grid, TextField, MenuItem, Select, InputLabel, Stack, OutlinedInput, FormHelperText} from '@mui/material';
 import InputFile from 'components/CustomInput/InputFile';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllBrand, fetchAllCategories, fetchAllSuppliers, fetchAllUnits, selectAllEmployeeList } from 'store/reducers/employees';
 import { capitalizedString } from 'utils/index';
 
 
-const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
+const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage, errors}) => {
     const dispatch = useDispatch();
     const { employeeSlice } = useSelector(selectAllEmployeeList);
-    // console.log({ employeeSlice });
 
     useEffect(() => {
         dispatch(fetchAllBrand());
@@ -28,12 +27,13 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         name="name"
                         value={values.name}
                         onChange={(e) => setFieldValue('name', e.target.value)}
+                        error={Boolean(errors.name)}
                     />
-                    {/* {errors?.employeeInfo?.first_name && (
+                    {errors?.name && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.first_name}
+                            {errors?.name}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
             <Grid item xs={6}>
@@ -45,12 +45,13 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         name="product_code"
                         value={values.product_code}
                         onChange={(e) => setFieldValue('product_code', e.target.value)}
+                        error={Boolean(errors.product_code)}
                     />
-                    {/* {errors?.employeeInfo?.last_name && (
+                     {errors?.product_code && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.last_name}
+                            {errors?.product_code}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
@@ -63,34 +64,37 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         value={values.brand}
                         onChange={(e) => setFieldValue('brand', e.target.value)}
                         displayEmpty
+                        error={Boolean(errors.brand)}
                     >
-                        <MenuItem value=''>----Select----</MenuItem>
+                        <MenuItem value=''>--Select--</MenuItem>
                         { employeeSlice?.allBrands.map(item => (
-                            <MenuItem value={item._id}>{capitalizedString(item.name)}</MenuItem>
+                            <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
-                    {/* {errors?.employeeInfo?.role_id && (
+                    {errors?.brand && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.role_id}
+                            {errors?.brand}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Quantity *</InputLabel>
-                    <TextField
+                    <OutlinedInput
+                        type="number"
                         fullWidth
                         placeholder="Quantity"
                         name="quantity"
                         value={values.quantity}
                         onChange={(e) => setFieldValue('quantity', e.target.value)}
+                        error={Boolean(errors.quantity)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                     {errors?.quantity && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.quantity}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
@@ -103,34 +107,37 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         value={values.unit_type}
                         onChange={(e) => setFieldValue('unit_type', e.target.value)}
                         displayEmpty
+                        error={Boolean(errors.unit_type)}
                     >
-                        <MenuItem value=''>----Select----</MenuItem>
+                        <MenuItem value=''>--Select--</MenuItem>
                         { employeeSlice?.allUnits.map(item => (
-                            <MenuItem value={item._id}>{capitalizedString(item.name)}</MenuItem>
+                            <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
-                    {/* {errors?.employeeInfo?.role_id && (
+                    {errors?.unit_type && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.role_id}
+                            {errors?.unit_type}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Unit Value *</InputLabel>
-                    <TextField
+                    <OutlinedInput
+                        type="number"
                         fullWidth
                         placeholder="Unit Value"
                         name="unit_value"
                         value={values.unit_value}
                         onChange={(e) => setFieldValue('unit_value', e.target.value)}
+                        error={Boolean(errors.unit_value)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                    {errors?.unit_value && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.unit_value}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
@@ -143,17 +150,18 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         value={values.category}
                         onChange={(e) => setFieldValue('category', e.target.value)}
                         displayEmpty
+                        error={Boolean(errors.category)}
                     >
-                        <MenuItem value=''>----Select----</MenuItem>
+                        <MenuItem value=''>--Select--</MenuItem>
                         { employeeSlice?.allCategories.map(item => (
-                            <MenuItem value={item._id}>{capitalizedString(item.name)}</MenuItem>
+                            <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
-                    {/* {errors?.employeeInfo?.role_id && (
+                    {errors?.category && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.role_id}
+                            {errors?.category}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
 
@@ -166,103 +174,112 @@ const AddProductForm = ({ values, setFieldValue, errors, touched}) => {
                         value={values.supplier}
                         onChange={(e) => setFieldValue('supplier', e.target.value)}
                         displayEmpty
+                        error={Boolean(errors.supplier)}
                     >
-                        <MenuItem value=''>----Select----</MenuItem>
+                        <MenuItem value=''>--Select--</MenuItem>
                         { employeeSlice?.allSuppliers.map(item => (
-                            <MenuItem value={item._id}>{capitalizedString(item.name)}</MenuItem>
+                            <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
-                    {/* {errors?.employeeInfo?.role_id && (
+                    {errors?.supplier && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.role_id}
+                            {errors?.supplier}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Selling Price *</InputLabel>
-                    <TextField
+                    <OutlinedInput
+                        type="number"
                         fullWidth
                         placeholder="Selling Price"
                         name="selling_price"
                         value={values.selling_price}
                         onChange={(e) => setFieldValue('selling_price', e.target.value)}
+                        error={Boolean(errors.selling_price)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                    {errors?.selling_price && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.selling_price}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
 
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Purchase Price *</InputLabel>
-                    <TextField
+                    <OutlinedInput
+                        type="number"
                         fullWidth
                         placeholder="Purchase Price"
                         name="purchase_price"
                         value={values.purchase_price}
                         onChange={(e) => setFieldValue('purchase_price', e.target.value)}
+                        error={Boolean(errors.purchase_price)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                    {errors?.purchase_price && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.purchase_price}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Discount Value (%)</InputLabel>
-                    <TextField
+                    <OutlinedInput
+                        type="number"
                         fullWidth
                         placeholder="Discount"
                         name="discount_value"
                         value={values.discount_value}
                         onChange={(e) => setFieldValue('discount_value', e.target.value)}
+                        error={Boolean(errors.discount_value)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                    {errors?.discount_value && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.discount_value}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
             <Grid item xs={6}>
                 <Stack spacing={1}>
                     <InputLabel>Tax in percent (%)</InputLabel>
-                    <TextField
-                        fullWidth
+                    <OutlinedInput
+                        type="number"
                         placeholder="Tax"
                         name="tax"
                         value={values.tax}
                         onChange={(e) => setFieldValue('tax', e.target.value)}
+                        error={Boolean(errors.tax)}
                     />
-                    {/* {errors?.employeeInfo?.phone_no && (
+                    {errors?.tax && (
                         <FormHelperText error id="standard-weight-helper-text-retype-password">
-                            {errors?.employeeInfo?.phone_no}
+                            {errors?.tax}
                         </FormHelperText>
-                    )} */}
+                    )}
                 </Stack>
             </Grid>
     
             <Grid item xs={12}>
                 <Stack spacing={1}>
                     <InputLabel>Image </InputLabel>
-                    <InputFile />
+                    <InputFile setFieldValue={setFieldValue} setUploadedImage={setUploadedImage} color={errors.profile_picture ? 'red' : '#d0d0d0'}
+                    />
                 </Stack>
             </Grid>
-            {/* { uploadedImage  &&
-                <Grid item xs={4}>
-                    <img src={uploadedImage} alt="Uploaded" height={100} width={100} style={{ borderRadius: 50}}/>                
+            { uploadedImage  &&
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center'}}>
+                    <img src={uploadedImage} alt="Uploaded" height='auto' width={300} style={{ borderRadius: 20}}/>                
                 </Grid>
-            } */}
+            }
             
         </Grid>
     );

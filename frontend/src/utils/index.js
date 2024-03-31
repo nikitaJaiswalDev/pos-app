@@ -34,13 +34,14 @@ export const formValidationSchema = Yup.object().shape({
 
 export const loginValidationSchema = Yup.object().shape({
   email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-  password: Yup.string().max(255).required('Password is required')
+  password: Yup.string().max(255).required('Password is required'),
 });
 
 export const convertImage = (buffer) => {
   const binary = buffer.reduce((data, byte) => data + String.fromCharCode(byte), '');
   return 'data:image/png;base64,' + btoa(binary);
 }
+
 export const convertBufferIntoFile = (base64Data, fileName='file.png') => {
   const parts = base64Data.split(';base64,');
     const mimeType = parts[0].split(':')[1];
@@ -61,17 +62,16 @@ export const productFormValidationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
   product_code: Yup.string().required('Required'),
   brand: Yup.string().required('Required'),
-  quantity: Yup.string().required('Required'),
+  quantity: Yup.number().required('Required'),
   unit_type: Yup.string().required('Required'),
-  unit_value: Yup.string().required('Required'),
+  unit_value: Yup.number().required('Required'),
   category: Yup.string().required('Required'),
-  sub_category: Yup.string().required('Required'),
-  purchase_price: Yup.string().required('Required'),
-  discount_type: Yup.string().required('Required'),
-  discount_value: Yup.string().required('Required'),
-  tax: Yup.string().required('Required'),
+  purchase_price: Yup.number().required('Required'),
+  discount_value: Yup.number().required('Required'),
+  tax: Yup.number().required('Required'),
   supplier: Yup.string().required('Required'),
-  image: Yup.string().required('Required'),
+  profile_picture: Yup.string().required('Required'),
+  selling_price: Yup.number().required('Required'),
 });
 
 export const supplierFormValidationSchema = Yup.object().shape({
@@ -83,4 +83,13 @@ export const supplierFormValidationSchema = Yup.object().shape({
   city: Yup.string().required('Required'),
   zip_code: Yup.string().required('Required'),
   address: Yup.string().required('Required'),
+});
+export const shopFormValidationSchema = Yup.object().shape({
+  name: Yup.string().required('Required'),
+  email: Yup.string().required('Required'),
+  mobile_no: Yup.string().required('Required'),
+  address: Yup.string().required('Required'),
+  country: Yup.string().required('Required'),
+  vat: Yup.string().required('Required'),
+  profile_picture: Yup.string().required('Required'),
 });

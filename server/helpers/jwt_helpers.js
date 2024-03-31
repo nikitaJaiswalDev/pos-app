@@ -3,13 +3,12 @@ const createError = require('http-errors')
 
 
 module.exports = {
-    signAccessToken: (userId, roleId) => {
-        console.log({ userId });
+    signAccessToken: (userId, roleId, signIn) => {
         return new Promise((resolve, reject) => {
             const payload = {userId: userId, role: roleId}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-                expiresIn: '1h',
+                expiresIn: signIn ? '1y': '1d',
                 issuer: 'nikujais.com',
                 audience: userId
             }
