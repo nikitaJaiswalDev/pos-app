@@ -42,7 +42,7 @@ const Category = () => {
         set_category({ name: '', name_error: null})
         dispatch(toggleLoader({loader: false}))
         set_type({ type: 'add', id: null})
-        dispatch(openToast({ toast_open: true, title: res.data.message}))
+        dispatch(openToast({ toast_open: true, title: res.data.message, type:"success"}))
       }
     }
   }

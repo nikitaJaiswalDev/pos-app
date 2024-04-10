@@ -76,7 +76,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
                         />
                         <CardContent sx={contentSX}>
                             <Typography variant="h5">{item.name.length > 10 ? item.name.slice(0,10)+'...' : item.name}</Typography>
-                            <Typography variant="body2" sx={{ display:'flex' ,justifyContent: 'center',}}><b>{item.selling_price - (item.selling_price * item.discount)/100 }₹</b> 
+                            <Typography variant="body2" sx={{ display:'flex' ,justifyContent: 'center',}}><b>{(item.selling_price - item.discount ).toFixed(2) }₹</b> 
                             <span style={{ marginLeft: '5px'}}><strike>{item.selling_price}₹</strike></span></Typography>
                         </CardContent>
                         <CardActions>

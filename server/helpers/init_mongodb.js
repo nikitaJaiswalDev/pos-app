@@ -1,10 +1,7 @@
 const mongoose = require('mongoose')
-const Grid = require("gridfs-stream");
-const fs = require("fs");
-var path = require("path");
 
-const URI = "mongodb+srv://nikita_mongo:123@cluster0.nyecp.mongodb.net/"
-const db_name = "pos_app"
+const URI = process.env.MONGO_URL
+const db_name = process.env.DB_NAME
 
 mongoose.connect(URI, {
     dbName: db_name

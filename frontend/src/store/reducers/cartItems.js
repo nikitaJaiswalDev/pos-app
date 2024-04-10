@@ -9,14 +9,18 @@ export const cart = createSlice({
   reducers: {
     addCartItem(state, action) {
         const newItem = action.payload.item;
-        const existingItemIndex = state.items.findIndex(item => item._id === newItem._id);
-        if (existingItemIndex !== -1) {
-            // If item already exists, update its quantity
-            state.items[existingItemIndex].qtn += newItem.qtn;
-            state.items[existingItemIndex].price += newItem.price;
+        if(newItem) {
+          const existingItemIndex = state.items.findIndex(item => item._id === newItem._id);
+          if (existingItemIndex !== -1) {
+              // If item already exists, update its quantity
+              state.items[existingItemIndex].qtn += newItem.qtn;
+              state.items[existingItemIndex].price += newItem.price;
+          } else {
+              // If item does not exist, push it into the state
+              state.items.push(newItem);
+          }
         } else {
-            // If item does not exist, push it into the state
-            state.items.push(newItem);
+          state.items = []
         }
     },
     updateQtn(state, action) {

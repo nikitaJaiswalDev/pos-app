@@ -24,6 +24,7 @@ const InputFile = ({ setFieldValue=null, setUploadedImage, set_data=null, data=n
         set_data({ ...data, image: file})
       }
       if(setFieldValue) {
+        console.log("file", file);
         setFieldValue("profile_picture", file);
       }
     }

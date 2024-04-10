@@ -33,13 +33,13 @@ const AddEmployee = () => {
     mutationFn: (data) => !type.id ? addEmployee(data): updateEmployee(type.id,data),
     onSuccess: (response) => {
       if(response.status == 200) {
-        dispatch(openToast({ toast_open: true, title: response.data.message }));
+        dispatch(openToast({ toast_open: true, title: response.data.message, type:"success" }));
         setType({ type: 'add', id: null})
         setUploadedImage(null)
         dispatch(fetchAllEmployeesList());
         dispatch(toggleLoader({loader: false}))
       } else {
-        dispatch(openToast({ toast_open: true, title: response.data.message }));
+        dispatch(openToast({ toast_open: true, title: response.data.message, type:"error" }));
       }
     }
   })

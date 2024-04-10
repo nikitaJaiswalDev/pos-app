@@ -15,7 +15,8 @@ const fetchRolesWithNames = async (roles) => {
 };
 exports.getAllRoleList = async (req, res, next) => {
   try {
-    const roles = await RoleListService.getAllRoleList();
+    let roles = await RoleListService.getAllRoleList();
+    roles = roles.filter(item => item.name !== 'super_admin')
     fetchRolesWithNames(roles).then(result => {
       res.json({ data: result, status: "success" });
     }).catch(error => {

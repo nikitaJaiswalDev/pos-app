@@ -63,10 +63,10 @@ const ProductTable = ({ data, dispatch, navigate }) => {
             {
                 id: 'supplier',
                 header: 'Supplier Name',
-                size: 150,
+                size: 100,
                 Cell: ({ row }) => {
                     return (
-                        <p>{ capitalizedString(row.original.supplier)}</p>
+                        <p>{ capitalizedString(row.original.supplierName)}</p>
                     )
                 }
             },

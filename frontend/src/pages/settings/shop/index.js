@@ -1,15 +1,59 @@
 import MainCard from 'components/MainCard'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Typography, Box, FormHelperText, Grid, OutlinedInput, InputLabel, Stack, Select, MenuItem, Button} from '@mui/material';
 import { Formik } from 'formik';
 import { Countries } from 'utils/countries_state'
 import InputFile from 'components/CustomInput/InputFile';
-import { shopFormValidationSchema } from 'utils/index';
+import { convertBufferIntoFile, convertImage, shopFormValidationSchema } from 'utils/index';
+import { updateShop } from 'api/index';
+import { useMutation } from '@tanstack/react-query'
+import { toggleLoader } from 'store/reducers/loader';
+import { openToast } from 'store/reducers/toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
 
 const ShopSetup = () => {
-  const [type, setType] = useState({type: 'add'})
   const formikRef = useRef();
   const [uploadedImage, setUploadedImage] = useState(null)
+  const dispatch = useDispatch()
+  const { employeeSlice } = useSelector(selectAllEmployeeList);
+
+  useEffect(() => {
+      dispatch(fetchShop());
+  }, [dispatch]);
+    
+  useEffect(() => {
+      if(employeeSlice.shop[0]) {
+        setUploadedImage(convertImage(employeeSlice.shop[0]?.image?.data))
+        formikRef.current.setValues((prevValues) => {
+            return {
+                ...prevValues,
+                name: employeeSlice.shop[0]?.name,
+                email: employeeSlice.shop[0]?.email,
+                phone: employeeSlice.shop[0]?.phone,
+                address: employeeSlice.shop[0]?.address,
+                country: employeeSlice.shop[0]?.country,
+                vat: employeeSlice.shop[0]?.vat,
+                profile_picture: convertBufferIntoFile(convertImage(employeeSlice.shop[0]?.image?.data)),
+            };
+        });
+    }
+  }, [employeeSlice])
+
+  // Add Shop
+  const { mutateAsync: addShopData } = useMutation({
+    mutationFn: (data) => updateShop(employeeSlice.shop[0]?._id,data),
+    onSuccess: (response) => {
+        if(response.status == 200) {
+          dispatch(openToast({ toast_open: true, title: response.data.message, type:"success" }));
+          dispatch(toggleLoader({loader: false}))
+          dispatch(fetchShop());
+        } else {
+          dispatch(openToast({ toast_open: true, title: response.data.message, type:"error" }));
+        }
+      }
+  })
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
@@ -21,20 +65,30 @@ const ShopSetup = () => {
           initialValues={{
               name: '',
               email: '',
-              mobile_no: '',
+              phone: '',
               address: '',
               country: 'IN',
               vat: '',
               profile_picture: ''
           }}
           
-          validationSchema={type.type === 'add' && shopFormValidationSchema} 
-          onSubmit={async (values, actions) => { 
-
+          validationSchema={shopFormValidationSchema} 
+          onSubmit={async (values) => {
+            dispatch(toggleLoader({ loader: true}))
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('email', values.email);
+            formData.append('phone', values.phone);
+            formData.append('address', values.address);
+            formData.append('country', values.country);
+            formData.append('vat', values.vat);
+            formData.append('image', values.profile_picture); 
+           await addShopData(formData)
           }}
           innerRef={formikRef}
         >
-          {( { errors, touched, handleChange, handleSubmit, values, setValues }) => { 
+          {( { errors, touched, handleChange, handleSubmit, values, setFieldValue, setValues }) => { 
+            formikRef.current = { setValues }
             return (
               <form noValidate onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
@@ -84,14 +138,14 @@ const ShopSetup = () => {
                               type="number"
                               fullWidth
                               placeholder="Shop Phone"
-                              name="mobile_no"
-                              value={values.mobile_no}
+                              name="phone"
+                              value={values.phone}
                               onChange={handleChange}
-                              error={Boolean(errors.mobile_no && touched.mobile_no)}
+                              error={Boolean(errors.phone && touched.phone)}
                           />
-                          {errors.mobile_no && touched.mobile_no && (
+                          {errors.phone && touched.phone && (
                               <FormHelperText error>
-                              {errors.mobile_no}
+                              {errors.phone}
                               </FormHelperText>
                           )}
                       </Stack>
@@ -159,7 +213,8 @@ const ShopSetup = () => {
                   <Grid item xs={12}>
                       <Stack spacing={1}>
                           <InputLabel>Image </InputLabel>
-                          <InputFile setFieldValue={setValues} setUploadedImage={setUploadedImage} color={errors.profile_picture ? 'red' : '#d0d0d0'}
+                          <InputFile 
+                            setFieldValue={setFieldValue} setUploadedImage={setUploadedImage} color={errors.profile_picture ? 'red' : '#d0d0d0'}
                           />
                       </Stack>
                   </Grid>

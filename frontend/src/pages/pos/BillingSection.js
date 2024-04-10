@@ -4,22 +4,22 @@ import { Grid, Autocomplete, TextField, Typography} from '@mui/material';
 import CartTable from './CartTable';
 import CustomButton from 'components/CustomButton/index';
 import WarningModal from 'components/CustomModal/Warning';
-import PaymentModal from 'components/CustomModal/PaymentModal';
-import InvoiceModal from 'components/CustomModal/InvoiceModal';
-import CustomerModal from './CustomerModal';
+import PaymentModal from './modals/PaymentModal';
+import InvoiceModal from './modals/InvoiceModal';
+import CustomerModal from './modals/CustomerModal';
 import { useSelector } from 'react-redux';
-import { fetchAllCustomer, selectAllEmployeeList } from 'store/reducers/employees';
 import BillingDetails from './BillingDetails';
+import { openWarning } from 'store/reducers/warning';
+import { addCartItem } from 'store/reducers/cartItems';
 
 const BillingSection = ({ customer, dispatch }) => {
-  console.log({ customer });
   const { items } = useSelector((state) =>  state.cart)
-  console.log({ items });
 
   const [cancelModal, setCancelModal] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false)
   const [invoiceModal, setInvoiceModal] = React.useState(false)
   const [customerModal, setCustomerModal] = React.useState(false)
+  const [invoiceData, setInvoiceData] = useState(null)
   const [productBill, setProductBill] = React.useState(
     { sub_total: 0, tax: 0, discount: 0, extra_discount: 0, coupon_discount: 0, total: 0 }
   )
@@ -28,14 +28,6 @@ const BillingSection = ({ customer, dispatch }) => {
       setSelectedCustomer(newValue);
     };
 
-    const deatails = [
-      {title: 'Sub total:', value: 0.00},
-      {title: 'Product discount:', value: 0.00},
-      {title: 'Extra discount:', value: 0.00},
-      {title: 'Coupon discount:', value: 0.00},
-      {title: 'Tax:', value: 0.00},
-      {title: 'Total:', value: 0.00},
-    ]
     useEffect(() => {
       const { sub_total, discount, tax } = items.reduce((acc, item) => {
         acc.sub_total += item.price * item.qtn;
@@ -48,9 +40,14 @@ const BillingSection = ({ customer, dispatch }) => {
         ...prevState,
         sub_total,
         discount,
-        tax
+        tax,
+        total: ((sub_total - discount ) + tax).toFixed(2)
       }));
     }, [items])
+
+    const handleClear = () => {
+      dispatch(openWarning({ warning_open: true, content: "You want to remove all items from cart!!", id: 1, delete_type: 'clear_cart' }))
+    }
 
   return (
     <React.Fragment>
@@ -80,7 +77,7 @@ const BillingSection = ({ customer, dispatch }) => {
         <br/>
         {/* Row 2 */}
         { selectedCustomer &&
-          <Typography variant="body5" onClick={() => console.log({ productBill})}>Current Customer : {selectedCustomer.name}</Typography>
+          <Typography variant="body5" >Current Customer : {selectedCustomer.name}</Typography>
         }
 
         <br/> 
@@ -98,10 +95,13 @@ const BillingSection = ({ customer, dispatch }) => {
         {/* Row 6*/}
         <Grid container spacing={2}>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <CustomButton bgColor="#f2678d" hoverColor="#ed4c78" title="Cancel Order" width={'200px'} handleClick={() => setCancelModal(true)} />
+            <CustomButton bgColor="#f2678d" hoverColor="#ed4c78" title="Cancel Order" width={'200px'} 
+            // handleClick={() => handleClear()}
+            handleClick={() => setCancelModal(true)}
+            disabled={items.length == 0 || selectedCustomer == null ? true : false} />
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Place Order" width={'200px'} handleClick={() => setPaymentModal(true)}/>
+            <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Place Order" width={'200px'} handleClick={() => setPaymentModal(true)} disabled={items.length == 0 || selectedCustomer == null ? true : false} />
           </Grid>
         </Grid>
       </MainCard>
@@ -112,6 +112,10 @@ const BillingSection = ({ customer, dispatch }) => {
           handleClose={() => setCancelModal(false)}
           title={"Are you sure?"}
           contentText="You want to remove all items from cart!!"
+          handleYes={() => {
+            dispatch(addCartItem({item: null}))
+            setCancelModal(false)
+          }}
         />
       }
       {
@@ -119,15 +123,20 @@ const BillingSection = ({ customer, dispatch }) => {
         <PaymentModal 
           open={paymentModal} 
           handleClose={() => setPaymentModal(false)}
-          handleSubmit={() => {
-            setPaymentModal(false)
-            setInvoiceModal(true)
-          }}
+          setPaymentModal={setPaymentModal}
+          setInvoiceModal={setInvoiceModal}
+          productBill={productBill}
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
+          dispatch={dispatch}
+          setProductBill={setProductBill}
+          setInvoiceData={setInvoiceData}
+          items={items}
         />
       }
       {
         invoiceModal &&
-        <InvoiceModal open={invoiceModal} handleClose={() => setInvoiceModal(false)}/>
+        <InvoiceModal open={invoiceModal} handleClose={() => setInvoiceModal(false)} invoiceData={invoiceData}/>
       }
     </React.Fragment>
   )

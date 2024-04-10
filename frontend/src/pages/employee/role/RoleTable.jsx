@@ -59,7 +59,7 @@ const RoleTable = ({ setType, type, addRoleList, setWarning, formikRef}) => {
                     setType({...type, id: row.original._id})
                     const res = await addRoleList(values)
                     if(res) {
-                      dispatch(openToast({toast_open: true, title: res.data.message}))
+                      dispatch(openToast({toast_open: true, title: res.data.message, type:"success"}))
                       setType({...type, id: null})
                     }
                   }}

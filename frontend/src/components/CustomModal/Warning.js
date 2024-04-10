@@ -19,11 +19,19 @@ const titleSx= {
   textAlign: 'center',
 }
 
-const WarningModal = ({open, handleClose, title, contentText}) => {
+const WarningModal = ({open, handleClose, title, contentText, handleYes=null}) => {
 
   const dispatch = useDispatch()
   const { delete_type, id } = useSelector((state) =>  state.warning)
- 
+  console.log({ id, delete_type});
+
+  const handleYesClick = () => {
+    if(delete_type !== null) {
+      dispatch(handleDelete({ id: id, delete_type: delete_type }))
+    } else {
+      handleYes()
+    }
+  }
   return (
     <React.Fragment>
       <Dialog
@@ -37,7 +45,7 @@ const WarningModal = ({open, handleClose, title, contentText}) => {
         </DialogContent>
         <DialogActions>
           <CustomButton bgColor="#aaa" hoverColor="#878181" title="No" handleClick={handleClose}/>
-          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={() => dispatch(handleDelete({ id: id, delete_type: delete_type }))}/>
+          <CustomButton bgColor="#00c9a7" hoverColor="#0c917b" title="Yes" handleClick={() => handleYesClick() }/>
         </DialogActions>
       </Dialog>
     </React.Fragment>

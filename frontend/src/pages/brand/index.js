@@ -47,7 +47,7 @@ const Brand = () => {
       dispatch(toggleLoader({ loader: true }));
       const response = await addBrandData(formData);
       if (response.status === 200) {
-        dispatch(openToast({ open: true, title: response.data.message}))
+        dispatch(openToast({ open: true, title: response.data.message, type:"success"}))
         set_brand({ name: '', name_error: null, image: null, image_error: null})
         set_image(null)
         set_type({ type: 'add', id: null})

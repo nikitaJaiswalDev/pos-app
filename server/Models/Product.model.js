@@ -9,6 +9,7 @@ const ProductSchema = new Schema({
     sku: {
         type: String,
         required: true,
+        unique: true
     },
     brand: {
         type: Schema.Types.ObjectId,

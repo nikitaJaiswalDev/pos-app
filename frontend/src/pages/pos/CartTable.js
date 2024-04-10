@@ -48,7 +48,7 @@ const CartTable = ({ data, dispatch }) => {
                             <RemoveIcon fontSize="inherit" />
                         </IconButton>
                     </TableCell>
-                    <TableCell align="right">{row.price} ₹</TableCell>
+                    <TableCell align="right">{row.price.toFixed(2)} ₹</TableCell>
                     <TableCell align="right"><DeleteFilled onClick={() => dispatch(removeCartItem({item: row}))} /></TableCell>
                     </TableRow>
                 )

@@ -79,7 +79,7 @@ const AddSupplier = () => {
                     try {
                         const res = await addSupplierData(values);
                         if (res.status === 200) {
-                            dispatch(openToast({ toast_open: true, title: res.data.message }));
+                            dispatch(openToast({ toast_open: true, title: res.data.message, type:"success" }));
                             actions.resetForm();
                             if (supplierId) {
                                 setTimeout(() => {
@@ -87,10 +87,10 @@ const AddSupplier = () => {
                                 }, 500);
                             }
                         } else {
-                            dispatch(openToast({ toast_open: true, title: res.data.message }));
+                            dispatch(openToast({ toast_open: true, title: res.data.message, type:"error" }));
                         }
                     } catch (error) {
-                        dispatch(openToast({ toast_open: true, title: error }));
+                        dispatch(openToast({ toast_open: true, title: error, type:"error"}));
                     } finally {
                         dispatch(toggleLoader({ loader: false }));
                     }

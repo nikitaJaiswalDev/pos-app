@@ -2,12 +2,12 @@ import React from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-const ErrorToast = ({ open, handleClose, title}) => {
+const CustomToast = ({ open, handleClose, title, type}) => {
   return (
     <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity="error"
+          severity={type}
           variant="filled"
           sx={{ width: '100%' }}
         >
@@ -17,4 +17,4 @@ const ErrorToast = ({ open, handleClose, title}) => {
   )
 }
 
-export default ErrorToast
+export default CustomToast

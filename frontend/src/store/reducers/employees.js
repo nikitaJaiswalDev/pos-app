@@ -1,6 +1,6 @@
 // employeeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getAllSuppliers, getAllUnits } from 'api/index';
+import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders } from 'api/index';
 
 // Async thunk for fetching all roles list
 export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async () => {
@@ -36,6 +36,14 @@ export const fetchAllCustomer = createAsyncThunk('fetchAllCustomer', async () =>
   const response = await getAllCustomers();
   return response;
 });
+export const fetchShop = createAsyncThunk('fetchShop', async () => {
+  const response = await getShop();
+  return response;
+});
+export const fetchAllOrders = createAsyncThunk('fetchAllOrders', async () => {
+  const response = await getAllOrders();
+  return response;
+});
 
 // Role slice
 const employeeSlice = createSlice({
@@ -57,6 +65,10 @@ const employeeSlice = createSlice({
     isAllProductPending: false,
     allCustomerList: [],
     isAllCustomerPending: false,
+    shop: [],
+    isShopPending: false,
+    orders: [],
+    isOrderPending: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -147,6 +159,28 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchAllCustomer.rejected, (state) => {
         state.isAllCustomerPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchShop.pending, (state) => {
+        state.isShopPending = true;
+      })
+      .addCase(fetchShop.fulfilled, (state, action) => {
+          state.shop = action.payload.data;
+          state.isShopPending = false;
+      })
+      .addCase(fetchShop.rejected, (state) => {
+        state.isShopPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchAllOrders.pending, (state) => {
+        state.isOrderPending = true;
+      })
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
+          state.orders = action.payload.data;
+          state.isOrderPending = false;
+      })
+      .addCase(fetchAllOrders.rejected, (state) => {
+        state.isOrderPending = false;
         // Handle error if needed
       });
   },

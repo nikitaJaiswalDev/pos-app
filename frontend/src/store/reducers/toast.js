@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 // initial state
 const initialState = {
   toast_open: false,
-  title: ''
+  title: '',
+  type: 'success'
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -16,6 +17,7 @@ const toast = createSlice({
     openToast(state, action) {
       state.toast_open = action.payload.toast_open;
       state.title = action.payload.title;
+      state.type = action.payload.type;
     },
   }
 });

@@ -231,7 +231,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
     
             <Grid item xs={6}>
                 <Stack spacing={1}>
-                    <InputLabel>Discount Value (%)</InputLabel>
+                    <InputLabel>Discount Value (in amount)</InputLabel>
                     <OutlinedInput
                         type="number"
                         fullWidth
@@ -251,7 +251,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
     
             <Grid item xs={6}>
                 <Stack spacing={1}>
-                    <InputLabel>Tax in percent (%)</InputLabel>
+                    <InputLabel>Tax in percent (in amount)</InputLabel>
                     <OutlinedInput
                         type="number"
                         placeholder="Tax"

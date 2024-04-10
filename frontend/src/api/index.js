@@ -1,8 +1,6 @@
 import axios from 'axios';
-let AUTH_TOKEN = localStorage.getItem('token');
 
 axios.defaults.baseURL = 'http://localhost:5000';
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Function to handle 401 errors
@@ -10,6 +8,19 @@ const handle401Error = () => {
   localStorage.removeItem('token')
   window.location.href = '/login';
 };
+// Add Request intercepter
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 // Add a response interceptor
 axios.interceptors.response.use(
   (response) => {
@@ -435,6 +446,52 @@ export async function updateCustomer(id, data) {
 export async function getCustomerById(id) {
   try {
       var res = await axios.get(`/customer/${id}`);
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- SHOPS API -------------------------------
+
+// Get all Shops
+export async function getShop() {
+  try {
+      var res = await axios.get("/shop");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+// Update Shop
+export async function updateShop(id, data) {
+  try {
+      var res = await axios.put(`/shop/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+// --------------------------- ORDERS API -------------------------------
+// Add order
+export async function addOrder(data) {
+  try {
+      var res = await axios.post("/order", data);
+      return {data: res.data, status: res.status}
+    } catch (error) {
+    console.log({ error });
+    return {data: error.response.data.error, status: error.response.status}
+  }
+}
+// Get all Orders
+export async function getAllOrders() {
+  try {
+      var res = await axios.get("/order");
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response

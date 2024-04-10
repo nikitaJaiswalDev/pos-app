@@ -22,11 +22,11 @@ const CustomerModal = ({ open, handleClose, dispatch}) => {
     onSuccess: (response) => {
       if(response.status == 200) {
         handleClose()
-        dispatch(openToast({ toast_open: true, title: response.data.message }));
-        // dispatch(fetchAllCustomer());
-        // dispatch(toggleLoader({loader: false}))
+        dispatch(openToast({ toast_open: true, title: response.data.message, type: "success" }));
+        dispatch(fetchAllCustomer());
+        dispatch(toggleLoader({loader: false}))
       } else {
-        dispatch(openToast({ toast_open: true, title: response.data.message }));
+        dispatch(openToast({ toast_open: true, title: response.data.message, type: "error" }));
       }
     }
   })

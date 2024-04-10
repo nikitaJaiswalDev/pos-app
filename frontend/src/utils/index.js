@@ -43,8 +43,8 @@ export const convertImage = (buffer) => {
 }
 
 export const convertBufferIntoFile = (base64Data, fileName='file.png') => {
-  const parts = base64Data.split(';base64,');
-    const mimeType = parts[0].split(':')[1];
+  const parts = base64Data?.split(';base64,');
+    const mimeType = parts[0]?.split(':')[1];
     const imageData = parts[1];
     const byteString = atob(imageData);
     const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -87,7 +87,7 @@ export const supplierFormValidationSchema = Yup.object().shape({
 export const shopFormValidationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
   email: Yup.string().required('Required'),
-  mobile_no: Yup.string().required('Required'),
+  phone: Yup.string().required('Required'),
   address: Yup.string().required('Required'),
   country: Yup.string().required('Required'),
   vat: Yup.string().required('Required'),

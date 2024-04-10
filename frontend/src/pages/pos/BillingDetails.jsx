@@ -44,7 +44,7 @@ const BillingDetails = ({ productBill }) => {
             <Typography variant="body5">Total:</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: 'flex', justifyContent: 'end'}}>
-            <Typography variant="body5" >{(productBill.sub_total - productBill.discount) + productBill.tax} ₹</Typography>
+            <Typography variant="body5" >{productBill.total} ₹</Typography>
           </Grid>
         </Grid>
     </React.Fragment>

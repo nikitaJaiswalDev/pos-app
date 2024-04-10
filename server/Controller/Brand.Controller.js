@@ -1,6 +1,5 @@
 const createError = require("http-errors");
 const BrandService = require("../Services/Brand");
-const jwt = require('jsonwebtoken');
 
 exports.getAllBrands = async (req, res, next) => {
   try {

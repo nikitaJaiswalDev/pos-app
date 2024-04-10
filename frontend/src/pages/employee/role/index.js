@@ -54,9 +54,9 @@ const AddRole = () => {
     mutationFn: (data) => !type.id ? addRole(data): editRole(type.id,data),
     onSuccess: (response) => {
       if(response.status !== 200) {
-        dispatch(openToast({toast_open: true, title: response.data.message}))
+        dispatch(openToast({toast_open: true, title: response.data.message, type:"success"}))
       } else {
-        dispatch(openToast({toast_open: true, title: response.data.message}))
+        dispatch(openToast({toast_open: true, title: response.data.message, type:"error"}))
         dispatch(fetchAllRolesList());
         setType({ type: 'add', id: null})
         formikRef.current.setValues((prevValues) => {

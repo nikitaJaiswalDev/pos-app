@@ -40,7 +40,7 @@ const Unit = () => {
         dispatch(fetchAllUnits());
         set_unit({ name: '', name_error: null})
         dispatch(toggleLoader({loader: false}))
-        dispatch(openToast({toast_open: true, title: res.data.message}))
+        dispatch(openToast({toast_open: true, title: res.data.message, type:"success"}))
         set_type({ type: 'add', id: null})
       }
     }

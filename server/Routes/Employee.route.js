@@ -16,7 +16,7 @@ const router = express.Router()
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.use(verifyAccessToken, authorizeRoles('Admin'))
+router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
 
 router.post("/", upload.single('image'), createEmployee);
 router.put("/:id", upload.single('image'), updateEmployee);

@@ -12,11 +12,11 @@ import Header from './Header';
 // types
 import { openDrawer } from 'store/reducers/menu';
 import CustomLoader from 'components/Loader/CustomLoader';
-import SuccessToast from 'components/CustomToast/SuccessToast';
 import { openToast } from 'store/reducers/toast';
 import WarningModal from 'components/CustomModal/Warning';
 import { openWarning } from 'store/reducers/warning';
 import { toggleLoader } from 'store/reducers/loader';
+import CustomToast from 'components/CustomToast/CustomToast';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -27,7 +27,7 @@ const MainLayout = () => {
 
   const { drawerOpen } = useSelector((state) => state.menu);
   const { loader } = useSelector((state) => state.loader);
-  const { toast_open, title } = useSelector((state) =>  state.toast)
+  const { toast_open, title, type } = useSelector((state) =>  state.toast)
   const { warning_open, content } = useSelector((state) =>  state.warning)
 
   // drawer toggler
@@ -58,7 +58,7 @@ const MainLayout = () => {
       </Box>
     </Box>
     <CustomLoader open={loader}/>
-    <SuccessToast open={toast_open} handleClose={() => dispatch(openToast({toast_open: false, title: ''}))} title={title}/>
+    <CustomToast open={toast_open} handleClose={() => dispatch(openToast({toast_open: false, title: ''}))} title={title} type={type}/>
     <WarningModal 
       open={warning_open} 
       handleClose={() => {

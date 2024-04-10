@@ -40,11 +40,11 @@ const useProductForm = (addProductData, dispatch, setType, navigate, type) => {
     try {
       const res = await addProductData(data)
       if(res.status !== 200) throw new Error(res.data.message)
-      dispatch(openToast({ toast_open: true, title: res.data.message }));
+      dispatch(openToast({ toast_open: true, title: res.data.message, type:"success" }));
       setUploadedImage(null)
       setType({ type: 'add', id: null})
     } catch (error) {
-      dispatch(openToast({ toast_open: true, title: error.message }));
+      dispatch(openToast({ toast_open: true, title: error.message, type:"error" }));
     } finally {
       dispatch(toggleLoader({loader: false}))
       actions.resetForm();

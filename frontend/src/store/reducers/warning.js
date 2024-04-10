@@ -4,6 +4,7 @@ import { deleteBrand, deleteCategory, deleteCustomert, deleteEmployee, deletePro
 import { openToast } from './toast';
 import { fetchAllBrand, fetchAllCategories, fetchAllCustomer, fetchAllEmployeesList, fetchAllProductList, fetchAllRolesList, fetchAllSuppliers, fetchAllUnits } from './employees';
 import { toggleLoader } from './loader';
+import { addCartItem } from './cartItems';
 
 
 export const deleteEmployeeData = createAsyncThunk('deleteEmployeeData', async (id, { rejectWithValue }) => {
@@ -117,49 +118,49 @@ export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_
     switch(delete_type) {
       case 'employee':
         const emp_res = await  dispatch(deleteEmployeeData(id));
-        dispatch(openToast({ toast_open: true, title:  emp_res?.payload?.message?.message}))
+        dispatch(openToast({ toast_open: true, title:  emp_res?.payload?.message?.message, type:"success"}))
         dispatch(fetchAllEmployeesList())
         dispatch(toggleLoader({loader: false}))
         break;
       case 'rolelist':
         const rolelist_res = await  dispatch(deleteRoleData(id));
-        dispatch(openToast({ toast_open: true, title:  rolelist_res?.payload?.message?.message}))
+        dispatch(openToast({ toast_open: true, title:  rolelist_res?.payload?.message?.message, type:"success"}))
         dispatch(fetchAllRolesList())
         dispatch(toggleLoader({loader: false}))
         break;
       case 'unit':
         const unit_res = await  dispatch(deleteUnitData(id));
-        dispatch(openToast({ toast_open: true, title:  unit_res?.payload?.message?.message}))
+        dispatch(openToast({ toast_open: true, title:  unit_res?.payload?.message?.message, type:"success"}))
         dispatch(fetchAllUnits())
         dispatch(toggleLoader({loader: false}))
         break;
       case 'brand':
         const brand_res = await  dispatch(deleteBrandData(id));
-        dispatch(openToast({ toast_open: true, title:  brand_res?.payload?.message?.message}))
+        dispatch(openToast({ toast_open: true, title:  brand_res?.payload?.message?.message, type:"success"}))
         dispatch(fetchAllBrand())
         dispatch(toggleLoader({loader: false}))
         break;
       case 'category':
         const category_res = await  dispatch(deleteCategoryData(id));
-        dispatch(openToast({ toast_open: true, title:  category_res?.payload?.message?.message}))
+        dispatch(openToast({ toast_open: true, title:  category_res?.payload?.message?.message, type:"success"}))
         dispatch(fetchAllCategories())
         dispatch(toggleLoader({loader: false}))
         break;
       case 'supplier':
           const supplier_res = await  dispatch(deleteSupplierData(id));
-          dispatch(openToast({ toast_open: true, title:  supplier_res?.payload?.message?.message}))
+          dispatch(openToast({ toast_open: true, title:  supplier_res?.payload?.message?.message, type:"success"}))
           dispatch(fetchAllSuppliers())
           dispatch(toggleLoader({loader: false}))
           break;
       case 'product':
           const product_res = await  dispatch(deleteProductData(id));
-          dispatch(openToast({ toast_open: true, title:  product_res?.payload?.message?.message}))
+          dispatch(openToast({ toast_open: true, title:  product_res?.payload?.message?.message, type:"success"}))
           dispatch(fetchAllProductList())
           dispatch(toggleLoader({loader: false}))
           break;
       case 'customer':
           const customer_res = await  dispatch(deleteCustomerData(id));
-          dispatch(openToast({ toast_open: true, title:  customer_res?.payload?.message?.message}))
+          dispatch(openToast({ toast_open: true, title:  customer_res?.payload?.message?.message, type:"success"}))
           dispatch(fetchAllCustomer())
           dispatch(toggleLoader({loader: false}))
           break;

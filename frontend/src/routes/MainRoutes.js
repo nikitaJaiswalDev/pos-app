@@ -10,7 +10,7 @@ import ProtectedRoute from './ProtectedRoute';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 
 // render - sample page
-const Order = Loadable(lazy(() => import('pages/orders/Order')));
+const Order = Loadable(lazy(() => import('pages/orders/index')));
 const Category = Loadable(lazy(() => import('pages/category/category/index')));
 const SubCategory = Loadable(lazy(() => import('pages/category/sub-category/index')));
 const AddNew = Loadable(lazy(() => import('pages/product/Add/index')));
@@ -23,7 +23,7 @@ const AddSupplier = Loadable(lazy(() => import('pages/supplier/add/index')));
 const ListSupplier = Loadable(lazy(() => import('pages/supplier/list/index')));
 const AddCustomer = Loadable(lazy(() => import('pages/customer/add/index')));
 const ListCustomer = Loadable(lazy(() => import('pages/customer/list/index')));
-const ShopSetup = Loadable(lazy(() => import('pages/settings/ShopSetup')));
+const ShopSetup = Loadable(lazy(() => import('pages/settings/shop/index')));
 // const Pos = Loadable(lazy(() => import('pages/pos/Pos')));
 
 // render - utilities

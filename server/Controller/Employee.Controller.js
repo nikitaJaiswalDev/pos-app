@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 
 exports.getAllEmployees = async (req, res, next) => {
   try {
-    const employees = await employeeService.getAllEmployees();
+    let employees = await employeeService.getAllEmployees();
+    employees = employees.filter(item => item.email !== 'droon99@yopmail.com')
     const data = employees.map(employee => {
       const { password, ...rest } = employee._doc;
       return rest;
