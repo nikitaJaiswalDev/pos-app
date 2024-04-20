@@ -43,6 +43,10 @@ const OrderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Customer'
     },
+    product: {
+        type: Schema.Types.Array,
+        ref: 'Products'
+    },
 }, {
     timestamps: true
 })

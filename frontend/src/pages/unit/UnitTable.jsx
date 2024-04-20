@@ -8,7 +8,7 @@ import { toggleLoader } from 'store/reducers/loader';
 import { capitalizedString } from 'utils/index';
 import { openWarning } from 'store/reducers/warning';
 
-const UnitTable = ({ data, set_unit, set_type }) => {
+const UnitTable = ({ data, set_unit, set_type, pagination, setPagination }) => {
     const dispatch = useDispatch()
 
     const columns = React.useMemo(
@@ -39,7 +39,7 @@ const UnitTable = ({ data, set_unit, set_type }) => {
       
     const table = useMaterialReactTable({
         columns,
-        data: data,
+        data: data?.units || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -54,11 +54,11 @@ const UnitTable = ({ data, set_unit, set_type }) => {
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: data?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Box>
@@ -71,7 +71,7 @@ const UnitTable = ({ data, set_unit, set_type }) => {
             <IconButton >
                 <Delete onClick={() => {
                     dispatch(toggleLoader({loader: true}))
-                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'unit' }));
+                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'unit', skip: pagination.pageIndex, limit: pagination.pageSize }));
                 }}/>
             </IconButton>
             </Box>

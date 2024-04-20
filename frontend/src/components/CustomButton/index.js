@@ -3,7 +3,6 @@ import { Button} from '@mui/material';
 import {PlusOutlined} from '@ant-design/icons';
 
 const CustomButton = ({ bgColor, hoverColor, title,icon=false, width='auto', handleClick, ...props}) => {
-    console.log('button clicked');
     const buttonSx = {
         backgroundColor: bgColor, 
         height: '36px', 

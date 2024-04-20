@@ -1,0 +1,9 @@
+1. When deleting records, it take time to render them again (need to show loader)
+2. When creating role, it is showing red color toast
+3. When creating employee, sometimes it is not showing roles listing
+4. when adding employee, mark profile picture as required
+5. generate automatic product code sku
+6. place order modal form validation
+7. Add curency field in shop and use that currency everywhere
+8. pos filter not working
+9. dashboard charts

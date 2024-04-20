@@ -6,7 +6,7 @@ import MaterialTable from '../../../components/CustomTable/MaterialTable';
 import { capitalizedString, convertImage } from 'utils/index';
 import { openWarning } from 'store/reducers/warning';
 
-const CustomerTable = ({ data, dispatch, navigate }) => {
+const CustomerTable = ({ data, dispatch, navigate, pagination, setPagination}) => {
     const columns = React.useMemo(
         () => [
             {
@@ -30,7 +30,7 @@ const CustomerTable = ({ data, dispatch, navigate }) => {
       
     const table = useMaterialReactTable({
         columns,
-        data: data,
+        data: data?.customer || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -45,11 +45,11 @@ const CustomerTable = ({ data, dispatch, navigate }) => {
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: data?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Box>
@@ -58,7 +58,7 @@ const CustomerTable = ({ data, dispatch, navigate }) => {
             </IconButton>
             <IconButton >
                 <Delete onClick={() => {
-                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'customer' }));
+                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'customer', skip: pagination.pageIndex, limit: pagination.pageSize }));
                 }}/>
             </IconButton>
             </Box>

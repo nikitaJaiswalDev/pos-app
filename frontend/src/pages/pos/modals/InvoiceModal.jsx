@@ -57,8 +57,7 @@ const InvoiceModal = ({ open, handleClose, invoiceData }) => {
   useEffect(() => {
     dispatch(fetchShop());
   }, [dispatch]);
-  console.log({ employeeSlice: employeeSlice.shop[0] });
-
+  
   return (
     <React.Fragment>
       <Dialog

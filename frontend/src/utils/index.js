@@ -93,3 +93,7 @@ export const shopFormValidationSchema = Yup.object().shape({
   vat: Yup.string().required('Required'),
   profile_picture: Yup.string().required('Required'),
 });
+export const PaymentFormSchema = Yup.object().shape({
+  payment_method: Yup.string().max(50).required('Required'),
+  collected_cash: Yup.string().max(50).required('Required'),
+});

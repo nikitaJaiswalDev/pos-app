@@ -8,8 +8,7 @@ import { openWarning } from 'store/reducers/warning';
 import { convertBufferIntoFile, convertImage } from 'utils/index';
 import { toggleLoader } from 'store/reducers/loader';
 
-const EmployeeTable = ({employeeSlice, setType, formikRef, setUploadedImage}) => {
-
+const EmployeeTable = ({employee, setType, formikRef, setUploadedImage, pagination, setPagination}) => {
     const dispatch = useDispatch()
 
     const columns = React.useMemo(
@@ -38,7 +37,7 @@ const EmployeeTable = ({employeeSlice, setType, formikRef, setUploadedImage}) =>
       
     const table = useMaterialReactTable({
         columns,
-        data: !employeeSlice?.isAllEmployeePending ? employeeSlice?.allEmployeesList : [],
+        data: employee?.employees || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -53,11 +52,11 @@ const EmployeeTable = ({employeeSlice, setType, formikRef, setUploadedImage}) =>
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: employee?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Box>
@@ -84,7 +83,7 @@ const EmployeeTable = ({employeeSlice, setType, formikRef, setUploadedImage}) =>
                 <Edit />
             </IconButton>
             <IconButton onClick={async() => {
-                dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.first_name} ${row?.row?.original.last_name}" `, id: row?.row?.original?._id, delete_type: 'employee' }));
+                dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.first_name} ${row?.row?.original.last_name}" `, id: row?.row?.original?._id, delete_type: 'employee', skip: pagination.pageIndex, limit: pagination.pageSize }));
             }}>
                 <Delete />
             </IconButton>

@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 exports.getAllUnits = async (req, res, next) => {
   try {
-    const units = await UnitService.getAllUnits();
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    const units = await UnitService.getAllUnits(limit, skip);
     res.json({ data: units, status: "success" });
   } catch (err) {
     next(err)

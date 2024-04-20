@@ -1,7 +1,24 @@
 const Customer = require('../Models/Customer.model')
 
-exports.getAllCustomers = async () => {
-    return await Customer.find();
+exports.getAllCustomers = async (limit, skip) => {
+  const totalCount = await Customer.countDocuments();
+  let query = Customer.find().sort({createdAt: -1});
+  if (limit !== 'null') {
+    query = query.limit(limit);
+  }
+
+  if (skip !== 'null') {
+    query = query.skip(skip);
+  }
+  let customer = await query;
+  return {
+    customer: customer, 
+    pagination: { 
+      limit: limit || totalCount,
+      skip: skip || 0,
+      total: totalCount
+    }
+  }
 };
 exports.createCustomer = async (data) => {
   return await Customer.create(data);

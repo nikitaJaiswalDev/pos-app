@@ -3,7 +3,9 @@ const CategoryService = require("../Services/Category");
 
 exports.getAllCategories = async (req, res, next) => {
   try {
-    const category = await CategoryService.getAllCategories();
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    category = await CategoryService.getAllCategories(limit, skip);
     res.json({ data: category, status: "success" });
   } catch (err) {
     next(err)

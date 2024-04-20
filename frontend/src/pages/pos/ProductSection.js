@@ -13,11 +13,10 @@ const contentSX = {
 
 const ITEMS_PER_PAGE = 10;
 
-const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
-
-    const [page, setPage] = useState(1);
-    const handlePagination = (event, value) => {
-        setPage(value)
+const ProductSection = ({ data, categories, setFilter, filter, dispatch, pagination, setPagination }) => {
+    
+    const handlePagination = (page) => {
+        setPagination({...pagination, pageIndex: page});
     };
     const [selectedCategory, setSelectedCategory] = useState(filter.category);
     const handleAutocompleteChange = (event, newValue) => {
@@ -26,7 +25,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
     };
 
     function handleAdd(item) {
-        dispatch(addCartItem({item: {_id: item._id, name: item.name, qtn: 1, price: item.selling_price, original_price: item.selling_price, discount: item.discount, tax: item.tax}}))
+        dispatch(addCartItem({item: {code: item.sku, name: item.name, qtn: 1, price: item.selling_price, original_price: item.selling_price, discount: item.discount, tax: item.tax, total_product_qtn: item.qtn }}))
     }
 
   return (
@@ -40,7 +39,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
                     size="small"
                     disablePortal
                     id="combo-box-demo"
-                    options={categories}
+                    options={categories?.data?.categories || []}
                     getOptionLabel={(option) => option?.name}
                     getOptionSelected={(option, value) => option?._id === value?._id}
                     value={selectedCategory}
@@ -64,7 +63,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
 
         {/* Products List */}
         <Grid container spacing={2} sx={{ margin: '0px 15px'}}>
-            { data.map((item, index) => (
+            { data?.products?.map((item, index) => (
                 <Grid item xs={4} sm={3} md={3} lg={2.2} key={index}>
                     <Card sx={{ maxWidth: 180, position: 'relative' }}>
                         <CardMedia
@@ -80,7 +79,10 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
                             <span style={{ marginLeft: '5px'}}><strike>{item.selling_price}₹</strike></span></Typography>
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => handleAdd(item)} variant="outlined" size="small" color="success">Add</Button>
+                            <Button onClick={() => handleAdd(item)} variant="outlined" size="small" color="success" disabled={item.qtn > 0 ? false: true}>Add</Button>
+                            { item.qtn == 0 && 
+                                <Typography variant="body2" color="red">Out of Stock</Typography>
+                            }
                         </CardActions>
                     </Card>
                 </Grid>
@@ -91,13 +93,11 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch }) => {
 
         {/* Pagination */}
         <Stack spacing={2} sx={{ alignItems: 'end'}}>
-            <Pagination 
-                count={Math.ceil(data.length / ITEMS_PER_PAGE)} 
-                siblingCount={0} 
-                boundaryCount={1} 
-                page={page} 
-                onChange={handlePagination} 
-                shape="rounded" color="primary" 
+            <Pagination
+                count={Math.round(data?.pagination?.total/pagination.pageSize)}
+                page={pagination.pageIndex + 1}
+                onChange={(event, page) => handlePagination(page - 1)}
+                shape="rounded" color="primary"
             />
         </Stack>
 

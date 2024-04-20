@@ -18,11 +18,9 @@ const paperSx = {
     }
 }
 const CartTable = ({ data, dispatch }) => {
-
   return (
-    <Paper sx={paperSx}
-    >
-        <TableContainer component={Paper}>
+    <Paper sx={paperSx} >
+        <TableContainer component={Paper} sx={{ height: data.length > 3 ? 240 : 'auto' }}>
         <Table sx={{ minWidth: 300 }} aria-label="simple table">
             <TableHead>
             <TableRow>

@@ -1,7 +1,24 @@
 const Brand = require('../Models/Brand.model')
 
-exports.getAllBrands = async () => {
-    return await Brand.find();
+exports.getAllBrands = async (limit, skip) => {
+  const totalCount = await Brand.countDocuments();
+  let query = Brand.find().sort({createdAt: -1});
+  if (limit !== 'null') {
+    query = query.limit(limit);
+  }
+
+  if (skip !== 'null') {
+    query = query.skip(skip);
+  }
+  let brands = await query;
+  return {
+    brands: brands, 
+    pagination: { 
+      limit: limit || totalCount,
+      skip: skip || 0,
+      total: totalCount
+    }
+  }
 };
 exports.createBrand = async (data) => {
   return await Brand.create(data);

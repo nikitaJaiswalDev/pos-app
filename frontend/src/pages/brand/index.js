@@ -20,10 +20,14 @@ const Brand = () => {
   const [type, set_type] = useState({type: 'add', id: null})
   const [brand, set_brand] = useState({ name: null, name_error: null, image: null, image_error: null })
   const [image, set_image] = useState()
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   useEffect(() => {
-    dispatch(fetchAllBrand());
-  }, [dispatch]);
+    dispatch(fetchAllBrand({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
 
   // Add Employee
   const { mutateAsync: addBrandData } = useMutation({
@@ -51,7 +55,7 @@ const Brand = () => {
         set_brand({ name: '', name_error: null, image: null, image_error: null})
         set_image(null)
         set_type({ type: 'add', id: null})
-        dispatch(fetchAllBrand());
+        dispatch(fetchAllBrand({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
       }
     } catch (error) {
       console.error("Error adding brand data:", error);
@@ -114,7 +118,7 @@ const Brand = () => {
                 
         <br/>
       <MainCard>
-        <BrandTable data={employeeSlice?.allBrands || []} set_brand={set_brand} set_image={set_image} set_type={set_type}/>
+        <BrandTable data={employeeSlice?.allBrands || []} set_brand={set_brand} set_image={set_image} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

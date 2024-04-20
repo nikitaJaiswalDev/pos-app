@@ -31,12 +31,12 @@ const product = {
           url: 'category/categories',
           target: false,
         },
-        {
-          id: 'child-sub-category',
-          title: 'Sub Category',
-          url: 'category/sub-categories',
-          target: false,
-        },
+        // {
+        //   id: 'child-sub-category',
+        //   title: 'Sub Category',
+        //   url: 'category/sub-categories',
+        //   target: false,
+        // },
       ]
     },
     {

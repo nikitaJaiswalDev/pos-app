@@ -8,13 +8,13 @@ import { capitalizedString } from 'utils/index';
 
 const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage, errors}) => {
     const dispatch = useDispatch();
-    const { employeeSlice } = useSelector(selectAllEmployeeList);
-
+    const { employeeSlice } = useSelector(selectAllEmployeeList); 
+    
     useEffect(() => {
-        dispatch(fetchAllBrand());
-        dispatch(fetchAllUnits());
-        dispatch(fetchAllCategories());
-        dispatch(fetchAllSuppliers());
+        dispatch(fetchAllBrand({ limit: null, skip: null}));
+        dispatch(fetchAllUnits({ limit: null, skip: null}));
+        dispatch(fetchAllCategories({ limit: null, skip: null}));
+        dispatch(fetchAllSuppliers({ limit: null, skip: null}));
     }, [dispatch]);
     return  (
         <Grid container spacing={2}>
@@ -67,7 +67,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
                         error={Boolean(errors.brand)}
                     >
                         <MenuItem value=''>--Select--</MenuItem>
-                        { employeeSlice?.allBrands.map(item => (
+                        { employeeSlice?.allBrands?.brands?.map(item => (
                             <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
@@ -110,7 +110,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
                         error={Boolean(errors.unit_type)}
                     >
                         <MenuItem value=''>--Select--</MenuItem>
-                        { employeeSlice?.allUnits.map(item => (
+                        { employeeSlice?.allUnits?.units?.map(item => (
                             <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
@@ -153,7 +153,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
                         error={Boolean(errors.category)}
                     >
                         <MenuItem value=''>--Select--</MenuItem>
-                        { employeeSlice?.allCategories.map(item => (
+                        { employeeSlice?.allCategories?.data?.categories?.map(item => (
                             <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>
@@ -177,7 +177,7 @@ const AddProductForm = ({ values, setFieldValue, uploadedImage, setUploadedImage
                         error={Boolean(errors.supplier)}
                     >
                         <MenuItem value=''>--Select--</MenuItem>
-                        { employeeSlice?.allSuppliers.map(item => (
+                        { employeeSlice?.allSuppliers?.suppliers?.map(item => (
                             <MenuItem key={item._id} value={item._id}>{capitalizedString(item.name)}</MenuItem>
                         ))}
                     </Select>

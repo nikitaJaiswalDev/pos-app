@@ -1,5 +1,5 @@
 import MainCard from 'components/MainCard'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllOrders, selectAllEmployeeList } from 'store/reducers/employees';
@@ -12,10 +12,14 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 const Order = () => {
     const dispatch = useDispatch();
     const { employeeSlice } = useSelector(selectAllEmployeeList);
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
 
     useEffect(() => {
-        dispatch(fetchAllOrders());
-    }, [dispatch]);
+        dispatch(fetchAllOrders({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+    }, [dispatch, pagination]);
 
     const columns = React.useMemo(
         () => [
@@ -94,7 +98,7 @@ const Order = () => {
 
     const table = useMaterialReactTable({
         columns,
-        data: employeeSlice.orders,
+        data: employeeSlice.orders?.data?.orders || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -109,11 +113,11 @@ const Order = () => {
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: employeeSlice?.orders?.data?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Button variant="outlined" startIcon={<ArrowCircleDownIcon />}>Invoice</Button>

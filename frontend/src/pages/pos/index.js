@@ -10,16 +10,22 @@ const Pos = () => {
   const dispatch = useDispatch();
   const { employeeSlice } = useSelector(selectAllEmployeeList);
   const [filter, setFilter] = useState({ category: null, text: null})
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   useEffect(() => {
-      dispatch(fetchAllProductList());
-      dispatch(fetchAllCategories());
-      dispatch(fetchAllCustomer());
-    }, [dispatch]);
+    dispatch(fetchAllCategories({ limit: null, skip: null}));
+    dispatch(fetchAllCustomer({ limit: null, skip: null}));
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
     
-    useEffect(() => {
-        dispatch(fetchAllProductList(filter));
-    }, [filter])
+  useEffect(() => {
+      dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize, filter: filter}));
+  }, [filter])
   
   
   return (
@@ -31,12 +37,12 @@ const Pos = () => {
 
           {/* Product Section */}
           <Grid item xs={12} md={7} lg={8}>
-            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch}/>
+            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch} pagination={pagination} setPagination={setPagination}/>
           </Grid>
 
           {/* Billing Section */}
           <Grid item xs={12} md={5} lg={4}>
-            <BillingSection customer={employeeSlice.allCustomerList} dispatch={dispatch}/>
+            <BillingSection customer={employeeSlice.allCustomerList?.customer || []} dispatch={dispatch}/>
           </Grid>
         </Grid>
       </Box>

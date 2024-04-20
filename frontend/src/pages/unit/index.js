@@ -19,9 +19,14 @@ const Unit = () => {
   const [unit, set_unit] = useState({
     name: '', name_error: null
   })
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   useEffect(() => {
-    dispatch(fetchAllUnits());
-  }, [dispatch]);
+    dispatch(fetchAllUnits({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
 
   // Add Employee
   const { mutateAsync: addUnitData } = useMutation({
@@ -80,7 +85,7 @@ const Unit = () => {
                 
         <br/>
       <MainCard>
-        <UnitTable data={employeeSlice?.allUnits || []} set_unit={set_unit} set_type={set_type}/>
+        <UnitTable data={employeeSlice?.allUnits || []} set_unit={set_unit} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

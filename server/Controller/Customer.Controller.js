@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 exports.getAllCustomers = async (req, res, next) => {
   try {
-    const customer = await CustomerService.getAllCustomers();
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    const customer = await CustomerService.getAllCustomers(limit, skip);
     res.json({ data: customer, status: "success" });
   } catch (err) {
     next(err)

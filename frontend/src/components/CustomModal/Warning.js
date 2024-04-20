@@ -23,7 +23,6 @@ const WarningModal = ({open, handleClose, title, contentText, handleYes=null}) =
 
   const dispatch = useDispatch()
   const { delete_type, id } = useSelector((state) =>  state.warning)
-  console.log({ id, delete_type});
 
   const handleYesClick = () => {
     if(delete_type !== null) {

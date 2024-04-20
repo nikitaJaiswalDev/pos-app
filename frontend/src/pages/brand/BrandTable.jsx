@@ -7,7 +7,7 @@ import { capitalizedString, convertBufferIntoFile, convertImage } from 'utils/in
 import { useDispatch } from 'react-redux';
 import { openWarning } from 'store/reducers/warning';
 
-const BrandTable = ({ data, set_brand, set_image, set_type }) => {
+const BrandTable = ({ data, set_brand, set_image, set_type, pagination, setPagination }) => {
 
     const dispatch = useDispatch()
 
@@ -49,7 +49,7 @@ const BrandTable = ({ data, set_brand, set_image, set_type }) => {
       
     const table = useMaterialReactTable({
         columns,
-        data: data,
+        data: data?.brands || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -64,11 +64,11 @@ const BrandTable = ({ data, set_brand, set_image, set_type }) => {
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: data?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Box>
@@ -81,7 +81,7 @@ const BrandTable = ({ data, set_brand, set_image, set_type }) => {
             </IconButton>
             <IconButton >
                 <Delete onClick={() => {
-                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'brand' }));
+                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'brand',skip: pagination.pageIndex, limit: pagination.pageSize }));
                 }}/>
             </IconButton>
             </Box>

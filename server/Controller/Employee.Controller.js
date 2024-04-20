@@ -4,13 +4,17 @@ const bcrypt = require('bcrypt')
 
 exports.getAllEmployees = async (req, res, next) => {
   try {
-    let employees = await employeeService.getAllEmployees();
-    employees = employees.filter(item => item.email !== 'droon99@yopmail.com')
-    const data = employees.map(employee => {
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    let response = await employeeService.getAllEmployees(limit, skip);
+    const data = response.employees.map(employee => {
       const { password, ...rest } = employee._doc;
       return rest;
     });
-    res.json({ data: data, status: "success" });
+    res.json({ data: {
+        employees: data, 
+        pagination: response.pagination
+    }, status: "success" });
   } catch (err) {
     next(err)
   }

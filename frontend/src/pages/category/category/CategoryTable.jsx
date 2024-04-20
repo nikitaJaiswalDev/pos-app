@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, IconButton } from '@mui/material';
 import { useMaterialReactTable } from 'material-react-table';
 import { Edit, Delete } from '@mui/icons-material';
@@ -7,9 +7,8 @@ import { capitalizedString } from 'utils/index';
 import { useDispatch } from 'react-redux';
 import { openWarning } from 'store/reducers/warning';
 
-const CategoryTable = ({ data, set_category, set_type }) => {
+const CategoryTable = ({ data, set_category, set_type, pagination, setPagination }) => {
     const dispatch = useDispatch()
-
     const columns = React.useMemo(
         () => [
             {
@@ -38,7 +37,7 @@ const CategoryTable = ({ data, set_category, set_type }) => {
       
     const table = useMaterialReactTable({
         columns,
-        data: data,
+        data: data?.data?.categories || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -53,11 +52,11 @@ const CategoryTable = ({ data, set_category, set_type }) => {
         enableFilters: true,
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        muiPaginationProps: {
-            color: 'secondary',
-            rowsPerPageOptions: [10, 20, 30],
-            shape: 'rounded',
-            variant: 'outlined',
+        manualPagination: true,
+        rowCount: data?.data?.pagination?.total,
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
         },
         renderRowActions: (row) => (
             <Box>
@@ -69,7 +68,7 @@ const CategoryTable = ({ data, set_category, set_type }) => {
             </IconButton>
             <IconButton >
                 <Delete onClick={() => {
-                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'category' }));
+                    dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'category', skip: pagination.pageIndex, limit: pagination.pageSize }));
                 }}/>
             </IconButton>
             </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, IconButton,  } from '@mui/material';
 import MaterialTable from 'components/CustomTable/MaterialTable';
 import { capitalizedString } from 'utils/index';
@@ -13,10 +13,14 @@ const ListSupplier = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { employeeSlice } = useSelector(selectAllEmployeeList);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   useEffect(() => {
-    dispatch(fetchAllSuppliers());
-  }, [dispatch]);
+    dispatch(fetchAllSuppliers({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
 
 
   const columns = React.useMemo(
@@ -67,7 +71,7 @@ const ListSupplier = () => {
   
   const table = useMaterialReactTable({
       columns,
-      data: employeeSlice.allSuppliers,
+      data: employeeSlice.allSuppliers?.suppliers || [],
       enableRowActions: true,
       enableDensityToggle: false,
       enableFullScreenToggle: false,
@@ -82,11 +86,11 @@ const ListSupplier = () => {
       enableFilters: true,
       paginationDisplayMode: 'pages',
       positionToolbarAlertBanner: 'bottom',
-      muiPaginationProps: {
-          color: 'secondary',
-          rowsPerPageOptions: [10, 20, 30],
-          shape: 'rounded',
-          variant: 'outlined',
+      manualPagination: true,
+      rowCount: employeeSlice.allSuppliers?.pagination?.total,
+      onPaginationChange: setPagination,
+      state: {
+          pagination,
       },
       renderRowActions: (row) => (
           <Box>
@@ -95,7 +99,7 @@ const ListSupplier = () => {
           </IconButton>
           <IconButton >
               <Delete onClick={() => {
-                dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'supplier' }));
+                dispatch(openWarning({ warning_open: true, content: `You want to Delete "${row?.row?.original.name}" `, id: row?.row?.original?._id, delete_type: 'supplier', skip: pagination.pageIndex, limit: pagination.pageSize }));
               }}/>
           </IconButton>
           </Box>

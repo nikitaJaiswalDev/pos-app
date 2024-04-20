@@ -3,7 +3,9 @@ const SupplierService = require("../Services/Supplier");
 
 exports.getAllSuppliers = async (req, res, next) => {
   try {
-    const suppliers = await SupplierService.getAllSuppliers();
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    const suppliers = await SupplierService.getAllSuppliers(limit, skip);
     res.json({ data: suppliers, status: "success" });
   } catch (err) {
     next(err)

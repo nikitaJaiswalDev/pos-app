@@ -3,7 +3,9 @@ const BrandService = require("../Services/Brand");
 
 exports.getAllBrands = async (req, res, next) => {
   try {
-    const brands = await BrandService.getAllBrands();
+    let limit = req.query.limit; 
+    let skip = req.query.skip; 
+    const brands = await BrandService.getAllBrands(limit, skip);
     res.json({ data: brands, status: "success" });
   } catch (err) {
     next(err)

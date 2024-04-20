@@ -19,10 +19,15 @@ const Category = () => {
   const [category, set_category] = useState({
     name: null, name_error: null
   })
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
 
   useEffect(() => {
-    dispatch(fetchAllCategories());
-  }, [dispatch]);
+    dispatch(fetchAllCategories({limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
 
   // Add Category
   const { mutateAsync: addCategoryData } = useMutation({
@@ -38,7 +43,7 @@ const Category = () => {
       }
       const res = await addCategoryData(obj)
       if(res.status === 200) {
-        dispatch(fetchAllCategories());
+        dispatch(fetchAllCategories({limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
         set_category({ name: '', name_error: null})
         dispatch(toggleLoader({loader: false}))
         set_type({ type: 'add', id: null})
@@ -80,7 +85,7 @@ const Category = () => {
                 
         <br/>
       <MainCard>
-        <CategoryTable data={employeeSlice?.allCategories} set_category={set_category} set_type={set_type} />
+        <CategoryTable data={employeeSlice?.allCategories} set_category={set_category} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

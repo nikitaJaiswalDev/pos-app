@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com';
+axios.defaults.baseURL = 'http://localhost:5000/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Function to handle 401 errors
@@ -143,9 +143,9 @@ export async function addEmployee(data) {
   }
 }
 // Get all Employees
-export async function getAllEmployeesList() {
+export async function getAllEmployeesList({ limit, skip }) {
   try {
-      var res = await axios.get("/employee");
+      var res = await axios.get(`/employee?limit=${limit}&skip=${skip}`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -186,9 +186,9 @@ export async function addUnit(data) {
   }
 }
 // Get all Units
-export async function getAllUnits() {
+export async function getAllUnits({ limit, skip }) {
   try {
-      var res = await axios.get("/unit");
+      var res = await axios.get(`/unit`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -229,9 +229,9 @@ export async function addBrand(data) {
   }
 }
 // Get all Brands
-export async function getAllBrand() {
+export async function getAllBrand({ limit, skip }) {
   try {
-      var res = await axios.get("/brand");
+      var res = await axios.get(`/brand?limit=${limit}&skip=${skip}`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -273,10 +273,10 @@ export async function addCategory(data) {
   }
 }
 // Get all Categories
-export async function getAllCategories() {
+export async function getAllCategories({ limit, skip }) {
   try {
-      var res = await axios.get("/category");
-      return {data: res.data.data, status: res.status}
+      var res = await axios.get(`/category?limit=${limit}&skip=${skip}`);
+      return {data: res.data, status: res.status}
   } catch (error) {
     return error.response
   }
@@ -312,9 +312,9 @@ export async function addSupplier(data) {
   }
 }
 // Get all Supplier
-export async function getAllSuppliers() {
+export async function getAllSuppliers({ limit, skip }) {
   try {
-      var res = await axios.get("/supplier");
+      var res = await axios.get(`/supplier?limit=${limit}&skip=${skip}`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -364,9 +364,9 @@ export async function addProduct(data) {
   }
 }
 // Get all Products
-export async function getAllProducts(filter) {
+export async function getAllProducts({ limit, skip, filter }) {
   try {
-      var res = await axios.get(`/product?category=${filter?.category}&text=${filter?.text}`);
+      var res = await axios.get(`/product?limit=${limit}&skip=${skip}&category=${filter?.category}&text=${filter?.text}`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -416,9 +416,9 @@ export async function addCustomer(data) {
   }
 }
 // Get all Customers
-export async function getAllCustomers() {
+export async function getAllCustomers({ limit, skip }) {
   try {
-      var res = await axios.get("/customer");
+      var res = await axios.get(`/customer?limit=${limit}&skip=${skip}`);
       return {data: res.data.data, status: res.status}
   } catch (error) {
     return error.response
@@ -489,10 +489,10 @@ export async function addOrder(data) {
   }
 }
 // Get all Orders
-export async function getAllOrders() {
+export async function getAllOrders({ limit, skip }) {
   try {
-      var res = await axios.get("/order");
-      return {data: res.data.data, status: res.status}
+      var res = await axios.get(`/order?limit=${limit}&skip=${skip}`);
+      return {data: res.data, status: res.status}
   } catch (error) {
     return error.response
   }

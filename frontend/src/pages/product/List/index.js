@@ -1,5 +1,5 @@
 import MainCard from 'components/MainCard'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Typography, Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ProductTable from './ProductTable';
@@ -12,10 +12,14 @@ const ListProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { employeeSlice } = useSelector(selectAllEmployeeList);
+    const [pagination, setPagination] = useState({
+      pageIndex: 0,
+      pageSize: 10,
+    });
 
     useEffect(() => {
-        dispatch(fetchAllProductList());
-    }, [dispatch]);
+        dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+    }, [dispatch, pagination]);
 
   return (
     <React.Fragment>
@@ -32,7 +36,7 @@ const ListProduct = () => {
       </Box>
 
       <MainCard>
-        <ProductTable data={employeeSlice.allProductList} dispatch={dispatch} navigate={navigate}/>
+        <ProductTable data={employeeSlice.allProductList} dispatch={dispatch} navigate={navigate} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

@@ -1,5 +1,5 @@
 import MainCard from 'components/MainCard'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Typography, Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { fetchAllCustomer, selectAllEmployeeList } from 'store/reducers/employees';
@@ -12,10 +12,14 @@ const ListCustomer = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { employeeSlice } = useSelector(selectAllEmployeeList);
+    const [pagination, setPagination] = useState({
+      pageIndex: 0,
+      pageSize: 10,
+    });
 
     useEffect(() => {
-        dispatch(fetchAllCustomer());
-    }, [dispatch]);
+        dispatch(fetchAllCustomer({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+    }, [dispatch, pagination]);
 
   return (
     <React.Fragment>
@@ -23,7 +27,7 @@ const ListCustomer = () => {
         <Box sx={{ display: 'flex', gap: 2 }}>
             <Typography variant="h3">Product List</Typography>
             <Box sx={{ background: '#908f8f', padding: '4px 8px', borderRadius: 2,}}>
-                <Typography variant="h5">{employeeSlice.allCustomerList.length}</Typography>
+                <Typography variant="h5">{employeeSlice.allCustomerList?.customer?.length}</Typography>
             </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
@@ -32,7 +36,7 @@ const ListCustomer = () => {
       </Box>
 
       <MainCard>
-        <CustomerTable data={employeeSlice.allCustomerList} dispatch={dispatch} navigate={navigate}/>
+        <CustomerTable data={employeeSlice.allCustomerList} dispatch={dispatch} navigate={navigate} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

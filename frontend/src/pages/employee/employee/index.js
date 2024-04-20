@@ -19,13 +19,15 @@ import GeneralCard from './GeneralCard';
 const AddEmployee = () => {
   const dispatch = useDispatch();
   const { employeeSlice } = useSelector(selectAllEmployeeList);
-  const [type, setType] = useState('add');
- 
+  const [type, setType] = useState({type: 'add', id: null});
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
   useEffect(() => {
-    dispatch(fetchAllEmployeesList());
-  }, [dispatch]);
-
+    dispatch(fetchAllEmployeesList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+  }, [dispatch, pagination]);
 
   // ----------------------- API Calls-------------------------
   // Add Employee
@@ -36,7 +38,7 @@ const AddEmployee = () => {
         dispatch(openToast({ toast_open: true, title: response.data.message, type:"success" }));
         setType({ type: 'add', id: null})
         setUploadedImage(null)
-        dispatch(fetchAllEmployeesList());
+        dispatch(fetchAllEmployeesList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
         dispatch(toggleLoader({loader: false}))
       } else {
         dispatch(openToast({ toast_open: true, title: response.data.message, type:"error" }));
@@ -60,13 +62,13 @@ const AddEmployee = () => {
               <br/>
               <AccountCard values={formikProps.values} setFieldValue={formikProps.setFieldValue} errors={formikProps.errors}/>
               <br/>
-              <SubmitButton type={type} text={"Employee"} />
+              <SubmitButton type={type.type} text={"Employee"} />
             </Form>
           )}
         </Formik>
           
           <br/><br/>
-        <EmployeeTable employeeSlice={employeeSlice} setType={setType} formikRef={formikRef} setUploadedImage={setUploadedImage}/>
+        <EmployeeTable employee={employeeSlice?.allEmployeesList} setType={setType} formikRef={formikRef} setUploadedImage={setUploadedImage} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
 
     </React.Fragment>

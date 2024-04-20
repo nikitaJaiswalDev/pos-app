@@ -3,7 +3,9 @@ const OrderService = require("../Services/Order");
 
 exports.getAllOrders = async (req, res, next) => {
   try {
-    const orders = await OrderService.getAllOrders();
+    const limit = req.query.limit; 
+    const skip = req.query.skip; 
+    const orders = await OrderService.getAllOrders(limit ,skip);
     res.json({ data: orders, status: "success" });
   } catch (err) {
     next(err)

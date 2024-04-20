@@ -4,7 +4,6 @@ import { deleteBrand, deleteCategory, deleteCustomert, deleteEmployee, deletePro
 import { openToast } from './toast';
 import { fetchAllBrand, fetchAllCategories, fetchAllCustomer, fetchAllEmployeesList, fetchAllProductList, fetchAllRolesList, fetchAllSuppliers, fetchAllUnits } from './employees';
 import { toggleLoader } from './loader';
-import { addCartItem } from './cartItems';
 
 
 export const deleteEmployeeData = createAsyncThunk('deleteEmployeeData', async (id, { rejectWithValue }) => {
@@ -112,14 +111,14 @@ export const deleteCustomerData = createAsyncThunk('deleteCustomerData', async (
 }
 );
 
-export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_type}, { dispatch, rejectWithValue }) => {
+export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_type, skip, limit}, { dispatch, rejectWithValue }) => {
   try {
     dispatch(toggleLoader({loader: true}))
     switch(delete_type) {
       case 'employee':
         const emp_res = await  dispatch(deleteEmployeeData(id));
         dispatch(openToast({ toast_open: true, title:  emp_res?.payload?.message?.message, type:"success"}))
-        dispatch(fetchAllEmployeesList())
+        dispatch(fetchAllEmployeesList({ limit: limit, skip: skip}))
         dispatch(toggleLoader({loader: false}))
         break;
       case 'rolelist':
@@ -131,37 +130,37 @@ export const handleDelete = createAsyncThunk('handleDelete', async ({id, delete_
       case 'unit':
         const unit_res = await  dispatch(deleteUnitData(id));
         dispatch(openToast({ toast_open: true, title:  unit_res?.payload?.message?.message, type:"success"}))
-        dispatch(fetchAllUnits())
+        dispatch(fetchAllUnits({ limit: limit, skip: skip}))
         dispatch(toggleLoader({loader: false}))
         break;
       case 'brand':
         const brand_res = await  dispatch(deleteBrandData(id));
         dispatch(openToast({ toast_open: true, title:  brand_res?.payload?.message?.message, type:"success"}))
-        dispatch(fetchAllBrand())
+        dispatch(fetchAllBrand({ limit: limit, skip: skip}))
         dispatch(toggleLoader({loader: false}))
         break;
       case 'category':
         const category_res = await  dispatch(deleteCategoryData(id));
         dispatch(openToast({ toast_open: true, title:  category_res?.payload?.message?.message, type:"success"}))
-        dispatch(fetchAllCategories())
+        dispatch(fetchAllCategories({ limit: limit, skip: skip}))
         dispatch(toggleLoader({loader: false}))
         break;
       case 'supplier':
           const supplier_res = await  dispatch(deleteSupplierData(id));
           dispatch(openToast({ toast_open: true, title:  supplier_res?.payload?.message?.message, type:"success"}))
-          dispatch(fetchAllSuppliers())
+          dispatch(fetchAllSuppliers({ limit: limit, skip: skip}))
           dispatch(toggleLoader({loader: false}))
           break;
       case 'product':
           const product_res = await  dispatch(deleteProductData(id));
           dispatch(openToast({ toast_open: true, title:  product_res?.payload?.message?.message, type:"success"}))
-          dispatch(fetchAllProductList())
+          dispatch(fetchAllProductList({ limit: limit, skip: skip}))
           dispatch(toggleLoader({loader: false}))
           break;
       case 'customer':
           const customer_res = await  dispatch(deleteCustomerData(id));
           dispatch(openToast({ toast_open: true, title:  customer_res?.payload?.message?.message, type:"success"}))
-          dispatch(fetchAllCustomer())
+          dispatch(fetchAllCustomer({ limit: limit, skip: skip}))
           dispatch(toggleLoader({loader: false}))
           break;
       default:
@@ -177,7 +176,9 @@ const initialState = {
   warning_open: false,
   content: '',
   id: null,
-  delete_type: null
+  delete_type: null,
+  skip: 0,
+  limit: 10
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -191,6 +192,8 @@ const warning = createSlice({
       state.content = action.payload.content;
       state.id = action.payload.id;
       state.delete_type = action.payload.delete_type;
+      state.skip = action.payload.skip;
+      state.limit = action.payload.limit;
     },
   },
   extraReducers: (builder) => {
@@ -200,6 +203,8 @@ const warning = createSlice({
       state.content = null;
       state.id = null;
       state.delete_type = null;
+      state.skip = 0;
+      state.limit = 10;
     })
     .addCase(handleDelete.rejected, (state, action) => {
       // Handle errors

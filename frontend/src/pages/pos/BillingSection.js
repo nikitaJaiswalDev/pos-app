@@ -41,7 +41,7 @@ const BillingSection = ({ customer, dispatch }) => {
         sub_total,
         discount,
         tax,
-        total: ((sub_total - discount ) + tax).toFixed(2)
+        total: ((sub_total - discount ) + tax).toFixed(2),
       }));
     }, [items])
 

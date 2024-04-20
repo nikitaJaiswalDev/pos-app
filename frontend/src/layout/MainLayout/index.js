@@ -62,7 +62,7 @@ const MainLayout = () => {
     <WarningModal 
       open={warning_open} 
       handleClose={() => {
-        dispatch(openWarning({ warning_open: false, content: '', id: null}))
+        dispatch(openWarning({ warning_open: false, content: '', id: null, skip: 0, limit: 10}))
         dispatch(toggleLoader({loader: false}))
       }}
       title="Are you sure?" 

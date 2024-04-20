@@ -3,45 +3,45 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders } from 'api/index';
 
 // Async thunk for fetching all roles list
-export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async () => {
-  const response = await getAllEmployeesList();
+export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async ( _ ) => {
+  const response = await getAllEmployeesList({ limit: _.limit, skip: _.skip });
   return response;
 });
 
-export const fetchAllUnits = createAsyncThunk('fetchAllUnits', async () => {
-  const response = await getAllUnits();
+export const fetchAllUnits = createAsyncThunk('fetchAllUnits', async ( _ ) => {
+  const response = await getAllUnits({ limit: _.limit, skip: _.skip });
   return response;
 });
-export const fetchAllBrand = createAsyncThunk('fetchAllBrand', async () => {
-  const response = await getAllBrand();
+export const fetchAllBrand = createAsyncThunk('fetchAllBrand', async ( _ ) => {
+  const response = await getAllBrand({ limit: _.limit, skip: _.skip });
   return response;
 });
-export const fetchAllCategories = createAsyncThunk('fetchAllCategories', async () => {
-  const response = await getAllCategories();
+export const fetchAllCategories = createAsyncThunk('fetchAllCategories', async ( _ ) => {
+  const response = await getAllCategories({ limit: _.limit, skip: _.skip});
   return response;
 });
-export const fetchAllSuppliers = createAsyncThunk('fetchAllSuppliers', async () => {
-  const response = await getAllSuppliers();
+export const fetchAllSuppliers = createAsyncThunk('fetchAllSuppliers', async ( _ ) => {
+  const response = await getAllSuppliers({ limit: _.limit, skip: _.skip});
   return response;
 });
 export const fetchAllRolesList = createAsyncThunk('fetchAllRolesList', async () => {
   const response = await getAllRolesList();
   return response;
 });
-export const fetchAllProductList = createAsyncThunk('fetchAllProductList', async (filter) => {
-  const response = await getAllProducts(filter);
+export const fetchAllProductList = createAsyncThunk('fetchAllProductList', async ( _ ) => {
+  const response = await getAllProducts({ limit: _.limit, skip: _.skip, filter: _.filter});
   return response;
 });
-export const fetchAllCustomer = createAsyncThunk('fetchAllCustomer', async () => {
-  const response = await getAllCustomers();
+export const fetchAllCustomer = createAsyncThunk('fetchAllCustomer', async ( _ ) => {
+  const response = await getAllCustomers({ limit: _.limit, skip: _.skip});
   return response;
 });
 export const fetchShop = createAsyncThunk('fetchShop', async () => {
   const response = await getShop();
   return response;
 });
-export const fetchAllOrders = createAsyncThunk('fetchAllOrders', async () => {
-  const response = await getAllOrders();
+export const fetchAllOrders = createAsyncThunk('fetchAllOrders', async ( _ ) => {
+  const response = await getAllOrders({ limit: _.limit, skip: _.skip});
   return response;
 });
 
