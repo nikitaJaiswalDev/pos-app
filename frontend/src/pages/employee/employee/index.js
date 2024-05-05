@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { Box, Typography } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import MainCard from 'components/MainCard';
-import { fetchAllEmployeesList, selectAllEmployeeList } from 'store/reducers/employees';
+import { fetchAllEmployeesList, fetchAllRolesList, selectAllEmployeeList } from 'store/reducers/employees';
 import useEmployeeForm from './useEmployeeForm';
 import SubmitButton from 'components/CustomButton/SubmitButton';
 import { formValidationSchema } from 'utils/index';
@@ -27,6 +27,7 @@ const AddEmployee = () => {
 
   useEffect(() => {
     dispatch(fetchAllEmployeesList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
+    dispatch(fetchAllRolesList())
   }, [dispatch, pagination]);
 
   // ----------------------- API Calls-------------------------

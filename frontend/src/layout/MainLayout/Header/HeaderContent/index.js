@@ -110,7 +110,7 @@ const HeaderContent = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <img src={convertImage(user?.user?.picture?.data)}  style={{ width: 32, height: 32, border: '1px solid', borderRadius: 50 }}/>
                             <Stack>
-                              <Typography variant="h6">{user?.user?.first_name} {user?.user?.last_name}</Typography>
+                              <Typography variant="h6" style={{ textTransform: 'capitalize' }}>{user?.user?.first_name} {user?.user?.last_name}</Typography>
                               {/* <p>{JSON.stringify(user?.user?.picture)}</p> */}
                               <Typography variant="body2" color="textSecondary">
                                 {user?.user?.role}

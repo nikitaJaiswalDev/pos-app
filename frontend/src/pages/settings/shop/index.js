@@ -1,6 +1,6 @@
 import MainCard from 'components/MainCard'
 import React, { useEffect, useRef, useState } from 'react'
-import { Typography, Box, FormHelperText, Grid, OutlinedInput, InputLabel, Stack, Select, MenuItem, Button} from '@mui/material';
+import { Typography, Box, FormHelperText, Grid, OutlinedInput, InputLabel, Stack, Select, MenuItem, Button, InputAdornment} from '@mui/material';
 import { Formik } from 'formik';
 import { Countries } from 'utils/countries_state'
 import InputFile from 'components/CustomInput/InputFile';
@@ -34,6 +34,7 @@ const ShopSetup = () => {
                 address: employeeSlice.shop[0]?.address,
                 country: employeeSlice.shop[0]?.country,
                 vat: employeeSlice.shop[0]?.vat,
+                currency: employeeSlice.shop[0]?.currency,
                 profile_picture: convertBufferIntoFile(convertImage(employeeSlice.shop[0]?.image?.data)),
             };
         });
@@ -69,7 +70,8 @@ const ShopSetup = () => {
               address: '',
               country: 'IN',
               vat: '',
-              profile_picture: ''
+              profile_picture: '',
+              currency: ''
           }}
           
           validationSchema={shopFormValidationSchema} 
@@ -83,12 +85,14 @@ const ShopSetup = () => {
             formData.append('country', values.country);
             formData.append('vat', values.vat);
             formData.append('image', values.profile_picture); 
+            formData.append('currency', values.currency); 
            await addShopData(formData)
+           dispatch(toggleLoader({ loader: false}))
           }}
           innerRef={formikRef}
         >
           {( { errors, touched, handleChange, handleSubmit, values, setFieldValue, setValues }) => { 
-            formikRef.current = { setValues }
+            formikRef.current = { setValues, values}
             return (
               <form noValidate onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
@@ -133,19 +137,18 @@ const ShopSetup = () => {
                   </Grid>
                   <Grid item xs={4}>
                       <Stack spacing={1}>
-                          <InputLabel>Shop Phone</InputLabel>
+                          <InputLabel>VAT Registration No.</InputLabel>
                           <OutlinedInput
-                              type="number"
+                              type="text"
                               fullWidth
-                              placeholder="Shop Phone"
-                              name="phone"
-                              value={values.phone}
+                              name="vat"
+                              value={values.vat}
                               onChange={handleChange}
-                              error={Boolean(errors.phone && touched.phone)}
+                              error={Boolean(errors.vat && touched.vat)}
                           />
-                          {errors.phone && touched.phone && (
+                          {errors.vat && touched.vat && (
                               <FormHelperText error>
-                              {errors.phone}
+                              {errors.vat}
                               </FormHelperText>
                           )}
                       </Stack>
@@ -177,7 +180,17 @@ const ShopSetup = () => {
                               fullWidth
                               name="country"
                               value={values.country}
-                              onChange={handleChange}
+                              onChange={(event) => {
+                                const selectedCountry = event.target.value;
+                                    const selectedCountryData = Countries.find(country => country.iso2 === selectedCountry);
+                                    if (selectedCountryData) {
+                                        formikRef.current.setValues({
+                                            ...formikRef.current.values,
+                                            country: selectedCountry,
+                                            currency: selectedCountryData.currency_symbol
+                                        });
+                                    }
+                              }}
                               error={Boolean(errors.country && touched.country)}
                           >
                               { Countries.map(item => (
@@ -193,18 +206,44 @@ const ShopSetup = () => {
                   </Grid>
                   <Grid item xs={4}>
                       <Stack spacing={1}>
-                          <InputLabel>VAT Registration No.</InputLabel>
+                          <InputLabel>Shop Phone</InputLabel>
+                            <OutlinedInput
+                                type="number"
+                                fullWidth
+                                placeholder="Shop Phone"
+                                name="phone"
+                                value={values.phone}
+                                onChange={handleChange}
+                                startAdornment={<InputAdornment position="start">
+                                    +{ 
+                                        values.country !== '' && Countries.find(country => country.iso2 === values.country)?.phone_code
+                                    }
+                                </InputAdornment>}
+                                error={Boolean(errors.phone && touched.phone)}
+                            />
+                            {errors.phone && touched.phone && (
+                                <FormHelperText error>
+                                {errors.phone}
+                                </FormHelperText>
+                            )}
+                      </Stack>
+                  </Grid>
+                  
+
+                  <Grid item xs={4}>
+                      <Stack spacing={1}>
+                          <InputLabel>Currency</InputLabel>
                           <OutlinedInput
                               type="text"
                               fullWidth
-                              name="vat"
-                              value={values.vat}
-                              onChange={handleChange}
-                              error={Boolean(errors.vat && touched.vat)}
+                              name="currency"
+                            //   readOnly
+                              value={values.currency}
+                              error={Boolean(errors.currency && touched.currency)}
                           />
-                          {errors.vat && touched.vat && (
+                          {errors.currency && touched.currency && (
                               <FormHelperText error>
-                              {errors.vat}
+                              {errors.currency}
                               </FormHelperText>
                           )}
                       </Stack>

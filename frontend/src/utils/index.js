@@ -59,7 +59,7 @@ export const convertBufferIntoFile = (base64Data, fileName='file.png') => {
 }
 
 export const productFormValidationSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
+  name: Yup.string().matches(/^[A-Za-z ]*$/, 'Name must contain only letters').required('Required'),
   product_code: Yup.string().required('Required'),
   brand: Yup.string().required('Required'),
   quantity: Yup.number().required('Required'),
@@ -74,10 +74,20 @@ export const productFormValidationSchema = Yup.object().shape({
   selling_price: Yup.number().required('Required'),
 });
 
-export const supplierFormValidationSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
+export const customerFormValidationSchema = Yup.object().shape({
+  name: Yup.string().matches(/^[A-Za-z ]*$/, 'Name must contain only letters').required('Required'),
   mobile_no: Yup.string().required('Required'),
-  email: Yup.string().required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
+  state: Yup.string().required('Required'),
+  city: Yup.string().required('Required'),
+  zip_code: Yup.string().required('Required'),
+  address: Yup.string().required('Required'),
+});
+
+export const supplierFormValidationSchema = Yup.object().shape({
+  name: Yup.string().matches(/^[A-Za-z ]*$/, 'Name must contain only letters').required('Required'),
+  mobile_no: Yup.string().required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
   country: Yup.string().required('Required'),
   state: Yup.string().required('Required'),
   city: Yup.string().required('Required'),
@@ -85,13 +95,14 @@ export const supplierFormValidationSchema = Yup.object().shape({
   address: Yup.string().required('Required'),
 });
 export const shopFormValidationSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
-  email: Yup.string().required('Required'),
+  name: Yup.string().matches(/^[A-Za-z ]*$/, 'Name must contain only letters').required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
   phone: Yup.string().required('Required'),
   address: Yup.string().required('Required'),
   country: Yup.string().required('Required'),
   vat: Yup.string().required('Required'),
   profile_picture: Yup.string().required('Required'),
+  currency: Yup.string().required('Required'),
 });
 export const PaymentFormSchema = Yup.object().shape({
   payment_method: Yup.string().max(50).required('Required'),

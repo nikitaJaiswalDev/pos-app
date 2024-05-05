@@ -28,9 +28,12 @@ const RoleTable = ({ setType, type, addRoleList, setWarning, formikRef}) => {
     const columns = React.useMemo(
       () => [
           {
-              accessorKey: 'name',
+              id: 'name',
               header: 'Employee Role List',
               size: 150,
+              Cell: ({ row }) => (
+                <p>{ capitalizedString(row.original.name) }</p>
+              ),
           },
           {
               accessorKey: 'roles',

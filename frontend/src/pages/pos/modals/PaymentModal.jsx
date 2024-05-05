@@ -10,7 +10,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, productBill, selectedCustomer, setSelectedCustomer, dispatch, setProductBill, setInvoiceData, items}) => {
+const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, productBill, selectedCustomer, setSelectedCustomer, dispatch, setProductBill, setInvoiceData, items , currency}) => {
 
     const [orderDetails, setOrderDetails] = useState({
         payment_method: '',
@@ -102,7 +102,7 @@ const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, pro
                 </Select>
 
                 <br/>
-                <Typography variant="body5">Collected Cash ($)</Typography>
+                <Typography variant="body5">Collected Cash ({currency})</Typography>
                 <TextField 
                   id="outlined-basic" 
                   variant="outlined" 
@@ -115,7 +115,7 @@ const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, pro
                 />
 
                 <br/>
-                <Typography variant="body5">Returned Amount($)</Typography>
+                <Typography variant="body5">Returned Amount({currency})</Typography>
                 <TextField id="outlined-basic" variant="outlined" value={orderDetails.returned_amount ? orderDetails.returned_amount.toFixed(2) : ''} InputProps={{ readOnly: true }}/>
 
             </FormControl>

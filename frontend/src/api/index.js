@@ -463,6 +463,15 @@ export async function getShop() {
     return error.response
   }
 }
+
+export async function getShopLogo() {
+  try {
+      var res = await axios.get("/shop/get-shop-logo");
+      return {data: res.data.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
 // Update Shop
 export async function updateShop(id, data) {
   try {
@@ -476,6 +485,7 @@ export async function updateShop(id, data) {
     return error.response
   }
 }
+
 
 // --------------------------- ORDERS API -------------------------------
 // Add order

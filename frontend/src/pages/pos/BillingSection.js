@@ -12,7 +12,7 @@ import BillingDetails from './BillingDetails';
 import { openWarning } from 'store/reducers/warning';
 import { addCartItem } from 'store/reducers/cartItems';
 
-const BillingSection = ({ customer, dispatch }) => {
+const BillingSection = ({ customer, dispatch, currency }) => {
   const { items } = useSelector((state) =>  state.cart)
 
   const [cancelModal, setCancelModal] = React.useState(false);
@@ -85,11 +85,11 @@ const BillingSection = ({ customer, dispatch }) => {
         {/* [
           {item: 'Marvel School bag', qty: 1, price: 4500},
         ] */}
-        <CartTable data={items} dispatch={dispatch}/>
+        <CartTable data={items} dispatch={dispatch} currency={currency}/>
 
         <br/>
         {/* Row 5 */}
-        <BillingDetails productBill={productBill}/>
+        <BillingDetails productBill={productBill} currency={currency}/>
 
         <br/>
         {/* Row 6*/}
@@ -132,11 +132,12 @@ const BillingSection = ({ customer, dispatch }) => {
           setProductBill={setProductBill}
           setInvoiceData={setInvoiceData}
           items={items}
+          currency={currency}
         />
       }
       {
         invoiceModal &&
-        <InvoiceModal open={invoiceModal} handleClose={() => setInvoiceModal(false)} invoiceData={invoiceData}/>
+        <InvoiceModal open={invoiceModal} handleClose={() => setInvoiceModal(false)} invoiceData={invoiceData} currency={currency}/>
       }
     </React.Fragment>
   )

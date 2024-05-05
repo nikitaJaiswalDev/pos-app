@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openToast } from 'store/reducers/toast';
 import { fetchAllRolesList } from 'store/reducers/employees';
 import { toggleLoader } from 'store/reducers/loader';
+import { capitalize } from 'utils/style';
 
 const AddRole = () => {
 
@@ -53,24 +54,24 @@ const AddRole = () => {
   const { mutateAsync: addRoleList } = useMutation({
     mutationFn: (data) => !type.id ? addRole(data): editRole(type.id,data),
     onSuccess: (response) => {
-      if(response.status !== 200) {
+      if(response.status == 200) {
         dispatch(openToast({toast_open: true, title: response.data.message, type:"success"}))
       } else {
         dispatch(openToast({toast_open: true, title: response.data.message, type:"error"}))
-        dispatch(fetchAllRolesList());
-        setType({ type: 'add', id: null})
-        formikRef.current.setValues((prevValues) => {
-          const updatedRoles = prevValues.roles.map(role => {
-            return {...role, status: false}
-          });
-          return {
-            ...prevValues,
-            roles: updatedRoles,
-            name: ''
-          };
-        });
       }
+      setType({ type: 'add', id: null})
+      dispatch(fetchAllRolesList());
       dispatch(toggleLoader({loader: false}))
+      formikRef.current.setValues((prevValues) => {
+        const updatedRoles = prevValues.roles.map(role => {
+          return {...role, status: false}
+        });
+        return {
+          ...prevValues,
+          roles: updatedRoles,
+          name: ''
+        };
+      });
     }
   })
 

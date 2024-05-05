@@ -12,8 +12,8 @@ exports.getAllShops = async (req, res, next) => {
 
 exports.createShop = async (req, res, next) => {
     try {
-      const { name, email, phone, address, country, vat } = req.body
-      await ShopService.createShop({ name, email, phone, address, country, vat, image: req.file.buffer });
+      const { name, email, phone, address, country, vat, currency } = req.body
+      await ShopService.createShop({ name, email, phone, address, country, vat, currency, image: req.file.buffer });
       res.json({ message: "Shop Added Successfully", status: "success" });
     } catch (err) {
         next(err)
@@ -50,3 +50,13 @@ exports.deleteShop = async (req, res, next) => {
     next(err)
   }
 };
+
+exports.getShopLogo = async (req, res, next) => {
+  try {
+    const shops = await ShopService.getAllShops();
+    res.json({ data: shops[0].image, status: "success" });
+  } catch (err) {
+    next(err)
+  }
+};
+

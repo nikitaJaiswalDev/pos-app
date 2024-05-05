@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Toolbar,Grid } from '@mui/material';
 import BillingSection from './BillingSection';
 import ProductSection from './ProductSection';
-import { fetchAllCategories, fetchAllCustomer, fetchAllProductList, selectAllEmployeeList } from 'store/reducers/employees';
+import { fetchAllCategories, fetchAllCustomer, fetchAllProductList, fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Pos = () => {
@@ -18,7 +18,9 @@ const Pos = () => {
   useEffect(() => {
     dispatch(fetchAllCategories({ limit: null, skip: null}));
     dispatch(fetchAllCustomer({ limit: null, skip: null}));
+    dispatch(fetchShop());
   }, [dispatch]);
+
   useEffect(() => {
     dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
   }, [dispatch, pagination]);
@@ -37,12 +39,12 @@ const Pos = () => {
 
           {/* Product Section */}
           <Grid item xs={12} md={7} lg={8}>
-            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch} pagination={pagination} setPagination={setPagination}/>
+            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch} pagination={pagination} setPagination={setPagination} currency={ employeeSlice.shop[0]?.currency }/>
           </Grid>
 
           {/* Billing Section */}
           <Grid item xs={12} md={5} lg={4}>
-            <BillingSection customer={employeeSlice.allCustomerList?.customer || []} dispatch={dispatch}/>
+            <BillingSection customer={employeeSlice.allCustomerList?.customer || []} dispatch={dispatch} currency={ employeeSlice.shop[0]?.currency }/>
           </Grid>
         </Grid>
       </Box>

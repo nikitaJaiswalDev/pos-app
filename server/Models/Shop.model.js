@@ -24,6 +24,11 @@ const ShopSchema = new Schema({
     },
     vat: {
         type: String,
+        required: true,
+    },
+    currency: {
+        type: String,
+        required: true,
     },
     image: {
         type: Buffer,

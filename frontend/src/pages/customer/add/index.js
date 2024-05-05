@@ -10,6 +10,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { toggleLoader } from 'store/reducers/loader';
 import { openToast } from 'store/reducers/toast';
+import { customerFormValidationSchema } from 'utils/index';
 
 const AddCustomer = () => {
     let { customerId } = useParams();
@@ -60,7 +61,8 @@ const AddCustomer = () => {
             </Box>
 
             <Formik 
-                initialValues={{ name: '',  mobile_no: '',  email: '',  state: '',  city: '',  zip_code: '',  address: '' }} 
+                initialValues={{ name: '',  mobile_no: '',  email: '',  state: '',  city: '',  zip_code: '',  address: '' }}
+                validationSchema={type.type === 'add' && customerFormValidationSchema} 
                 onSubmit={async (values, actions) => {
                     dispatch(toggleLoader({ loader: true }));
                     try {

@@ -13,7 +13,7 @@ const contentSX = {
 
 const ITEMS_PER_PAGE = 10;
 
-const ProductSection = ({ data, categories, setFilter, filter, dispatch, pagination, setPagination }) => {
+const ProductSection = ({ data, categories, setFilter, filter, dispatch, pagination, setPagination, currency }) => {
     
     const handlePagination = (page) => {
         setPagination({...pagination, pageIndex: page});
@@ -75,8 +75,8 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch, paginat
                         />
                         <CardContent sx={contentSX}>
                             <Typography variant="h5">{item.name.length > 10 ? item.name.slice(0,10)+'...' : item.name}</Typography>
-                            <Typography variant="body2" sx={{ display:'flex' ,justifyContent: 'center',}}><b>{(item.selling_price - item.discount ).toFixed(2) }₹</b> 
-                            <span style={{ marginLeft: '5px'}}><strike>{item.selling_price}₹</strike></span></Typography>
+                            <Typography variant="body2" sx={{ display:'flex' ,justifyContent: 'center',}}><b>{(item.selling_price - item.discount ).toFixed(2) }{currency}</b> 
+                            <span style={{ marginLeft: '5px'}}><strike>{item.selling_price}{currency}</strike></span></Typography>
                         </CardContent>
                         <CardActions>
                             <Button onClick={() => handleAdd(item)} variant="outlined" size="small" color="success" disabled={item.qtn > 0 ? false: true}>Add</Button>

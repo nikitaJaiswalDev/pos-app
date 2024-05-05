@@ -5,7 +5,8 @@ const {
     getShopById,
     createShop,
     updateShop,
-    deleteShop
+    deleteShop,
+    getShopLogo
 } = require('../Controller/Shop.Controller')
 const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');
@@ -17,6 +18,9 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Make getAllRoleList accessible to anyone
+
+router.route("/get-shop-logo").get(getShopLogo);
+
 router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
 
 router.post("/", upload.single('image'), createShop);

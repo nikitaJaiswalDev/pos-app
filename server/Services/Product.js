@@ -3,7 +3,7 @@ const Supplier = require('../Models/Supplier.model')
 
 exports.getAllProducts = async (query, limit ,skip) => {
     const totalCount = await Product.countDocuments();
-    let product_query = Product.find().sort({createdAt: -1});
+    let product_query = Product.find(query).sort({createdAt: -1});
     if (limit !== 'null') {
       product_query = product_query.limit(limit);
     }

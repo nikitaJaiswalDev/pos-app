@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Logo from './Logo';
 import config from 'config';
 import { activeItem } from 'store/reducers/menu';
-import { fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
+import { fetchShop, fetchShopLogo, selectAllEmployeeList } from 'store/reducers/employees';
 import { useEffect } from 'react';
 import { convertImage } from 'utils/index';
 
@@ -18,8 +18,11 @@ import { convertImage } from 'utils/index';
 const LogoSection = ({ sx, to }) => {
   const { defaultId } = useSelector((state) => state.menu);
   const { employeeSlice } = useSelector(selectAllEmployeeList);
-  
   const dispatch = useDispatch();
+
+  useEffect(() => {
+      dispatch(fetchShopLogo());
+  }, [dispatch]); 
   
   useEffect(() => {
     if(localStorage.getItem('token')) {
@@ -36,8 +39,8 @@ const LogoSection = ({ sx, to }) => {
       sx={sx}
     >
       { 
-      employeeSlice.shop[0] ? 
-      <img src={convertImage(employeeSlice.shop[0]?.image?.data)} width={150} height={80}/>
+      employeeSlice.shopLogo ? 
+      <img src={convertImage(employeeSlice?.shopLogo?.data)} width={150} height={80}/>
       :
       <Logo />
       }

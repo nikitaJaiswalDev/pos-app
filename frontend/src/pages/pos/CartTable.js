@@ -17,7 +17,7 @@ const paperSx = {
         borderRadius: 2
     }
 }
-const CartTable = ({ data, dispatch }) => {
+const CartTable = ({ data, dispatch, currency }) => {
   return (
     <Paper sx={paperSx} >
         <TableContainer component={Paper} sx={{ height: data.length > 3 ? 240 : 'auto' }}>
@@ -46,7 +46,7 @@ const CartTable = ({ data, dispatch }) => {
                             <RemoveIcon fontSize="inherit" />
                         </IconButton>
                     </TableCell>
-                    <TableCell align="right">{row.price.toFixed(2)} ₹</TableCell>
+                    <TableCell align="right">{row.price.toFixed(2)} {currency}</TableCell>
                     <TableCell align="right"><DeleteFilled onClick={() => dispatch(removeCartItem({item: row}))} /></TableCell>
                     </TableRow>
                 )

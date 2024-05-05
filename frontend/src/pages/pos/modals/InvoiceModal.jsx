@@ -18,7 +18,7 @@ const dialogContentSx= {
 const buttonContainerSx={
   display: 'flex', justifyContent: 'center', padding: '10px 0px', gap: '25px'
 }
-const CustomTable = ({ data }) => {
+const CustomTable = ({ data, currency }) => {
 
   return (
     <Paper sx={{boxShadow: 'unset'}}>
@@ -40,7 +40,7 @@ const CustomTable = ({ data }) => {
                   <TableCell component="th" scope="row">{index+1}</TableCell>
                   <TableCell align="right">{item?.name.length > 20 ? item.name.slice(0,20)+'...' : item?.name}</TableCell>
                   <TableCell align="right">{item?.qtn}</TableCell>
-                  <TableCell align="right">{item?.price} $</TableCell>
+                  <TableCell align="right">{item?.price} {currency} </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -49,7 +49,7 @@ const CustomTable = ({ data }) => {
     </Paper>
   )
 }
-const InvoiceModal = ({ open, handleClose, invoiceData }) => {
+const InvoiceModal = ({ open, handleClose, invoiceData, currency }) => {
 
   const { employeeSlice } = useSelector(selectAllEmployeeList);
   const dispatch = useDispatch()
@@ -97,34 +97,34 @@ const InvoiceModal = ({ open, handleClose, invoiceData }) => {
           
           <Typography variant="subtitle2" gutterBottom>--------------------------------------------------------------------</Typography>
 
-          <CustomTable data={invoiceData?.products || []}/>
+          <CustomTable data={invoiceData?.products || []} currency={currency}/>
 
           <Typography variant="subtitle2" gutterBottom>--------------------------------------------------------------------</Typography>
                     
           <br/>
           <Box sx={boxSx}>
             <Typography variant="subtitle2" gutterBottom>Items price:</Typography>
-            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.order_amount} $</Typography>
+            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.order_amount} {currency}</Typography>
           </Box>
           <Box sx={boxSx}>
             <Typography variant="subtitle2" gutterBottom>Tax:</Typography>
-            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.total_tax} $</Typography>
+            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.total_tax} {currency}</Typography>
           </Box>
           <Box sx={boxSx}>
             <Typography variant="subtitle2" gutterBottom>Subtotal:</Typography>
-            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.order_amount + invoiceData?.billing?.total_tax} $</Typography>
+            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.order_amount + invoiceData?.billing?.total_tax} {currency}</Typography>
           </Box>
           <Box sx={boxSx}>
             <Typography variant="subtitle2" gutterBottom>Extra discount:</Typography>
-            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.extra_discount} $</Typography>
+            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.extra_discount} {currency}</Typography>
           </Box>
           <Box sx={boxSx}>
             <Typography variant="subtitle2" gutterBottom>Coupon discount:</Typography>
-            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.coupon_discount} $</Typography>
+            <Typography variant="subtitle2" gutterBottom>{invoiceData?.billing?.coupon_discount} {currency}</Typography>
           </Box>
           <Box sx={boxSx}>
             <Typography variant="subtitle1" gutterBottom>Total:</Typography>
-            <Typography variant="subtitle1" gutterBottom>{invoiceData?.billing?.paid_amount} $</Typography>
+            <Typography variant="subtitle1" gutterBottom>{invoiceData?.billing?.paid_amount} {currency}</Typography>
           </Box>
 
           <Typography variant="subtitle2" gutterBottom>--------------------------------------------------------------------</Typography>

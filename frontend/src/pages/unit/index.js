@@ -41,8 +41,9 @@ const Unit = () => {
         name: unit.name
       }
       const res = await addUnitData(obj)
-      if(res.status === 200) {
-        dispatch(fetchAllUnits());
+      console.log({ res });
+      if(res.status == 200) {
+        dispatch(fetchAllUnits({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
         set_unit({ name: '', name_error: null})
         dispatch(toggleLoader({loader: false}))
         dispatch(openToast({toast_open: true, title: res.data.message, type:"success"}))

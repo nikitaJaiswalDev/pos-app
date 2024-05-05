@@ -2,7 +2,7 @@ import MainCard from 'components/MainCard'
 import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllOrders, selectAllEmployeeList } from 'store/reducers/employees';
+import { fetchAllOrders, fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
 import MaterialTable from 'components/CustomTable/MaterialTable';
 import { useMaterialReactTable } from 'material-react-table';
 import moment from 'moment'
@@ -20,6 +20,10 @@ const Order = () => {
     useEffect(() => {
         dispatch(fetchAllOrders({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
     }, [dispatch, pagination]);
+
+    useEffect(() => {
+        dispatch(fetchShop());
+    }, [dispatch]);
 
     const columns = React.useMemo(
         () => [
@@ -57,7 +61,7 @@ const Order = () => {
                 header: 'Order Amount',
                 size: 100,
                 Cell: ({ row }) => (
-                    <p>{ row.original.order_amount }₹</p>
+                    <p>{ row.original.order_amount } { employeeSlice.shop[0]?.currency }</p>
                 )
             },
             {
@@ -65,7 +69,7 @@ const Order = () => {
                 header: 'Total Tax',
                 size: 100,
                 Cell: ({ row }) => (
-                    <p>{ row.original.total_tax }₹</p>
+                    <p>{ row.original.total_tax } { employeeSlice.shop[0]?.currency }</p>
                 )
             },
             {
@@ -73,7 +77,7 @@ const Order = () => {
                 header: 'Extra Discount',
                 size: 100,
                 Cell: ({ row }) => (
-                    <p>{ row.original.extra_discount }₹</p>
+                    <p>{ row.original.extra_discount } { employeeSlice.shop[0]?.currency }</p>
                 )
             },
             {
@@ -81,7 +85,7 @@ const Order = () => {
                 header: 'Coupon Discount',
                 size: 100,
                 Cell: ({ row }) => (
-                    <p>{ row.original.coupon_discount }₹</p>
+                    <p>{ row.original.coupon_discount } { employeeSlice.shop[0]?.currency }</p>
                 )
             },
             {
@@ -89,7 +93,7 @@ const Order = () => {
                 header: 'Paid Amount',
                 size: 100,
                 Cell: ({ row }) => (
-                    <p>{ row.original.paid_amount }₹</p>
+                    <p>{ row.original.paid_amount } { employeeSlice.shop[0]?.currency }</p>
                 )
             },
         ],

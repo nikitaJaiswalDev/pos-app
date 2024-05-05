@@ -13,14 +13,14 @@ router.post('/login',async (req, res, next) => {
         // const result = await authSchema.validateAsync(req.body)
 
         const user = await Employee.findOne({email: email})
-        if(!user) throw createError.NotFound("User not registered")
+        if(!user) throw createError.NotFound("Invalid Username/Passowrd")
 
         const isMatch = await user.isValidPassword(password)
-        if(!isMatch) throw createError.Unauthorized("Username/password not valid")
+        if(!isMatch) throw createError.Unauthorized("Invalid Username/Passowrd")
       
         
         const role = await getRoleListById(user.role_id)
-        if(!role) throw createError.NotFound("User has no role")
+        if(!role) throw createError.NotFound("Invalid Username/Passowrd")
         
         const accessToken = await signAccessToken(user.id, role.name, signIn)
 
@@ -33,7 +33,7 @@ router.post('/login',async (req, res, next) => {
             picture: user.image
         }})
     } catch (error) {
-        if(error.isJoi === true) return next(createError.BadRequest('Invalid Email/Password'))
+        if(error.isJoi === true) return next(createError.BadRequest('Invalid Username/Passowrd'))
         next(error)
     }
 })

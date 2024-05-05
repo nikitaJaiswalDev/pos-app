@@ -27,7 +27,7 @@ const ListProduct = () => {
         <Box sx={{ display: 'flex', gap: 2 }}>
             <Typography variant="h3">Product List</Typography>
             <Box sx={{ background: '#908f8f', padding: '4px 8px', borderRadius: 2,}}>
-                <Typography variant="h5">{employeeSlice.allProductList.length}</Typography>
+                <Typography variant="h5">{employeeSlice.allProductList?.products?.length}</Typography>
             </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>

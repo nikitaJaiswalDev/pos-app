@@ -7,6 +7,7 @@ import { capitalizedString, convertImage } from 'utils/index';
 import { openWarning } from 'store/reducers/warning';
 
 const CustomerTable = ({ data, dispatch, navigate, pagination, setPagination}) => {
+
     const columns = React.useMemo(
         () => [
             {
@@ -18,6 +19,11 @@ const CustomerTable = ({ data, dispatch, navigate, pagination, setPagination}) =
                         <p>{ capitalizedString(row.original.name)}</p>
                     )
                 }
+            },
+            {
+                accessorKey: 'email',
+                header: 'Email',
+                size: 150,
             },
             {
                 accessorKey: 'mobile_no',

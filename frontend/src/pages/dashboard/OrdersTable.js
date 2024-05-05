@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { Box, Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
@@ -11,7 +11,7 @@ import NumberFormat from 'react-number-format';
 // project import
 import Dot from 'components/@extended/Dot';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllOrders, selectAllEmployeeList } from 'store/reducers/employees';
+import { fetchAllOrders, fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
 import { chipSx } from 'pages/employee/style';
 
 
@@ -102,12 +102,15 @@ OrderStatus.propTypes = {
 
 export default function OrderTable() {
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
     const { employeeSlice } = useSelector(selectAllEmployeeList);
 
     useEffect(() => {
         dispatch(fetchAllOrders({ limit: 5, skip: 0}));
+        dispatch(fetchShop());
     }, [dispatch]);
+    
 
   return (
     <Box>
@@ -142,6 +145,7 @@ export default function OrderTable() {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     tabIndex={-1}
                     key={row._id}
+                    onClick={() => navigate('/orders')}
                   >
                     <TableCell component="th" scope="row" align="left">{row.order}</TableCell>
                     <TableCell align="left">
@@ -157,7 +161,7 @@ export default function OrderTable() {
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
-                      <NumberFormat value={row.paid_amount} displayType="text" thousandSeparator prefix="₹" />
+                      <NumberFormat value={row.paid_amount} displayType="text" thousandSeparator prefix= { employeeSlice.shop[0]?.currency } />
                     </TableCell>
                   </TableRow>
                 )

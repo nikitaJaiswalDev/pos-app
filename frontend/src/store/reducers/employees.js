@@ -1,6 +1,6 @@
 // employeeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders } from 'api/index';
+import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders, getShopLogo } from 'api/index';
 
 // Async thunk for fetching all roles list
 export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async ( _ ) => {
@@ -40,6 +40,10 @@ export const fetchShop = createAsyncThunk('fetchShop', async () => {
   const response = await getShop();
   return response;
 });
+export const fetchShopLogo = createAsyncThunk('fetchShopLogo', async () => {
+  const response = await getShopLogo();
+  return response;
+});
 export const fetchAllOrders = createAsyncThunk('fetchAllOrders', async ( _ ) => {
   const response = await getAllOrders({ limit: _.limit, skip: _.skip});
   return response;
@@ -66,7 +70,9 @@ const employeeSlice = createSlice({
     allCustomerList: [],
     isAllCustomerPending: false,
     shop: [],
+    shopLogo: null,
     isShopPending: false,
+    isShopLogoPending: false,
     orders: [],
     isOrderPending: false,
   },
@@ -170,6 +176,17 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchShop.rejected, (state) => {
         state.isShopPending = false;
+        // Handle error if needed
+      })
+      .addCase(fetchShopLogo.pending, (state) => {
+        state.isShopLogoPending = true;
+      })
+      .addCase(fetchShopLogo.fulfilled, (state, action) => {
+          state.shopLogo = action.payload.data;
+          state.isShopLogoPending = false;
+      })
+      .addCase(fetchShopLogo.rejected, (state) => {
+        state.isShopLogoPending = false;
         // Handle error if needed
       })
       .addCase(fetchAllOrders.pending, (state) => {

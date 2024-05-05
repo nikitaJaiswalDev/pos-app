@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, IconButton } from '@mui/material';
 import { useMaterialReactTable } from 'material-react-table';
 import { Edit, Delete } from '@mui/icons-material';
 import MaterialTable from '../../../components/CustomTable/MaterialTable';
 import { capitalizedString, convertImage } from 'utils/index';
 import { openWarning } from 'store/reducers/warning';
+import { fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
+import { useSelector } from 'react-redux';
 
 const ProductTable = ({ data, dispatch, navigate, pagination, setPagination }) => {
+    const { employeeSlice } = useSelector(selectAllEmployeeList);
+
+    useEffect(() => {
+        dispatch(fetchShop());
+    }, [dispatch]);
 
     const columns = React.useMemo(
         () => [
@@ -41,7 +48,7 @@ const ProductTable = ({ data, dispatch, navigate, pagination, setPagination }) =
                 size: 150,
                 Cell: ({ row }) => {
                     return (
-                        <p>{ row.original.purchase_price} ₹</p>
+                        <p>{ row.original.purchase_price} {employeeSlice?.shop[0]?.currency}</p>
                     )
                 }
             },
@@ -51,7 +58,7 @@ const ProductTable = ({ data, dispatch, navigate, pagination, setPagination }) =
                 size: 150,
                 Cell: ({ row }) => {
                     return (
-                        <p>{ row.original.selling_price} ₹</p>
+                        <p>{ row.original.selling_price} { employeeSlice?.shop[0]?.currency }</p>
                     )
                 }
             },
