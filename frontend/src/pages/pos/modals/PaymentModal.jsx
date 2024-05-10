@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, productBill, selectedCustomer, setSelectedCustomer, dispatch, setProductBill, setInvoiceData, items , currency}) => {
-
+    
     const [orderDetails, setOrderDetails] = useState({
         payment_method: '',
         collected_cash: '',
@@ -23,58 +23,53 @@ const PaymentModal = ({ open, handleClose, setPaymentModal, setInvoiceModal, pro
     })
 
     const handleOrder = async () => {
-      if(orderDetails.payment_method == '' || orderDetails.collected_cash == '') {
-        setError({...error, payment_method_error: true, collected_cash_error: true})
-      } else {
-        setError({...error, payment_method_error: false, collected_cash_error: false})
-        try {
-          // Toggle loader
-          dispatch(toggleLoader({ loader: true }))
-        
-          // Prepare order object
-          const obj = {
-            payment_method: orderDetails.payment_method,
-            order_amount: productBill.sub_total,
-            total_tax: productBill.tax,
-            extra_discount: productBill.extra_discount + productBill.discount,
-            coupon_discount: productBill.coupon_discount,
-            paid_amount: productBill.total,
-            customer: selectedCustomer._id,
-            product: items.map(item => item.code)
-          }      
-          // Add order
-          const res = await addOrder(obj);
-        
-          // Update product quantities and handle response
-          if (res.status === 200) {
-            // Update product quantities
-            await Promise.all(items.map(async item => {
-              await updateProduct(item._id, {
-                qtn: item.total_product_qtn - 1
-              });
-            }));
-        
-            // Reset states
-            setPaymentModal(false);
-            setInvoiceModal(true);
-            setInvoiceData({ billing: res.data.data, products: items });
-            setProductBill({ sub_total: 0, tax: 0, discount: 0, extra_discount: 0, coupon_discount: 0, total: 0 });
-            dispatch(addCartItem({ item: null }));
-            setSelectedCustomer(null);
-        
-            // Toggle loader and show success toast
-            dispatch(toggleLoader({ loader: false }));
-            dispatch(openToast({ open: true, title: res.data.message, type: 'success' }));
-          }
-        } catch (error) {
-          // Handle errors
-          console.error("Error processing order:", error);
-          dispatch(toggleLoader({ loader: false }));
-          dispatch(openToast({ open: true, title: "An error occurred while processing the order.", type: 'error' }));
+      try {
+        const { payment_method, collected_cash, returned_amount } = orderDetails;
+        const paymentError = payment_method !== '';
+        const collectedCashError = collected_cash !== '' && returned_amount >= 0;
+    
+        setError({ ...error, payment_method_error: !paymentError, collected_cash_error: !collectedCashError });
+        if (!paymentError || !collectedCashError) {
+          return;
         }
+    
+        dispatch(toggleLoader({ loader: true }));
+    
+        const obj = {
+          payment_method,
+          order_amount: productBill.sub_total,
+          total_tax: productBill.tax,
+          extra_discount: productBill.extra_discount + productBill.discount,
+          coupon_discount: productBill.coupon_discount,
+          paid_amount: productBill.total,
+          customer: selectedCustomer._id,
+          product: items
+        };
+    
+        const res = await addOrder(obj);
+    
+        if (res.status === 200) {
+          await Promise.all(items.map(async (item) => {
+            await updateProduct(item._id, { qtn: item.total_product_qtn - 1 });
+          }));
+    
+          setPaymentModal(false);
+          setInvoiceModal(true);
+          setInvoiceData({ billing: res.data.data, products: items });
+          setProductBill({ sub_total: 0, tax: 0, discount: 0, extra_discount: 0, coupon_discount: 0, total: 0 });
+          dispatch(addCartItem({ item: null }));
+          setSelectedCustomer(null);
+    
+          dispatch(toggleLoader({ loader: false }));
+          dispatch(openToast({ open: true, title: res.data.message, type: 'success' }));
+        }
+      } catch (error) {
+        console.error("Error processing order:", error);
+        dispatch(toggleLoader({ loader: false }));
+        dispatch(openToast({ open: true, title: "An error occurred while processing the order.", type: 'error' }));
       }
-      
-    }
+    };
+    
 
   return (
     <React.Fragment>

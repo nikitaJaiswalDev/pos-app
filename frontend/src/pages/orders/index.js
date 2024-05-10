@@ -8,6 +8,7 @@ import { useMaterialReactTable } from 'material-react-table';
 import moment from 'moment'
 import { capitalizedString } from 'utils/index';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import InvoiceModal from 'pages/pos/modals/InvoiceModal';
 
 const Order = () => {
     const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const Order = () => {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [openInvoice, setOpenInvoice] = useState(false)
+    const [invoiceData, setInvoiceData] = useState([])
 
     useEffect(() => {
         dispatch(fetchAllOrders({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
@@ -24,6 +27,27 @@ const Order = () => {
     useEffect(() => {
         dispatch(fetchShop());
     }, [dispatch]);
+    
+    const handleInvoice = async(data) => {
+        setOpenInvoice(true)
+        setInvoiceData({
+            billing: {
+                payment_method: data.payment_method ,
+                total_tax: data.total_tax,
+                order_amount: data.order_amount,
+                extra_discount: data.extra_discount,
+                coupon_discount: data.coupon_discount,
+                paid_amount: data.paid_amount,
+                customer: data.customer,
+                _id : data._id,
+                createdAt:  data.createdAt,
+                updatedAt: data.updatedAt,
+                order: data.order    ,
+                __v: 0
+            },
+            products: data.product
+        })
+    }
 
     const columns = React.useMemo(
         () => [
@@ -124,13 +148,18 @@ const Order = () => {
             pagination,
         },
         renderRowActions: (row) => (
-            <Button variant="outlined" startIcon={<ArrowCircleDownIcon />}>Invoice</Button>
+            <Button variant="outlined" startIcon={<ArrowCircleDownIcon />} onClick={() => handleInvoice(row?.row?.original)}>Invoice</Button>
         ),
         
     })
   return (
     <MainCard title="order Card">
         <MaterialTable table={table} title={'Order Table'}/>
+
+        {
+            openInvoice &&
+            <InvoiceModal open={openInvoice} handleClose={() => setOpenInvoice(false)} invoiceData={invoiceData} currency={employeeSlice.shop[0]?.currency }/>
+        }
     </MainCard>
   )
 }

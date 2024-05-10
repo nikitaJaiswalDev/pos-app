@@ -13,7 +13,7 @@ const contentSX = {
 
 const ITEMS_PER_PAGE = 10;
 
-const ProductSection = ({ data, categories, setFilter, filter, dispatch, pagination, setPagination, currency }) => {
+const ProductSection = ({ data, categories, setFilter, filter, dispatch, pagination, setPagination, currency, delayedDispatch }) => {
     
     const handlePagination = (page) => {
         setPagination({...pagination, pageIndex: page});
@@ -25,7 +25,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch, paginat
     };
 
     function handleAdd(item) {
-        dispatch(addCartItem({item: {code: item.sku, name: item.name, qtn: 1, price: item.selling_price, original_price: item.selling_price, discount: item.discount, tax: item.tax, total_product_qtn: item.qtn }}))
+        dispatch(addCartItem({item: {code: item.sku, name: item.name, qtn: 1, price: item.selling_price, original_price: item.selling_price, discount: item.discount, tax: item.tax, total_product_qtn: item.qtn, _id: item._id }}))
     }
 
   return (
@@ -54,7 +54,7 @@ const ProductSection = ({ data, categories, setFilter, filter, dispatch, paginat
                     variant="outlined" 
                     placeholder="Search by code or name"
                     value={filter.text}
-                    onChange={(e) => setFilter({...filter, text: e.target.value})}
+                    onChange={(e) =>  delayedDispatch({ text: e.target.value })}
                 />
             </Grid>
         </Grid>

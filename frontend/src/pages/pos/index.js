@@ -4,6 +4,7 @@ import BillingSection from './BillingSection';
 import ProductSection from './ProductSection';
 import { fetchAllCategories, fetchAllCustomer, fetchAllProductList, fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
 import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash/debounce';
 
 const Pos = () => {
 
@@ -25,9 +26,18 @@ const Pos = () => {
     dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
   }, [dispatch, pagination]);
     
-  useEffect(() => {
-      dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize, filter: filter}));
-  }, [filter])
+  // useEffect(() => {
+  //     dispatch(fetchAllProductList({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize, filter: filter}));
+  // }, [filter])
+
+  // Debounce the dispatch function
+  const delayedDispatch = debounce((filterValue) => {
+    dispatch(fetchAllProductList({
+      limit: pagination.pageSize,
+      skip: pagination.pageIndex * pagination.pageSize,
+      filter: filterValue
+    }));
+  }, 500);
   
   
   return (
@@ -39,7 +49,7 @@ const Pos = () => {
 
           {/* Product Section */}
           <Grid item xs={12} md={7} lg={8}>
-            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch} pagination={pagination} setPagination={setPagination} currency={ employeeSlice.shop[0]?.currency }/>
+            <ProductSection data={employeeSlice.allProductList} categories={employeeSlice.allCategories} setFilter={setFilter} filter={filter} dispatch={dispatch} pagination={pagination} setPagination={setPagination} currency={ employeeSlice.shop[0]?.currency } delayedDispatch={delayedDispatch}/>
           </Grid>
 
           {/* Billing Section */}

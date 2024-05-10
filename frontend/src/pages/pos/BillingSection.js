@@ -29,6 +29,7 @@ const BillingSection = ({ customer, dispatch, currency }) => {
     };
 
     useEffect(() => {
+      console.log({ items });
       const { sub_total, discount, tax } = items.reduce((acc, item) => {
         acc.sub_total += item.price * item.qtn;
         acc.discount += item.discount * item.qtn;

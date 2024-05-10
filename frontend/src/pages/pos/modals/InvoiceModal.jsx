@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {Dialog, DialogTitle, IconButton, DialogContent, Typography, Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Box, Divider} from '@mui/material';
 import { CloseOutlined } from '@ant-design/icons';
 import CustomButton from 'components/CustomButton/index';
-import ReactToPrint from "react-to-print";
+import { useReactToPrint} from "react-to-print";
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchShop, selectAllEmployeeList } from 'store/reducers/employees';
@@ -50,19 +50,24 @@ const CustomTable = ({ data, currency }) => {
   )
 }
 const InvoiceModal = ({ open, handleClose, invoiceData, currency }) => {
-
+  const componentRef = useRef();
   const { employeeSlice } = useSelector(selectAllEmployeeList);
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchShop());
   }, [dispatch]);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   
   return (
     <React.Fragment>
       <Dialog
         open={open}
         onClose={handleClose}
+        ref={componentRef} 
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="customized-dialog-title"> Print Invoice </DialogTitle>
@@ -78,7 +83,7 @@ const InvoiceModal = ({ open, handleClose, invoiceData, currency }) => {
           <CloseOutlined />
         </IconButton>
         <Box sx={buttonContainerSx}>
-          <CustomButton bgColor="#161853" hoverColor="#111452" title="Proceed, If thermal printer is ready."/>
+          <CustomButton handleClick={handlePrint} bgColor="#161853" hoverColor="#111452" title="Proceed, If thermal printer is ready."/>
           <CustomButton handleClick={handleClose} bgColor="#ed4c78" hoverColor="#e91e56" title="Back"/>
         </Box>
 
@@ -134,7 +139,7 @@ const InvoiceModal = ({ open, handleClose, invoiceData, currency }) => {
         </DialogContent>
       </Dialog>
 
-      <ReactToPrint
+      {/* <ReactToPrint
         // content={reactToPrintContent}
         documentTitle="AwesomeFileName"
         // onAfterPrint={handleAfterPrint}
@@ -142,7 +147,7 @@ const InvoiceModal = ({ open, handleClose, invoiceData, currency }) => {
         // onBeforePrint={handleBeforePrint}
         // removeAfterPrint
         // trigger={reactToPrintTrigger}
-      />
+      /> */}
 
     </React.Fragment>
   )

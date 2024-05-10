@@ -5,7 +5,7 @@ const {
     getProductById,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 } = require('../Controller/Product.Controller')
 const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');

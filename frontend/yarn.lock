@@ -8687,10 +8687,10 @@ react-syntax-highlighter@^15.5.0:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
-react-to-print@^2.14.15:
-  version "2.14.15"
-  resolved "https://registry.npmjs.org/react-to-print/-/react-to-print-2.14.15.tgz"
-  integrity sha512-SKnwOzU2cJ8eaAkoJO7+gNhvfEDmm+Y34IdcHsjtHioUevUPhprqbVtvNJlZ2JkGJ8ExK2QNWM9pXECTDR5D8w==
+react-to-print@^2.15.1:
+  version "2.15.1"
+  resolved "https://registry.npmjs.org/react-to-print/-/react-to-print-2.15.1.tgz"
+  integrity sha512-1foogIFbCpzAVxydkhBiDfMiFYhIMphiagDOfcG4X/EcQ+fBPqJ0rby9Wv/emzY1YLkIQy/rEgOrWQT+rBKhjw==
 
 react-transition-group@^4.4.5:
   version "4.4.5"
