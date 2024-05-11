@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:5000/';
+// axios.defaults.baseURL = 'http://localhost:5000/';
+axios.defaults.baseURL = process.env.API_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Function to handle 401 errors
