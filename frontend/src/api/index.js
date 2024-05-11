@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 // axios.defaults.baseURL = 'http://localhost:5000/';
-axios.defaults.baseURL = process.env.API_URL;
+axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+console.log({ process: process.env.API_URL})
 
 // Function to handle 401 errors
 const handle401Error = () => {
