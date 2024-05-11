@@ -155,7 +155,7 @@ export default function OrderTable() {
                       <Stack direction="row" spacing={1} sx={{ display: 'flow'}}>
                         {
                           row.product?.map(item => (
-                            <Chip key={item} label={item}  sx={chipSx}/>
+                            <Chip key={item.code} label={item.code}  sx={chipSx}/>
                           ))
                         }
                       </Stack>
