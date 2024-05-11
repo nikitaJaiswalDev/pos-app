@@ -16,6 +16,7 @@ const ProductRoute = require('./Routes/Product.Route')
 const CustomerRoute = require('./Routes/Customer.Route')
 const ShopRoute = require('./Routes/Shop.Route')
 const OrderRoute = require('./Routes/Order.Route')
+const StatRoute = require('./Routes/Stats.Route')
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/product', ProductRoute)
 app.use('/customer', CustomerRoute)
 app.use('/shop', ShopRoute)
 app.use('/order', OrderRoute)
+app.use('/stats', StatRoute)
 
 app.use((err, req, res, next ) => {
     res.status(err.status || 500)
