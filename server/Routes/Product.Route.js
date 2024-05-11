@@ -17,7 +17,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Make getAllRoleList accessible to anyone
-router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
+router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin', 'manager', 'employee'))
 
 router.post("/", upload.single('image'), createProduct);
 router.put("/:id", upload.single('image'), updateProduct);

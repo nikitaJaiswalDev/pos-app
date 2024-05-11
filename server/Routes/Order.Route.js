@@ -10,7 +10,7 @@ const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');
 
 const router = express.Router()
-router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
+router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin', 'manager', 'employee'))
 
 router.route("/").get(getAllOrders).post(createOrder);
 router.route("/:id").get(getOrderById).put(updateOrder).delete(deleteOrder);

@@ -21,7 +21,7 @@ const upload = multer({ storage: storage });
 
 router.route("/get-shop-logo").get(getShopLogo);
 
-router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
+router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin', 'manager', 'employee'))
 
 router.post("/", upload.single('image'), createShop);
 router.put("/:id", upload.single('image'), updateShop);

@@ -10,7 +10,7 @@ const { verifyAccessToken } = require('../helpers/jwt_helpers');
 const authorizeRoles = require('../helpers/authorize_roles');
 
 const router = express.Router()
-router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin'))
+router.use(verifyAccessToken, authorizeRoles('admin', 'super_admin', 'manager', 'employee'))
 
 router.route("/").get(getAllCategories).post(createCategory);
 router.route("/:id").get(getCategoryById).put(updateCategory).delete(deleteCategory);

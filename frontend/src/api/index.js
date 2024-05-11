@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'http://localhost:5000/';
-axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
+axios.defaults.baseURL = 'http://localhost:5000/';
+// axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 console.log({ process: process.env.API_URL})
