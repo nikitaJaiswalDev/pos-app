@@ -32,8 +32,8 @@ exports.getShopById = async (req, res, next) => {
 
 exports.updateShop = async (req, res, next) => {
   try {
-    const { name, email, phone, address, country, vat } = req.body
-    const shop = await ShopService.updateShop(req.params.id, {name, email, phone, address, country, vat, image: req.file.buffer });
+    const { name, email, phone, address, country, vat, currency } = req.body
+    const shop = await ShopService.updateShop(req.params.id, {name, email, phone, address, country, vat, currency, image: req.file.buffer });
     if(!shop) throw createError.NotFound()
     res.json({ message: "Shop Updated Successfully", status: "success" });
   } catch (err) {
