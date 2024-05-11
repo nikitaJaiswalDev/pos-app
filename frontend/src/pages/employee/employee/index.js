@@ -69,7 +69,7 @@ const AddEmployee = () => {
         </Formik>
           
           <br/><br/>
-        <EmployeeTable employee={employeeSlice?.allEmployeesList} setType={setType} formikRef={formikRef} setUploadedImage={setUploadedImage} pagination={pagination} setPagination={setPagination}/>
+        <EmployeeTable employee={employeeSlice} setType={setType} formikRef={formikRef} setUploadedImage={setUploadedImage} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
 
     </React.Fragment>

@@ -91,6 +91,7 @@ const ListSupplier = () => {
       onPaginationChange: setPagination,
       state: {
           pagination,
+          isLoading: employeeSlice?.isSupplierPending
       },
       renderRowActions: (row) => (
           <Box>

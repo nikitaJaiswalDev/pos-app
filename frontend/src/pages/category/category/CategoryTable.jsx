@@ -37,7 +37,7 @@ const CategoryTable = ({ data, set_category, set_type, pagination, setPagination
       
     const table = useMaterialReactTable({
         columns,
-        data: data?.data?.categories || [],
+        data: data?.allCategories?.data?.categories || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -57,6 +57,7 @@ const CategoryTable = ({ data, set_category, set_type, pagination, setPagination
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: data?.isCategoryPending
         },
         renderRowActions: (row) => (
             <Box>

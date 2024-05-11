@@ -36,7 +36,7 @@ const ListProduct = () => {
       </Box>
 
       <MainCard>
-        <ProductTable data={employeeSlice.allProductList} dispatch={dispatch} navigate={navigate} pagination={pagination} setPagination={setPagination}/>
+        <ProductTable data={employeeSlice} dispatch={dispatch} navigate={navigate} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

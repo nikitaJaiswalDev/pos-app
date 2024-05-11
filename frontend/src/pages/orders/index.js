@@ -146,6 +146,7 @@ const Order = () => {
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: employeeSlice?.isOrderPending
         },
         renderRowActions: (row) => (
             <Button variant="outlined" startIcon={<ArrowCircleDownIcon />} onClick={() => handleInvoice(row?.row?.original)}>Invoice</Button>

@@ -118,7 +118,7 @@ const Brand = () => {
                 
         <br/>
       <MainCard>
-        <BrandTable data={employeeSlice?.allBrands || []} set_brand={set_brand} set_image={set_image} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
+        <BrandTable data={employeeSlice || []} set_brand={set_brand} set_image={set_image} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

@@ -37,7 +37,7 @@ const EmployeeTable = ({employee, setType, formikRef, setUploadedImage, paginati
       
     const table = useMaterialReactTable({
         columns,
-        data: employee?.employees || [],
+        data: employee?.allEmployeesList?.employees || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -53,10 +53,11 @@ const EmployeeTable = ({employee, setType, formikRef, setUploadedImage, paginati
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
         manualPagination: true,
-        rowCount: employee?.pagination?.total,
+        rowCount: employee?.allEmployeesList?.pagination?.total,
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: employee?.isAllEmployeePending
         },
         renderRowActions: (row) => (
             <Box>

@@ -93,6 +93,9 @@ const RoleTable = ({ setType, type, addRoleList, setWarning, formikRef}) => {
             shape: 'rounded',
             variant: 'outlined',
         },
+        state: {
+          isLoading: employeeSlice?.isAllRolesPending
+      },
         renderRowActions: ({row}) => (
             <Box>
               <IconButton onClick={() => {

@@ -49,7 +49,7 @@ const BrandTable = ({ data, set_brand, set_image, set_type, pagination, setPagin
       
     const table = useMaterialReactTable({
         columns,
-        data: data?.brands || [],
+        data: data?.allBrands?.brands || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -69,6 +69,7 @@ const BrandTable = ({ data, set_brand, set_image, set_type, pagination, setPagin
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: data?.isBrandPending
         },
         renderRowActions: (row) => (
             <Box>

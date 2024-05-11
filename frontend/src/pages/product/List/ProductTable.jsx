@@ -83,7 +83,7 @@ const ProductTable = ({ data, dispatch, navigate, pagination, setPagination }) =
       
     const table = useMaterialReactTable({
         columns,
-        data: data?.products || [],
+        data: data?.allProductList?.products || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -103,6 +103,7 @@ const ProductTable = ({ data, dispatch, navigate, pagination, setPagination }) =
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: data?.isAllProductPending
         },
         renderRowActions: (row) => (
             <Box>

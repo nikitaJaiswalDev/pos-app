@@ -41,7 +41,6 @@ const Unit = () => {
         name: unit.name
       }
       const res = await addUnitData(obj)
-      console.log({ res });
       if(res.status == 200) {
         dispatch(fetchAllUnits({ limit: pagination.pageSize, skip: pagination.pageIndex * pagination.pageSize}));
         set_unit({ name: '', name_error: null})
@@ -86,7 +85,7 @@ const Unit = () => {
                 
         <br/>
       <MainCard>
-        <UnitTable data={employeeSlice?.allUnits || []} set_unit={set_unit} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
+        <UnitTable data={employeeSlice || []} set_unit={set_unit} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

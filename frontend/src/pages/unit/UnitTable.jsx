@@ -39,7 +39,7 @@ const UnitTable = ({ data, set_unit, set_type, pagination, setPagination }) => {
       
     const table = useMaterialReactTable({
         columns,
-        data: data?.units || [],
+        data: data?.allUnits?.units || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -59,6 +59,7 @@ const UnitTable = ({ data, set_unit, set_type, pagination, setPagination }) => {
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: data?.isUnitPending
         },
         renderRowActions: (row) => (
             <Box>

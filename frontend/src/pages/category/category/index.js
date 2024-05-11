@@ -85,7 +85,7 @@ const Category = () => {
                 
         <br/>
       <MainCard>
-        <CategoryTable data={employeeSlice?.allCategories} set_category={set_category} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
+        <CategoryTable data={employeeSlice} set_category={set_category} set_type={set_type} pagination={pagination} setPagination={setPagination}/>
       </MainCard>
     </React.Fragment>
   )

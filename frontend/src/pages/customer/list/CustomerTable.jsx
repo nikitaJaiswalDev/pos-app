@@ -36,7 +36,7 @@ const CustomerTable = ({ data, dispatch, navigate, pagination, setPagination}) =
       
     const table = useMaterialReactTable({
         columns,
-        data: data?.customer || [],
+        data: data?.allCustomerList?.customer || [],
         enableRowActions: true,
         enableDensityToggle: false,
         enableFullScreenToggle: false,
@@ -56,6 +56,7 @@ const CustomerTable = ({ data, dispatch, navigate, pagination, setPagination}) =
         onPaginationChange: setPagination,
         state: {
             pagination,
+            isLoading: data?.isAllCustomerPending
         },
         renderRowActions: (row) => (
             <Box>
