@@ -1,6 +1,6 @@
 // employeeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders, getShopLogo } from 'api/index';
+import { getAllBrand, getAllCategories, getAllCustomers, getAllEmployeesList, getAllProducts, getAllRolesList, getAllRolesNames, getShop, getAllSuppliers, getAllUnits, getAllOrders, getShopLogo, getChartStats } from 'api/index';
 
 // Async thunk for fetching all roles list
 export const fetchAllEmployeesList = createAsyncThunk('roles/fetchAllEmployeesList', async ( _ ) => {
@@ -48,6 +48,10 @@ export const fetchAllOrders = createAsyncThunk('fetchAllOrders', async ( _ ) => 
   const response = await getAllOrders({ limit: _.limit, skip: _.skip});
   return response;
 });
+export const fetchChartStats = createAsyncThunk('fetchChartStats', async ( _ ) => {
+  const response = await getChartStats({ type: _.type});
+  return response;
+});
 
 // Role slice
 const employeeSlice = createSlice({
@@ -75,6 +79,8 @@ const employeeSlice = createSlice({
     isShopLogoPending: false,
     orders: [],
     isOrderPending: false,
+    isChartStatsPending: false,
+    chartStats: []
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -199,6 +205,16 @@ const employeeSlice = createSlice({
       .addCase(fetchAllOrders.rejected, (state) => {
         state.isOrderPending = false;
         // Handle error if needed
+      })
+      .addCase(fetchChartStats.pending, (state) => {
+        state.isChartStatsPending = true;
+      })
+      .addCase(fetchChartStats.fulfilled, (state, action) => {
+          state.chartStats = action.payload.data;
+          state.isChartStatsPending = false;
+      })
+      .addCase(fetchChartStats.rejected, (state) => {
+        state.isChartStatsPending = false;
       });
   },
 });

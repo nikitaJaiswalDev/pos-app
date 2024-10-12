@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router()
 const createError = require('http-errors')
 const Employee = require('../Models/Employee.model')
-const {authSchema} = require('../helpers/validation_schema')
 const { signAccessToken, verifyAccessToken } = require('../helpers/jwt_helpers');
 const { getRoleListById } = require('../Services/RoleList');
 const { getEmployeeById } = require('../Services/Employee');
@@ -14,6 +13,8 @@ router.post('/login',async (req, res, next) => {
 
         const user = await Employee.findOne({email: email})
         if(!user) throw createError.NotFound("Invalid Username/Passowrd")
+        console.log('user', user);
+        
 
         const isMatch = await user.isValidPassword(password)
         if(!isMatch) throw createError.Unauthorized("Invalid Username/Passowrd")

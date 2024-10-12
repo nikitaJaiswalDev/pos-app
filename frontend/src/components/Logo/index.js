@@ -19,10 +19,6 @@ const LogoSection = ({ sx, to }) => {
   const { defaultId } = useSelector((state) => state.menu);
   const { employeeSlice } = useSelector(selectAllEmployeeList);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-      dispatch(fetchShopLogo());
-  }, [dispatch]); 
   
   useEffect(() => {
     if(localStorage.getItem('token')) {

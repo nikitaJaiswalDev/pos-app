@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'http://localhost:5000/';
-axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
+axios.defaults.baseURL = 'http://localhost:5001/';
+// axios.defaults.baseURL = 'https://pos-app-lb4s.onrender.com/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 console.log({ process: process.env.API_URL})
@@ -516,6 +516,17 @@ export async function getAllOrders({ limit, skip }) {
 export async function getStats() {
   try {
       var res = await axios.get(`/stats`);
+      return {data: res.data, status: res.status}
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+// Get Stats Value
+export async function getChartStats(data) {
+  try {
+      var res = await axios.get(`/order/chart/${data.type}`);
       return {data: res.data, status: res.status}
   } catch (error) {
     return error.response

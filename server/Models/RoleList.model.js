@@ -15,6 +15,10 @@ const RoleListSchema = new Schema({
         type: Boolean,
         required: true,
     },
+    deletedAt: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true
 })

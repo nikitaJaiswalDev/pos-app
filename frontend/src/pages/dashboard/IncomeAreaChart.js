@@ -5,105 +5,97 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 // third-party
-import ReactApexChart from 'react-apexcharts';
-
-// chart options
-const areaChartOptions = {
-  chart: {
-    height: 450,
-    type: 'area',
-    toolbar: {
-      show: false
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    curve: 'smooth',
-    width: 2
-  },
-  grid: {
-    strokeDashArray: 0
-  }
-};
+import Chart from "react-apexcharts";
+import { fetchChartStats, selectAllEmployeeList } from 'store/reducers/employees';
+import { useDispatch, useSelector } from 'react-redux';
 
 // ==============================|| INCOME AREA CHART ||============================== //
 
+const getWeeksInMonths = (orders = []) => {
+  const weeks = [];
+  const months = [];
+  const counts = [];
+  
+  orders.forEach(order => {
+    const { month, week } = order._id;
+    const { count } = order;
+    weeks.push(`Week ${week}`);
+    months.push(`Month ${month}`);
+    counts.push(count);
+  });
+
+  return { months, weeks, counts };
+};
+
 const IncomeAreaChart = ({ slot }) => {
-  const theme = useTheme();
-
-  const { primary, secondary } = theme.palette.text;
-  const line = theme.palette.divider;
-
-  const [options, setOptions] = useState(areaChartOptions);
+  
+  const dispatch = useDispatch();
+  
+  // Fetching employee data using Redux
+  const { employeeSlice } = useSelector(selectAllEmployeeList);
+  const {months, weeks, counts } = getWeeksInMonths(employeeSlice.chartStats?.data?.orders);
 
   useEffect(() => {
-    setOptions((prevState) => ({
-      ...prevState,
-      colors: [theme.palette.primary.main, theme.palette.primary[700]],
-      xaxis: {
-        categories:
-          slot === 'month'
-            ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        labels: {
-          style: {
-            colors: [
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary
-            ]
-          }
-        },
-        axisBorder: {
-          show: true,
-          color: line
-        },
-        tickAmount: slot === 'month' ? 11 : 7
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: [secondary]
+    // Dispatching action to fetch chart data based on the selected type
+    dispatch(fetchChartStats({ type: slot }));
+  }, [dispatch, slot]);
+
+  // Dynamically update chart options when data changes
+  const [options, setOptions] = useState({
+    chart: {
+      id: "basic-bar",
+      toolbar: { show: false },
+      responsive: [
+        {
+          breakpoint: 1000,
+          options: {
+            chart: { width: '100%' },
+            xaxis: {
+              labels: { show: true }
+            }
           }
         }
-      },
-      grid: {
-        borderColor: line
-      },
-      tooltip: {
-        theme: 'light'
-      }
-    }));
-  }, [primary, secondary, line, theme, slot]);
+      ]
+    },
+    xaxis: {
+      categories: [] // Initially empty, will be set dynamically
+    }
+  });
 
   const [series, setSeries] = useState([
     {
-      name: 'Sales',
-      data: [0, 86, 28, 115, 48, 210, 136]
+      name: "Orders Count",
+      data: [] // Initially empty, will be set dynamically
     }
   ]);
 
+  // Update options and series when weeks or counts change
   useEffect(() => {
-    setSeries([
-      {
-        name: 'Page Views',
-        data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
-      }
-    ]);
-  }, [slot]);
+    if (weeks.length && counts.length) {
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        xaxis: { categories: slot === 'week' ? weeks : months }
+      }));
 
-  return <ReactApexChart options={options} series={series} type="area" height={450} />;
+      setSeries([
+        {
+          name: "Orders Count",
+          data: counts
+        }
+      ]);
+    }
+  }, [employeeSlice.isChartStatsPending, slot]); // Only update when weeks or counts change
+
+  return (
+    employeeSlice.isChartStatsPending ? <div>Loading...</div> : 
+    <Chart
+      options={options}
+      series={series}
+      type="line"
+      width="100%"
+      height="350"
+    />
+  );
 };
 
 IncomeAreaChart.propTypes = {

@@ -34,7 +34,13 @@ const EmployeeSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    deletedAt: {
+        type: Boolean,
+        default: false
     }
+}, {
+    timestamps: true
 })
 
 EmployeeSchema.pre('save', async function (next) {

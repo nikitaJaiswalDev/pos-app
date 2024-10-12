@@ -50,3 +50,12 @@ exports.deleteOrder = async (req, res, next) => {
     next(err)
   }
 };
+
+exports.getOrdersforChart = async (req, res, next) => {
+  try {
+    const orders = await OrderService.getOrdersForCharts(req.params.type);
+    res.json({ data: orders, status: "success" });
+  } catch (err) {
+    next(err)
+  }
+};
