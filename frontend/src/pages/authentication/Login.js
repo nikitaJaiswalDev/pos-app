@@ -60,6 +60,7 @@ const Login = () => {
                 const res = await login(values);
                 if (res.status === 200) {
                     localStorage.setItem('token', res.data.token)
+                    sessionStorage.setItem("reloaded", "true");
                     navigate('/')
                 } else {
                   dispatch(openToast({ toast_open: true, title: res.data.message, type:"error" }));
