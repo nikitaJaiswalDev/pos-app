@@ -35,8 +35,8 @@ const LogoSection = ({ sx, to }) => {
       sx={sx}
     >
       { 
-      employeeSlice.shopLogo ? 
-      <img src={convertImage(employeeSlice?.shopLogo?.data)} width={150} height={80}/>
+      employeeSlice.shop[0]?.image ? 
+      <img src={convertImage(employeeSlice?.shop[0]?.image.data)} width={100} height={80}/>
       :
       <Logo />
       }

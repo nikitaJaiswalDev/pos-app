@@ -237,9 +237,9 @@ const ShopSetup = () => {
                               type="text"
                               fullWidth
                               name="currency"
-                            //   readOnly
                               value={values.currency}
                               error={Boolean(errors.currency && touched.currency)}
+                              onChange={handleChange}
                           />
                           {errors.currency && touched.currency && (
                               <FormHelperText error>
